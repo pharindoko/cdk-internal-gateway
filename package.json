@@ -1,8 +1,9 @@
 {
   "name": "cdk-internal-gateway",
+  "description": "CDK construct to create an internal gateway to ease the creation of internal websites, apis or applications",
   "repository": {
     "type": "git",
-    "url": "https://github.com/user/cdk-internal-gateway.git"
+    "url": "https://github.com/pharindoko/cdk-internal-gateway.git"
   },
   "scripts": {
     "build": "npx projen build",
@@ -29,8 +30,7 @@
     "projen": "npx projen"
   },
   "author": {
-    "name": "user",
-    "email": "user@domain.com",
+    "name": "Florian Fuß",
     "organization": false
   },
   "devDependencies": {
@@ -38,7 +38,7 @@
     "@types/node": "^14",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
-    "aws-cdk-lib": "2.1.0",
+    "aws-cdk-lib": "2.46.0",
     "constructs": "10.0.5",
     "eslint": "^8",
     "eslint-import-resolver-node": "^0.3.6",
@@ -58,7 +58,7 @@
     "typescript": "^4.8.4"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "^2.1.0",
+    "aws-cdk-lib": "^2.46.0",
     "constructs": "^10.0.5"
   },
   "keywords": [
@@ -108,7 +108,7 @@
     }
   },
   "types": "lib/index.d.ts",
-  "stability": "stable",
+  "stability": "experimental",
   "jsii": {
     "outdir": "dist",
     "targets": {},
