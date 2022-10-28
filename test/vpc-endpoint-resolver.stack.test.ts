@@ -121,7 +121,7 @@ Object {
                   "VpcEndpoints.0.NetworkInterfaceIds.1",
                 ],
               },
-              "\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666986636254\\"}}",
+              "\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666987088681\\"}}",
             ],
           ],
         },
@@ -150,7 +150,7 @@ Object {
                   "VpcEndpoints.0.NetworkInterfaceIds.1",
                 ],
               },
-              "\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666986636254\\"}}",
+              "\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666987088681\\"}}",
             ],
           ],
         },
@@ -206,7 +206,7 @@ Object {
         "vpcEndpointResolverStackDescribeVPCEndpointsCustomResourcePolicy37F29399",
       ],
       "Properties": Object {
-        "Create": "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeVpcEndpoints\\",\\"parameters\\":{\\"VpcEndpointIds\\":[\\"vpce-1234567890\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666986636236\\"}}",
+        "Create": "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeVpcEndpoints\\",\\"parameters\\":{\\"VpcEndpointIds\\":[\\"vpce-1234567890\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666987088662\\"}}",
         "InstallLatestAwsSdk": true,
         "ServiceToken": Object {
           "Fn::GetAtt": Array [
@@ -214,7 +214,7 @@ Object {
             "Arn",
           ],
         },
-        "Update": "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeVpcEndpoints\\",\\"parameters\\":{\\"VpcEndpointIds\\":[\\"vpce-1234567890\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666986636236\\"}}",
+        "Update": "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeVpcEndpoints\\",\\"parameters\\":{\\"VpcEndpointIds\\":[\\"vpce-1234567890\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666987088662\\"}}",
       },
       "Type": "Custom::AWS",
       "UpdateReplacePolicy": "Delete",
@@ -260,7 +260,7 @@ test('VPC Endpoint Local NS Lookup Query Resolver Stack provider', async () => {
     },
     serviceName: 'internalservice',
     stage: 'dev',
-    vpcEndpointDnsName: 'vpce-1234567890.eu-central-1.vpce.amazonaws.com',
+    vpcEndpointDnsName: 'golem.de',
   });
   const template = Template.fromStack(stack);
   expect(template).toMatchInlineSnapshot(`
