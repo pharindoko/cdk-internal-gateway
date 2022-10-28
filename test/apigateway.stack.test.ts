@@ -49,14 +49,14 @@ test('Api Gateway Stack provider', () => {
   expect(template).toMatchInlineSnapshot(`
 Object {
   "Outputs": Object {
-    "ApiGatewayApiGatewayStackTestEndpointB2F94B58": Object {
+    "apiGatewayStackgatewayEndpoint8F2FE31A": Object {
       "Value": Object {
         "Fn::Join": Array [
           "",
           Array [
             "https://",
             Object {
-              "Ref": "ApiGatewayApiGatewayStackTest446B3FCA",
+              "Ref": "apiGatewayStackgatewayD04F9A2A",
             },
             ".execute-api.eu-central-1.",
             Object {
@@ -64,7 +64,7 @@ Object {
             },
             "/",
             Object {
-              "Ref": "ApiGatewayApiGatewayStackTestDeploymentStagedev4ACD7265",
+              "Ref": "apiGatewayStackgatewayDeploymentStagedevE6F48FB8",
             },
             "/",
           ],
@@ -80,52 +80,56 @@ Object {
     },
   },
   "Resources": Object {
-    "ApiBasePathMappingSaninternalServiceStackApiGatewayCustomDomain672539FB": Object {
+    "apiGatewayStackgatewayAccount8A2D24FA": Object {
+      "DeletionPolicy": "Retain",
+      "DependsOn": Array [
+        "apiGatewayStackgatewayD04F9A2A",
+      ],
       "Properties": Object {
-        "BasePath": "",
-        "DomainName": Object {
-          "Fn::ImportValue": "internalServiceStack:ExportsOutputRefApiGatewayCustomDomain2BCB9839B486D378",
-        },
-        "RestApiId": Object {
-          "Ref": "ApiGatewayApiGatewayStackTest446B3FCA",
-        },
-        "Stage": Object {
-          "Ref": "ApiGatewayApiGatewayStackTestDeploymentStagedev4ACD7265",
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "apiGatewayStackgatewayCloudWatchRole690D2586",
+            "Arn",
+          ],
         },
       },
-      "Type": "AWS::ApiGateway::BasePathMapping",
+      "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
     },
-    "ApiBasePathMappingSaninternalServiceStackApiGatewayCustomDomainSaninternalservicedevtest2comF93DEDFB": Object {
+    "apiGatewayStackgatewayCloudWatchRole690D2586": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
-        "BasePath": "",
-        "DomainName": Object {
-          "Fn::ImportValue": "internalServiceStack:ExportsOutputRefApiGatewayCustomDomainSaninternalservicedevtest2comF8D3AEC589B19ED8",
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
         },
-        "RestApiId": Object {
-          "Ref": "ApiGatewayApiGatewayStackTest446B3FCA",
-        },
-        "Stage": Object {
-          "Ref": "ApiGatewayApiGatewayStackTestDeploymentStagedev4ACD7265",
-        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
       },
-      "Type": "AWS::ApiGateway::BasePathMapping",
+      "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
     },
-    "ApiBasePathMappingSaninternalServiceStackApiGatewayCustomDomainSaninternalservicedevtestcom95853F1A": Object {
-      "Properties": Object {
-        "BasePath": "",
-        "DomainName": Object {
-          "Fn::ImportValue": "internalServiceStack:ExportsOutputRefApiGatewayCustomDomainSaninternalservicedevtestcom82EF4ECAFB0837AE",
-        },
-        "RestApiId": Object {
-          "Ref": "ApiGatewayApiGatewayStackTest446B3FCA",
-        },
-        "Stage": Object {
-          "Ref": "ApiGatewayApiGatewayStackTestDeploymentStagedev4ACD7265",
-        },
-      },
-      "Type": "AWS::ApiGateway::BasePathMapping",
-    },
-    "ApiGatewayApiGatewayStackTest446B3FCA": Object {
+    "apiGatewayStackgatewayD04F9A2A": Object {
       "Properties": Object {
         "BinaryMediaTypes": Array [
           "*/*",
@@ -140,7 +144,7 @@ Object {
           ],
         },
         "MinimumCompressionSize": 1000,
-        "Name": "internalservice-dev-ApiGatewayStackTest",
+        "Name": "apiGatewayStack-gateway",
         "Policy": Object {
           "Statement": Array [
             Object {
@@ -175,83 +179,34 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "ApiGatewayApiGatewayStackTestAccount52151DB3": Object {
-      "DeletionPolicy": "Retain",
+    "apiGatewayStackgatewayDeployment92249B73d061054acb7628c148cfc9aeae3148c2": Object {
       "DependsOn": Array [
-        "ApiGatewayApiGatewayStackTest446B3FCA",
-      ],
-      "Properties": Object {
-        "CloudWatchRoleArn": Object {
-          "Fn::GetAtt": Array [
-            "ApiGatewayApiGatewayStackTestCloudWatchRole36D77C61",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::ApiGateway::Account",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "ApiGatewayApiGatewayStackTestCloudWatchRole36D77C61": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "apigateway.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
-              ],
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "ApiGatewayApiGatewayStackTestDeployment1E5FBFA1d3d687064a4ac9f88aba749ef99ab20a": Object {
-      "DependsOn": Array [
-        "ApiGatewayApiGatewayStackTestGET2780DC65",
+        "apiGatewayStackgatewayGET2DDA0E8F",
       ],
       "Properties": Object {
         "Description": "This service serves internalservices.",
         "RestApiId": Object {
-          "Ref": "ApiGatewayApiGatewayStackTest446B3FCA",
+          "Ref": "apiGatewayStackgatewayD04F9A2A",
         },
       },
       "Type": "AWS::ApiGateway::Deployment",
     },
-    "ApiGatewayApiGatewayStackTestDeploymentStagedev4ACD7265": Object {
+    "apiGatewayStackgatewayDeploymentStagedevE6F48FB8": Object {
       "DependsOn": Array [
-        "ApiGatewayApiGatewayStackTestAccount52151DB3",
+        "apiGatewayStackgatewayAccount8A2D24FA",
       ],
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "ApiGatewayApiGatewayStackTestDeployment1E5FBFA1d3d687064a4ac9f88aba749ef99ab20a",
+          "Ref": "apiGatewayStackgatewayDeployment92249B73d061054acb7628c148cfc9aeae3148c2",
         },
         "RestApiId": Object {
-          "Ref": "ApiGatewayApiGatewayStackTest446B3FCA",
+          "Ref": "apiGatewayStackgatewayD04F9A2A",
         },
         "StageName": "dev",
       },
       "Type": "AWS::ApiGateway::Stage",
     },
-    "ApiGatewayApiGatewayStackTestGET2780DC65": Object {
+    "apiGatewayStackgatewayGET2DDA0E8F": Object {
       "Properties": Object {
         "AuthorizationType": "NONE",
         "HttpMethod": "GET",
@@ -260,15 +215,60 @@ Object {
         },
         "ResourceId": Object {
           "Fn::GetAtt": Array [
-            "ApiGatewayApiGatewayStackTest446B3FCA",
+            "apiGatewayStackgatewayD04F9A2A",
             "RootResourceId",
           ],
         },
         "RestApiId": Object {
-          "Ref": "ApiGatewayApiGatewayStackTest446B3FCA",
+          "Ref": "apiGatewayStackgatewayD04F9A2A",
         },
       },
       "Type": "AWS::ApiGateway::Method",
+    },
+    "apiGatewayStackinternalServiceStackinternalServiceStackApiGatewayCustomDomainF8681355": Object {
+      "Properties": Object {
+        "BasePath": "",
+        "DomainName": Object {
+          "Fn::ImportValue": "internalServiceStack:ExportsOutputRefinternalServiceStackApiGatewayCustomDomainF3D19E8F3CFD2B8B",
+        },
+        "RestApiId": Object {
+          "Ref": "apiGatewayStackgatewayD04F9A2A",
+        },
+        "Stage": Object {
+          "Ref": "apiGatewayStackgatewayDeploymentStagedevE6F48FB8",
+        },
+      },
+      "Type": "AWS::ApiGateway::BasePathMapping",
+    },
+    "apiGatewayStackinternalServiceStackinternalServiceStackdomaininternalservicedevtest2com6A175E79": Object {
+      "Properties": Object {
+        "BasePath": "",
+        "DomainName": Object {
+          "Fn::ImportValue": "internalServiceStack:ExportsOutputRefinternalServiceStackdomaininternalservicedevtest2com798F5BAC0D28D4EE",
+        },
+        "RestApiId": Object {
+          "Ref": "apiGatewayStackgatewayD04F9A2A",
+        },
+        "Stage": Object {
+          "Ref": "apiGatewayStackgatewayDeploymentStagedevE6F48FB8",
+        },
+      },
+      "Type": "AWS::ApiGateway::BasePathMapping",
+    },
+    "apiGatewayStackinternalServiceStackinternalServiceStackdomaininternalservicedevtestcomAE5A88B0": Object {
+      "Properties": Object {
+        "BasePath": "",
+        "DomainName": Object {
+          "Fn::ImportValue": "internalServiceStack:ExportsOutputRefinternalServiceStackdomaininternalservicedevtestcom451134F428688DAD",
+        },
+        "RestApiId": Object {
+          "Ref": "apiGatewayStackgatewayD04F9A2A",
+        },
+        "Stage": Object {
+          "Ref": "apiGatewayStackgatewayDeploymentStagedevE6F48FB8",
+        },
+      },
+      "Type": "AWS::ApiGateway::BasePathMapping",
     },
   },
   "Rules": Object {

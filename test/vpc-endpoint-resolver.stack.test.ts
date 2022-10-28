@@ -1,17 +1,17 @@
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
-import { VPCEndpointResolverStack } from '../src';
+import { ResourceQueryResolverStack } from '../src/custom-resource-resolver.stack';
+import { LocalNSLookupResolverStack } from '../src/local-nslookup-resolver.stack';
 
-test('VPC Endpoint Stack provider', () => {
+test('VPC Endpoint Custom Resource Query Resolver Stack provider', () => {
   const app = new cdk.App();
-  const stack = new VPCEndpointResolverStack(app, 'vpcEndpointResolverStack', {
+  const stack = new ResourceQueryResolverStack(app, 'vpcEndpointResolverStack', {
     env: {
       account: '123456789101',
       region: 'eu-central-1',
     },
     serviceName: 'internalservice',
     stage: 'dev',
-    vpcId: 'vpc-1234567890',
     vpcEndpointId: 'vpce-1234567890',
   });
   const template = Template.fromStack(stack);
@@ -22,7 +22,7 @@ Object {
       "Description": "VPC Endpoint IP Address ",
       "Value": Object {
         "Fn::GetAtt": Array [
-          "DescribeNetworkInterfaces622753B7",
+          "vpcEndpointResolverStackDescribeNetworkInterfacesBF6A2ECE",
           "NetworkInterfaces.0.PrivateIpAddress",
         ],
       },
@@ -31,7 +31,7 @@ Object {
       "Description": "VPC Endpoint IP Address ",
       "Value": Object {
         "Fn::GetAtt": Array [
-          "DescribeNetworkInterfaces622753B7",
+          "vpcEndpointResolverStackDescribeNetworkInterfacesBF6A2ECE",
           "NetworkInterfaces.1.PrivateIpAddress",
         ],
       },
@@ -51,9 +51,7 @@ Object {
       ],
       "Properties": Object {
         "Code": Object {
-          "S3Bucket": Object {
-            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
-          },
+          "S3Bucket": "cdk-hnb659fds-assets-123456789101-eu-central-1",
           "S3Key": "e845402ce43b66fc6f20df4a239f20f8662eb6c7f920b94cf6542dd0e64ce0f7.zip",
         },
         "Handler": "index.handler",
@@ -99,10 +97,10 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "DescribeNetworkInterfaces622753B7": Object {
+    "vpcEndpointResolverStackDescribeNetworkInterfacesBF6A2ECE": Object {
       "DeletionPolicy": "Delete",
       "DependsOn": Array [
-        "DescribeNetworkInterfacesCustomResourcePolicy0D555CBA",
+        "vpcEndpointResolverStackDescribeNetworkInterfacesCustomResourcePolicy6E75C922",
       ],
       "Properties": Object {
         "Create": Object {
@@ -112,18 +110,18 @@ Object {
               "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeNetworkInterfaces\\",\\"parameters\\":{\\"NetworkInterfaceIds\\":[\\"",
               Object {
                 "Fn::GetAtt": Array [
-                  "DescribeVPCEndpoints567058F0",
+                  "vpcEndpointResolverStackDescribeVPCEndpointsFDDDF98F",
                   "VpcEndpoints.0.NetworkInterfaceIds.0",
                 ],
               },
               "\\",\\"",
               Object {
                 "Fn::GetAtt": Array [
-                  "DescribeVPCEndpoints567058F0",
+                  "vpcEndpointResolverStackDescribeVPCEndpointsFDDDF98F",
                   "VpcEndpoints.0.NetworkInterfaceIds.1",
                 ],
               },
-              "\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666560944388\\"}}",
+              "\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666984223970\\"}}",
             ],
           ],
         },
@@ -141,18 +139,18 @@ Object {
               "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeNetworkInterfaces\\",\\"parameters\\":{\\"NetworkInterfaceIds\\":[\\"",
               Object {
                 "Fn::GetAtt": Array [
-                  "DescribeVPCEndpoints567058F0",
+                  "vpcEndpointResolverStackDescribeVPCEndpointsFDDDF98F",
                   "VpcEndpoints.0.NetworkInterfaceIds.0",
                 ],
               },
               "\\",\\"",
               Object {
                 "Fn::GetAtt": Array [
-                  "DescribeVPCEndpoints567058F0",
+                  "vpcEndpointResolverStackDescribeVPCEndpointsFDDDF98F",
                   "VpcEndpoints.0.NetworkInterfaceIds.1",
                 ],
               },
-              "\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666560944388\\"}}",
+              "\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666984223970\\"}}",
             ],
           ],
         },
@@ -160,7 +158,7 @@ Object {
       "Type": "Custom::AWS",
       "UpdateReplacePolicy": "Delete",
     },
-    "DescribeNetworkInterfacesCustomResourcePolicy0D555CBA": Object {
+    "vpcEndpointResolverStackDescribeNetworkInterfacesCustomResourcePolicy6E75C922": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -172,7 +170,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "DescribeNetworkInterfacesCustomResourcePolicy0D555CBA",
+        "PolicyName": "vpcEndpointResolverStackDescribeNetworkInterfacesCustomResourcePolicy6E75C922",
         "Roles": Array [
           Object {
             "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
@@ -181,26 +179,7 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "DescribeVPCEndpoints567058F0": Object {
-      "DeletionPolicy": "Delete",
-      "DependsOn": Array [
-        "DescribeVPCEndpointsCustomResourcePolicy6ACDD1F9",
-      ],
-      "Properties": Object {
-        "Create": "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeVpcEndpoints\\",\\"parameters\\":{\\"VpcEndpointIds\\":[\\"vpce-1234567890\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666560944375\\"}}",
-        "InstallLatestAwsSdk": true,
-        "ServiceToken": Object {
-          "Fn::GetAtt": Array [
-            "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
-            "Arn",
-          ],
-        },
-        "Update": "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeVpcEndpoints\\",\\"parameters\\":{\\"VpcEndpointIds\\":[\\"vpce-1234567890\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666560944375\\"}}",
-      },
-      "Type": "Custom::AWS",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "DescribeVPCEndpointsCustomResourcePolicy6ACDD1F9": Object {
+    "vpcEndpointResolverStackDescribeVPCEndpointsCustomResourcePolicy37F29399": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -212,7 +191,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "DescribeVPCEndpointsCustomResourcePolicy6ACDD1F9",
+        "PolicyName": "vpcEndpointResolverStackDescribeVPCEndpointsCustomResourcePolicy37F29399",
         "Roles": Array [
           Object {
             "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
@@ -220,6 +199,25 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "vpcEndpointResolverStackDescribeVPCEndpointsFDDDF98F": Object {
+      "DeletionPolicy": "Delete",
+      "DependsOn": Array [
+        "vpcEndpointResolverStackDescribeVPCEndpointsCustomResourcePolicy37F29399",
+      ],
+      "Properties": Object {
+        "Create": "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeVpcEndpoints\\",\\"parameters\\":{\\"VpcEndpointIds\\":[\\"vpce-1234567890\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666984223954\\"}}",
+        "InstallLatestAwsSdk": true,
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+            "Arn",
+          ],
+        },
+        "Update": "{\\"service\\":\\"EC2\\",\\"action\\":\\"describeVpcEndpoints\\",\\"parameters\\":{\\"VpcEndpointIds\\":[\\"vpce-1234567890\\"]},\\"physicalResourceId\\":{\\"id\\":\\"1666984223954\\"}}",
+      },
+      "Type": "Custom::AWS",
+      "UpdateReplacePolicy": "Delete",
     },
   },
   "Rules": Object {
@@ -253,3 +251,54 @@ Object {
 `);
 });
 
+test('VPC Endpoint Local NS Lookup Query Resolver Stack provider', async () => {
+  const app = new cdk.App();
+  const stack = new LocalNSLookupResolverStack(app, 'vpcEndpointResolverStack', {
+    env: {
+      account: '123456789101',
+      region: 'eu-central-1',
+    },
+    serviceName: 'internalservice',
+    stage: 'dev',
+    vpcEndpointDnsName: 'vpce-1234567890.eu-central-1.vpce.amazonaws.com',
+  });
+  const template = Template.fromStack(stack);
+  expect(template).toMatchInlineSnapshot(`
+Object {
+  "Parameters": Object {
+    "BootstrapVersion": Object {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Rules": Object {
+    "CheckBootstrapVersion": Object {
+      "Assertions": Array [
+        Object {
+          "Assert": Object {
+            "Fn::Not": Array [
+              Object {
+                "Fn::Contains": Array [
+                  Array [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  Object {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`);
+});

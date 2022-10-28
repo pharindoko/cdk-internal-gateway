@@ -77,28 +77,28 @@ export class InternalServiceStack extends Stack {
     super(scope, id, props);
 
 
-    const existingVpc = ec2.Vpc.fromLookup(this, 'VPC', {
-      isDefault: false,
-      region: props?.env?.region,
+    const existingVpc = ec2.Vpc.fromLookup(this, `${this.stackName}-VPC`, {
       vpcId: props.vpcId,
     });
 
     this.vpcEndpointId =
       ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
         this,
-        'VPCEndpoint',
+        `${this.stackName}-VPCEndpoint`,
         {
           port: 443,
           vpcEndpointId: props.vpcEndpointId,
         },
       );
+
     const domainName = `${props.subDomain}.${props.hostedZoneName}`;
-    const hostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
-      domainName: domainName,
+    const hostedZone = route53.HostedZone.fromLookup(this, `${this.stackName}-HostedZone`, {
+      domainName: `${props.hostedZoneName}`,
       privateZone: true,
+      vpcId: existingVpc.vpcId,
     });
 
-    const cert = new certificatemanager.Certificate(this, 'SSLCertificate', {
+    const cert = new certificatemanager.Certificate(this, `${this.stackName}-SSLCertificate`, {
       domainName: domainName,
       subjectAlternativeNames: props.subjectAlternativeNames,
       validation: certificatemanager.CertificateValidation.fromDnsMultiZone({
@@ -106,7 +106,7 @@ export class InternalServiceStack extends Stack {
       }),
     });
 
-    const domain = new apigateway.DomainName(this, 'ApiGatewayCustomDomain', {
+    const domain = new apigateway.DomainName(this, `${this.stackName}-ApiGatewayCustomDomain`, {
       domainName: `${props.subDomain}.${props.hostedZoneName}`,
       certificate: cert,
       endpointType: apigateway.EndpointType.REGIONAL,
@@ -118,7 +118,7 @@ export class InternalServiceStack extends Stack {
     for (const domainItem of props.subjectAlternativeNames) {
       const sanDomain = new apigateway.DomainName(
         this,
-        `ApiGatewayCustomDomainSan${domainItem}`,
+        `${this.stackName}-domain-${domainItem}`,
         {
           domainName: domainItem,
           certificate: cert,
@@ -132,9 +132,9 @@ export class InternalServiceStack extends Stack {
 
     const loadBalancerSecurityGroup = new ec2.SecurityGroup(
       this,
-      'LoadBalancerSecurityGroup',
+      `${this.stackName}-LoadBalancerSecurityGroup`,
       {
-        securityGroupName: `${props.serviceName}-${props.stage}-lb-sg`,
+        securityGroupName: `${this.stackName}-lb-sg`,
         vpc: existingVpc,
         allowAllOutbound: true,
         description: 'security group for a load balancer',
@@ -149,21 +149,21 @@ export class InternalServiceStack extends Stack {
 
     const alb = new elb.ApplicationLoadBalancer(
       this,
-      'ApplicationLoadBalancer',
+      `${this.stackName}-ApplicationLoadBalancer`,
       {
         vpc: existingVpc,
         vpcSubnets: {
-          subnets: props.internalSubnetIds.map((ip, index) =>
-            ec2.Subnet.fromSubnetId(this, `Subnet${index}`, ip),
+          subnets: props.internalSubnetIds.map((subnetId, index) =>
+            ec2.Subnet.fromSubnetId(this, `Subnet${index}`, subnetId),
           ),
         },
         internetFacing: false,
         securityGroup: loadBalancerSecurityGroup,
-        loadBalancerName: `${props.serviceName}-${props.stage}-lb`,
+        loadBalancerName: `${this.stackName}-lb`,
       },
     );
 
-    new route53.ARecord(this, 'Route53Record', {
+    new route53.ARecord(this, `${this.stackName}-Route53Record`, {
       zone: hostedZone,
       target: route53.RecordTarget.fromAlias(
         new targets.LoadBalancerTarget(alb),
@@ -177,28 +177,28 @@ export class InternalServiceStack extends Stack {
       targetGroupTargets.push(new elasticloadbalancingv2targets.IpTarget(ip));
     }
 
-    const targetGroup = new elb.ApplicationTargetGroup(this, 'TargetGroup', {
+    const targetGroup = new elb.ApplicationTargetGroup(this, `${this.stackName}-TargetGroup`, {
       port: 443,
       vpc: existingVpc,
       protocol: elb.ApplicationProtocol.HTTPS,
       targetType: elb.TargetType.IP,
       targets: targetGroupTargets,
-      targetGroupName: `${props.serviceName}-${props.stage}-tg`,
+      targetGroupName: `${this.stackName}-tg`,
     });
 
-    const listener = alb.addListener('Listener', {
+    const listener = alb.addListener(`${this.stackName}-Listener`, {
       port: 443,
       certificates: [cert],
     });
 
-    listener.addTargetGroups('TargetGroupAttachment', {
+    listener.addTargetGroups(`${this.stackName}-TargetGroupAttachment`, {
       targetGroups: [targetGroup],
     });
 
-    new CfnOutput(this, 'DomainUrl', {
+    new CfnOutput(this, `${this.stackName}-DomainUrl`, {
       value: `https://${domainName}`,
       description: 'service url',
-      exportName: `${props.serviceName}-${props.stage}-DomainUrl`,
+      exportName: `${this.stackName}-DomainUrl`,
     });
   }
 }

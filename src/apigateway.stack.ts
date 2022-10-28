@@ -80,9 +80,9 @@ export abstract class ApiGatewayStack extends Stack {
 
     this.internalApiGateway = new apigateway.RestApi(
       this,
-      `ApiGateway${this.constructor.name}`,
+      `${this.stackName}-gateway`,
       {
-        restApiName: `${props.serviceName}-${props.stage}-${this.constructor.name}`,
+        restApiName: `${this.stackName}-gateway`,
         description: `This service serves ${props.serviceName}s.`,
         endpointConfiguration: {
           types: [apigateway.EndpointType.PRIVATE],
@@ -100,7 +100,7 @@ export abstract class ApiGatewayStack extends Stack {
     for (const domainItem of props.domains) {
       new apigateway.BasePathMapping(
         this,
-        `ApiBasePathMappingSan${domainItem}`,
+        `${this.stackName}-${domainItem}`,
         {
           domainName: domainItem,
           restApi: this.internalApiGateway,

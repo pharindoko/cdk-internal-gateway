@@ -27,36 +27,36 @@ test('Internal Service provider', () => {
   expect(template).toMatchInlineSnapshot(`
 Object {
   "Outputs": Object {
-    "DomainUrl": Object {
+    "ExportsOutputRefinternalServiceStackApiGatewayCustomDomainF3D19E8F3CFD2B8B": Object {
+      "Export": Object {
+        "Name": "internalServiceStack:ExportsOutputRefinternalServiceStackApiGatewayCustomDomainF3D19E8F3CFD2B8B",
+      },
+      "Value": Object {
+        "Ref": "internalServiceStackApiGatewayCustomDomainF3D19E8F",
+      },
+    },
+    "ExportsOutputRefinternalServiceStackdomaininternalservicedevtest2com798F5BAC0D28D4EE": Object {
+      "Export": Object {
+        "Name": "internalServiceStack:ExportsOutputRefinternalServiceStackdomaininternalservicedevtest2com798F5BAC0D28D4EE",
+      },
+      "Value": Object {
+        "Ref": "internalServiceStackdomaininternalservicedevtest2com798F5BAC",
+      },
+    },
+    "ExportsOutputRefinternalServiceStackdomaininternalservicedevtestcom451134F428688DAD": Object {
+      "Export": Object {
+        "Name": "internalServiceStack:ExportsOutputRefinternalServiceStackdomaininternalservicedevtestcom451134F428688DAD",
+      },
+      "Value": Object {
+        "Ref": "internalServiceStackdomaininternalservicedevtestcom451134F4",
+      },
+    },
+    "internalServiceStackDomainUrl": Object {
       "Description": "service url",
       "Export": Object {
-        "Name": "internalservice-dev-DomainUrl",
+        "Name": "internalServiceStack-DomainUrl",
       },
       "Value": "https://internalservice-dev.test.aws1234.com",
-    },
-    "ExportsOutputRefApiGatewayCustomDomain2BCB9839B486D378": Object {
-      "Export": Object {
-        "Name": "internalServiceStack:ExportsOutputRefApiGatewayCustomDomain2BCB9839B486D378",
-      },
-      "Value": Object {
-        "Ref": "ApiGatewayCustomDomain2BCB9839",
-      },
-    },
-    "ExportsOutputRefApiGatewayCustomDomainSaninternalservicedevtest2comF8D3AEC589B19ED8": Object {
-      "Export": Object {
-        "Name": "internalServiceStack:ExportsOutputRefApiGatewayCustomDomainSaninternalservicedevtest2comF8D3AEC589B19ED8",
-      },
-      "Value": Object {
-        "Ref": "ApiGatewayCustomDomainSaninternalservicedevtest2comF8D3AEC5",
-      },
-    },
-    "ExportsOutputRefApiGatewayCustomDomainSaninternalservicedevtestcom82EF4ECAFB0837AE": Object {
-      "Export": Object {
-        "Name": "internalServiceStack:ExportsOutputRefApiGatewayCustomDomainSaninternalservicedevtestcom82EF4ECAFB0837AE",
-      },
-      "Value": Object {
-        "Ref": "ApiGatewayCustomDomainSaninternalservicedevtestcom82EF4ECA",
-      },
     },
   },
   "Parameters": Object {
@@ -67,7 +67,7 @@ Object {
     },
   },
   "Resources": Object {
-    "ApiGatewayCustomDomain2BCB9839": Object {
+    "internalServiceStackApiGatewayCustomDomainF3D19E8F": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test.aws1234.com",
         "EndpointConfiguration": Object {
@@ -76,43 +76,13 @@ Object {
           ],
         },
         "RegionalCertificateArn": Object {
-          "Ref": "SSLCertificate2E93C565",
+          "Ref": "internalServiceStackSSLCertificate6CFC17B0",
         },
         "SecurityPolicy": "TLS_1_2",
       },
       "Type": "AWS::ApiGateway::DomainName",
     },
-    "ApiGatewayCustomDomainSaninternalservicedevtest2comF8D3AEC5": Object {
-      "Properties": Object {
-        "DomainName": "internalservice-dev.test2.com",
-        "EndpointConfiguration": Object {
-          "Types": Array [
-            "REGIONAL",
-          ],
-        },
-        "RegionalCertificateArn": Object {
-          "Ref": "SSLCertificate2E93C565",
-        },
-        "SecurityPolicy": "TLS_1_2",
-      },
-      "Type": "AWS::ApiGateway::DomainName",
-    },
-    "ApiGatewayCustomDomainSaninternalservicedevtestcom82EF4ECA": Object {
-      "Properties": Object {
-        "DomainName": "internalservice-dev.test.com",
-        "EndpointConfiguration": Object {
-          "Types": Array [
-            "REGIONAL",
-          ],
-        },
-        "RegionalCertificateArn": Object {
-          "Ref": "SSLCertificate2E93C565",
-        },
-        "SecurityPolicy": "TLS_1_2",
-      },
-      "Type": "AWS::ApiGateway::DomainName",
-    },
-    "ApplicationLoadBalancerFD56DEE1": Object {
+    "internalServiceStackApplicationLoadBalancer97B5BBCE": Object {
       "Properties": Object {
         "LoadBalancerAttributes": Array [
           Object {
@@ -120,12 +90,12 @@ Object {
             "Value": "false",
           },
         ],
-        "Name": "internalservice-dev-lb",
+        "Name": "internalServiceStack-lb",
         "Scheme": "internal",
         "SecurityGroups": Array [
           Object {
             "Fn::GetAtt": Array [
-              "LoadBalancerSecurityGroup3036A0FC",
+              "internalServiceStackLoadBalancerSecurityGroup3E17EC9E",
               "GroupId",
             ],
           },
@@ -138,35 +108,35 @@ Object {
       },
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
     },
-    "ApplicationLoadBalancerListener6CA03B43": Object {
+    "internalServiceStackApplicationLoadBalancerinternalServiceStackListenerDD6E0A07": Object {
       "Properties": Object {
         "Certificates": Array [
           Object {
             "CertificateArn": Object {
-              "Ref": "SSLCertificate2E93C565",
+              "Ref": "internalServiceStackSSLCertificate6CFC17B0",
             },
           },
         ],
         "DefaultActions": Array [
           Object {
             "TargetGroupArn": Object {
-              "Ref": "TargetGroup3D7CD9B8",
+              "Ref": "internalServiceStackTargetGroup14BD7A30",
             },
             "Type": "forward",
           },
         ],
         "LoadBalancerArn": Object {
-          "Ref": "ApplicationLoadBalancerFD56DEE1",
+          "Ref": "internalServiceStackApplicationLoadBalancer97B5BBCE",
         },
         "Port": 443,
         "Protocol": "HTTPS",
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
     },
-    "LoadBalancerSecurityGroup3036A0FC": Object {
+    "internalServiceStackLoadBalancerSecurityGroup3E17EC9E": Object {
       "Properties": Object {
         "GroupDescription": "security group for a load balancer",
-        "GroupName": "internalservice-dev-lb-sg",
+        "GroupName": "internalServiceStack-lb-sg",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -187,7 +157,7 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "Route53Record4E35C00F": Object {
+    "internalServiceStackRoute53Record2CE2CA62": Object {
       "Properties": Object {
         "AliasTarget": Object {
           "DNSName": Object {
@@ -197,7 +167,7 @@ Object {
                 "dualstack.",
                 Object {
                   "Fn::GetAtt": Array [
-                    "ApplicationLoadBalancerFD56DEE1",
+                    "internalServiceStackApplicationLoadBalancer97B5BBCE",
                     "DNSName",
                   ],
                 },
@@ -206,7 +176,7 @@ Object {
           },
           "HostedZoneId": Object {
             "Fn::GetAtt": Array [
-              "ApplicationLoadBalancerFD56DEE1",
+              "internalServiceStackApplicationLoadBalancer97B5BBCE",
               "CanonicalHostedZoneID",
             ],
           },
@@ -217,7 +187,7 @@ Object {
       },
       "Type": "AWS::Route53::RecordSet",
     },
-    "SSLCertificate2E93C565": Object {
+    "internalServiceStackSSLCertificate6CFC17B0": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test.aws1234.com",
         "SubjectAlternativeNames": Array [
@@ -227,16 +197,16 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "internalServiceStack/SSLCertificate",
+            "Value": "internalServiceStack/internalServiceStack-SSLCertificate",
           },
         ],
         "ValidationMethod": "DNS",
       },
       "Type": "AWS::CertificateManager::Certificate",
     },
-    "TargetGroup3D7CD9B8": Object {
+    "internalServiceStackTargetGroup14BD7A30": Object {
       "Properties": Object {
-        "Name": "internalservice-dev-tg",
+        "Name": "internalServiceStack-tg",
         "Port": 443,
         "Protocol": "HTTPS",
         "TargetGroupAttributes": Array [
@@ -257,6 +227,36 @@ Object {
         "VpcId": "vpc-12345",
       },
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+    },
+    "internalServiceStackdomaininternalservicedevtest2com798F5BAC": Object {
+      "Properties": Object {
+        "DomainName": "internalservice-dev.test2.com",
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "REGIONAL",
+          ],
+        },
+        "RegionalCertificateArn": Object {
+          "Ref": "internalServiceStackSSLCertificate6CFC17B0",
+        },
+        "SecurityPolicy": "TLS_1_2",
+      },
+      "Type": "AWS::ApiGateway::DomainName",
+    },
+    "internalServiceStackdomaininternalservicedevtestcom451134F4": Object {
+      "Properties": Object {
+        "DomainName": "internalservice-dev.test.com",
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "REGIONAL",
+          ],
+        },
+        "RegionalCertificateArn": Object {
+          "Ref": "internalServiceStackSSLCertificate6CFC17B0",
+        },
+        "SecurityPolicy": "TLS_1_2",
+      },
+      "Type": "AWS::ApiGateway::DomainName",
     },
   },
   "Rules": Object {
