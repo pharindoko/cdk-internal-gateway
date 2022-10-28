@@ -1,7 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { ResourceQueryResolverStack } from '../src/custom-resource-resolver.stack';
-import { LocalNSLookupResolverStack } from '../src/local-nslookup-resolver.stack';
 
 test('VPC Endpoint Custom Resource Query Resolver Stack provider', () => {
   const app = new cdk.App();
