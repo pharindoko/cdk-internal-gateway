@@ -251,54 +251,54 @@ Object {
 `);
 });
 
-test('VPC Endpoint Local NS Lookup Query Resolver Stack provider', async () => {
-  const app = new cdk.App();
-  const stack = new LocalNSLookupResolverStack(app, 'vpcEndpointResolverStack', {
-    env: {
-      account: '123456789101',
-      region: 'eu-central-1',
-    },
-    serviceName: 'internalservice',
-    stage: 'dev',
-    vpcEndpointDnsName: 'vpce-1234567890.eu-central-1.vpce.amazonaws.com',
-  });
-  const template = Template.fromStack(stack);
-  expect(template).toMatchInlineSnapshot(`
-Object {
-  "Parameters": Object {
-    "BootstrapVersion": Object {
-      "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
-      "Type": "AWS::SSM::Parameter::Value<String>",
-    },
-  },
-  "Rules": Object {
-    "CheckBootstrapVersion": Object {
-      "Assertions": Array [
-        Object {
-          "Assert": Object {
-            "Fn::Not": Array [
-              Object {
-                "Fn::Contains": Array [
-                  Array [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                  ],
-                  Object {
-                    "Ref": "BootstrapVersion",
-                  },
-                ],
-              },
-            ],
-          },
-          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
-        },
-      ],
-    },
-  },
-}
-`);
-});
+// test('VPC Endpoint Local NS Lookup Query Resolver Stack provider', async () => {
+//   const app = new cdk.App();
+//   const stack = new LocalNSLookupResolverStack(app, 'vpcEndpointResolverStack', {
+//     env: {
+//       account: '123456789101',
+//       region: 'eu-central-1',
+//     },
+//     serviceName: 'internalservice',
+//     stage: 'dev',
+//     vpcEndpointDnsName: 'vpce-1234567890.eu-central-1.vpce.amazonaws.com',
+//   });
+//   const template = Template.fromStack(stack);
+//   expect(template).toMatchInlineSnapshot(`
+// Object {
+//   "Parameters": Object {
+//     "BootstrapVersion": Object {
+//       "Default": "/cdk-bootstrap/hnb659fds/version",
+//       "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+//       "Type": "AWS::SSM::Parameter::Value<String>",
+//     },
+//   },
+//   "Rules": Object {
+//     "CheckBootstrapVersion": Object {
+//       "Assertions": Array [
+//         Object {
+//           "Assert": Object {
+//             "Fn::Not": Array [
+//               Object {
+//                 "Fn::Contains": Array [
+//                   Array [
+//                     "1",
+//                     "2",
+//                     "3",
+//                     "4",
+//                     "5",
+//                   ],
+//                   Object {
+//                     "Ref": "BootstrapVersion",
+//                   },
+//                 ],
+//               },
+//             ],
+//           },
+//           "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+//         },
+//       ],
+//     },
+//   },
+// }
+// `);
+// });
