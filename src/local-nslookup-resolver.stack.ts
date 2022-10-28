@@ -24,7 +24,9 @@ export class LocalNSLookupResolverStack extends VpcEndpointIPResolver {
         this.vcpEndpointIpAddresses = await resolver.resolve(props.vpcEndpointDnsName);
         this.setIpAddressesOutput();
       }
-      )();
+      )().catch((error) => {
+        console.error(error);
+      });
     } catch (error) {
       console.log(`Error: ${error}`);
       throw error;

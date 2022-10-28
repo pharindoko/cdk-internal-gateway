@@ -183,7 +183,7 @@
       "error"
     ],
     "@typescript-eslint/no-floating-promises": [
-      "off"
+      "error"
     ],
     "no-return-await": [
       "off"
