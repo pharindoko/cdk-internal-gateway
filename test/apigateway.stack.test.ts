@@ -20,8 +20,6 @@ beforeAll(() => {
       account: '123456789101',
       region: 'eu-central-1',
     },
-    serviceName: 'internalservice',
-    stage: 'dev',
     vpcId: 'vpc-1234567890',
     internalSubnetIds: ['subnet-1234567890', 'subnet-1234567890'],
     vpcEndpointId: 'vpce-1234567890',
@@ -38,7 +36,6 @@ test('Api Gateway Stack provider', () => {
       account: '123456789101',
       region: 'eu-central-1',
     },
-    serviceName: 'internalservice',
     stage: 'dev',
     domains: internalServiceStack.domains,
     vpcEndpointId: internalServiceStack.vpcEndpointId,
@@ -134,7 +131,7 @@ Object {
         "BinaryMediaTypes": Array [
           "*/*",
         ],
-        "Description": "This service serves internalservices.",
+        "Description": "This service serves apiGatewayStacks.",
         "EndpointConfiguration": Object {
           "Types": Array [
             "PRIVATE",
@@ -179,12 +176,12 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "apiGatewayStackgatewayDeployment92249B73d061054acb7628c148cfc9aeae3148c2": Object {
+    "apiGatewayStackgatewayDeployment92249B739a243da14bdc566ace7eda6e5a36b6be": Object {
       "DependsOn": Array [
         "apiGatewayStackgatewayGET2DDA0E8F",
       ],
       "Properties": Object {
-        "Description": "This service serves internalservices.",
+        "Description": "This service serves apiGatewayStacks.",
         "RestApiId": Object {
           "Ref": "apiGatewayStackgatewayD04F9A2A",
         },
@@ -197,7 +194,7 @@ Object {
       ],
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "apiGatewayStackgatewayDeployment92249B73d061054acb7628c148cfc9aeae3148c2",
+          "Ref": "apiGatewayStackgatewayDeployment92249B739a243da14bdc566ace7eda6e5a36b6be",
         },
         "RestApiId": Object {
           "Ref": "apiGatewayStackgatewayD04F9A2A",

@@ -13,11 +13,6 @@ import { Construct } from 'constructs';
  */
 export interface ApiGatewayStackProps extends StackProps {
   /**
-   * Service name  used for all cloudformation resource names and internal aws resource names.
-   */
-  readonly serviceName: string;
-
-  /**
    * Stage name  used for all cloudformation resource names and internal aws resource names.
    */
   readonly stage: string;
@@ -83,7 +78,7 @@ export abstract class ApiGatewayStack extends Stack {
       `${this.stackName}-gateway`,
       {
         restApiName: `${this.stackName}-gateway`,
-        description: `This service serves ${props.serviceName}s.`,
+        description: `This service serves ${this.stackName}s.`,
         endpointConfiguration: {
           types: [apigateway.EndpointType.PRIVATE],
           vpcEndpoints: [props.vpcEndpointId],

@@ -12,8 +12,6 @@ test('Internal Service provider', () => {
       account: '123456789101',
       region: 'eu-central-1',
     },
-    serviceName: 'internalservice',
-    stage: 'dev',
     vpcId: 'vpc-1234567890',
     internalSubnetIds: ['subnet-1234567890', 'subnet-1234567890'],
     vpcEndpointId: 'vpce-1234567890',

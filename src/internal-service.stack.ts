@@ -17,16 +17,6 @@ import { Construct } from 'constructs';
  */
 export interface InternalServiceStackProps extends StackProps {
   /**
-   * Service name  used for all cloudformation resource names and internal aws resource names.
-   */
-  readonly serviceName: string;
-
-  /**
-   * Stage name  used for all cloudformation resource names and internal aws resource names.
-   */
-  readonly stage: string;
-
-  /**
    * VPC attached to the application load balancer.
    */
   readonly vpcId: string;
