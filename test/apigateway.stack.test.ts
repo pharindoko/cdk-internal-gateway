@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Construct } from 'constructs';
 import { ApiGatewayStack, ApiGatewayStackProps, InternalServiceStack } from '../src';
 
@@ -30,6 +30,8 @@ beforeAll(() => {
   });
 });
 
+
+
 test('Api Gateway Stack provider', () => {
   const stack = new ApiGatewayStackTest(app, 'apiGatewayStack', {
     env: {
@@ -43,6 +45,49 @@ test('Api Gateway Stack provider', () => {
 
 
   const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
+    "EndpointConfiguration": {
+      "Types": [
+        "PRIVATE"
+      ],
+    }
+  }
+  ));
+  template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
+    "Policy": {
+      "Statement": [
+        {
+          "Action": "execute-api:Invoke",
+          "Condition": {
+            "StringNotEquals": {
+              "aws:sourceVpce": internalServiceStack.vpcEndpointId.vpcEndpointId,
+            },
+          },
+          "Effect": "Deny",
+          "Principal": {
+            "AWS": "*",
+          },
+          "Resource": "execute-api:/*/*/*",
+        },
+        {
+          "Action": "execute-api:Invoke",
+          "Condition": {
+            "StringEquals": {
+              "aws:sourceVpce": internalServiceStack.vpcEndpointId.vpcEndpointId,
+            },
+          },
+          "Effect": "Allow",
+          "Principal": {
+            "AWS": "*",
+          },
+          "Resource": "execute-api:/*/*/*",
+        },
+      ],
+      "Version": "2012-10-17",
+    },
+  }
+  ));
+
   expect(template).toMatchInlineSnapshot(`
 Object {
   "Outputs": Object {

@@ -3,10 +3,7 @@ import { Template } from 'aws-cdk-lib/assertions';
 import { InternalServiceStack } from '../src';
 
 test('Internal Service provider', () => {
-
-
   const app = new cdk.App();;
-
   const stack = new InternalServiceStack(app, 'internalServiceStack', {
     env: {
       account: '123456789101',
