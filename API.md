@@ -2,39 +2,39 @@
 
 ## Constructs <a name="Constructs" id="Constructs"></a>
 
-### ApiGatewayStack <a name="ApiGatewayStack" id="cdk-internal-gateway.ApiGatewayStack"></a>
+### InternalApiGatewayStack <a name="InternalApiGatewayStack" id="cdk-internal-gateway.InternalApiGatewayStack"></a>
 
-#### Initializers <a name="Initializers" id="cdk-internal-gateway.ApiGatewayStack.Initializer"></a>
+#### Initializers <a name="Initializers" id="cdk-internal-gateway.InternalApiGatewayStack.Initializer"></a>
 
 ```typescript
-import { ApiGatewayStack } from 'cdk-internal-gateway'
+import { InternalApiGatewayStack } from 'cdk-internal-gateway'
 
-new ApiGatewayStack(scope: Construct, id: string, props: ApiGatewayStackProps)
+new InternalApiGatewayStack(scope: Construct, id: string, props: InternalApiGatewayStackProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.Initializer.parameter.props">props</a></code> | <code><a href="#cdk-internal-gateway.ApiGatewayStackProps">ApiGatewayStackProps</a></code> | *No description.* |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.Initializer.parameter.props">props</a></code> | <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps">InternalApiGatewayStackProps</a></code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="cdk-internal-gateway.ApiGatewayStack.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="cdk-internal-gateway.InternalApiGatewayStack.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="cdk-internal-gateway.ApiGatewayStack.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="cdk-internal-gateway.InternalApiGatewayStack.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="cdk-internal-gateway.ApiGatewayStack.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="cdk-internal-gateway.InternalApiGatewayStack.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#cdk-internal-gateway.ApiGatewayStackProps">ApiGatewayStackProps</a>
+- *Type:* <a href="#cdk-internal-gateway.InternalApiGatewayStackProps">InternalApiGatewayStackProps</a>
 
 ---
 
@@ -42,23 +42,23 @@ new ApiGatewayStack(scope: Construct, id: string, props: ApiGatewayStackProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.addDependency">addDependency</a></code> | Add a dependency between this stack and another stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.addMetadata">addMetadata</a></code> | Adds an arbitary key-value pair, with information you want to record about the stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.addTransform">addTransform</a></code> | Add a Transform to this stack. A Transform is a macro that AWS CloudFormation uses to process your template. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.exportValue">exportValue</a></code> | Create a CloudFormation Export for a value. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.formatArn">formatArn</a></code> | Creates an ARN from components. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.getLogicalId">getLogicalId</a></code> | Allocates a stack-unique CloudFormation-compatible logical identity for a specific resource. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.regionalFact">regionalFact</a></code> | Look up a fact value for the given fact for the region of this stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.renameLogicalId">renameLogicalId</a></code> | Rename a generated logical identities. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.reportMissingContextKey">reportMissingContextKey</a></code> | Indicate that a context key was expected. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.resolve">resolve</a></code> | Resolve a tokenized value in the context of the current stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.splitArn">splitArn</a></code> | Splits the provided ARN into its components. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.toJsonString">toJsonString</a></code> | Convert an object, potentially containing tokens, to a JSON string. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.addDependency">addDependency</a></code> | Add a dependency between this stack and another stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.addMetadata">addMetadata</a></code> | Adds an arbitary key-value pair, with information you want to record about the stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.addTransform">addTransform</a></code> | Add a Transform to this stack. A Transform is a macro that AWS CloudFormation uses to process your template. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.exportValue">exportValue</a></code> | Create a CloudFormation Export for a value. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.formatArn">formatArn</a></code> | Creates an ARN from components. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.getLogicalId">getLogicalId</a></code> | Allocates a stack-unique CloudFormation-compatible logical identity for a specific resource. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.regionalFact">regionalFact</a></code> | Look up a fact value for the given fact for the region of this stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.renameLogicalId">renameLogicalId</a></code> | Rename a generated logical identities. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.reportMissingContextKey">reportMissingContextKey</a></code> | Indicate that a context key was expected. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.resolve">resolve</a></code> | Resolve a tokenized value in the context of the current stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.splitArn">splitArn</a></code> | Splits the provided ARN into its components. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.toJsonString">toJsonString</a></code> | Convert an object, potentially containing tokens, to a JSON string. |
 
 ---
 
-##### `toString` <a name="toString" id="cdk-internal-gateway.ApiGatewayStack.toString"></a>
+##### `toString` <a name="toString" id="cdk-internal-gateway.InternalApiGatewayStack.toString"></a>
 
 ```typescript
 public toString(): string
@@ -66,7 +66,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `addDependency` <a name="addDependency" id="cdk-internal-gateway.ApiGatewayStack.addDependency"></a>
+##### `addDependency` <a name="addDependency" id="cdk-internal-gateway.InternalApiGatewayStack.addDependency"></a>
 
 ```typescript
 public addDependency(target: Stack, reason?: string): void
@@ -77,19 +77,19 @@ Add a dependency between this stack and another stack.
 This can be used to define dependencies between any two stacks within an
 app, and also supports nested stacks.
 
-###### `target`<sup>Required</sup> <a name="target" id="cdk-internal-gateway.ApiGatewayStack.addDependency.parameter.target"></a>
+###### `target`<sup>Required</sup> <a name="target" id="cdk-internal-gateway.InternalApiGatewayStack.addDependency.parameter.target"></a>
 
 - *Type:* aws-cdk-lib.Stack
 
 ---
 
-###### `reason`<sup>Optional</sup> <a name="reason" id="cdk-internal-gateway.ApiGatewayStack.addDependency.parameter.reason"></a>
+###### `reason`<sup>Optional</sup> <a name="reason" id="cdk-internal-gateway.InternalApiGatewayStack.addDependency.parameter.reason"></a>
 
 - *Type:* string
 
 ---
 
-##### `addMetadata` <a name="addMetadata" id="cdk-internal-gateway.ApiGatewayStack.addMetadata"></a>
+##### `addMetadata` <a name="addMetadata" id="cdk-internal-gateway.InternalApiGatewayStack.addMetadata"></a>
 
 ```typescript
 public addMetadata(key: string, value: any): void
@@ -101,19 +101,19 @@ These get translated to the Metadata section of the generated template.
 
 > [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/metadata-section-structure.html](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/metadata-section-structure.html)
 
-###### `key`<sup>Required</sup> <a name="key" id="cdk-internal-gateway.ApiGatewayStack.addMetadata.parameter.key"></a>
+###### `key`<sup>Required</sup> <a name="key" id="cdk-internal-gateway.InternalApiGatewayStack.addMetadata.parameter.key"></a>
 
 - *Type:* string
 
 ---
 
-###### `value`<sup>Required</sup> <a name="value" id="cdk-internal-gateway.ApiGatewayStack.addMetadata.parameter.value"></a>
+###### `value`<sup>Required</sup> <a name="value" id="cdk-internal-gateway.InternalApiGatewayStack.addMetadata.parameter.value"></a>
 
 - *Type:* any
 
 ---
 
-##### `addTransform` <a name="addTransform" id="cdk-internal-gateway.ApiGatewayStack.addTransform"></a>
+##### `addTransform` <a name="addTransform" id="cdk-internal-gateway.InternalApiGatewayStack.addTransform"></a>
 
 ```typescript
 public addTransform(transform: string): void
@@ -134,7 +134,7 @@ stack.addTransform('AWS::Serverless-2016-10-31')
 ```
 
 
-###### `transform`<sup>Required</sup> <a name="transform" id="cdk-internal-gateway.ApiGatewayStack.addTransform.parameter.transform"></a>
+###### `transform`<sup>Required</sup> <a name="transform" id="cdk-internal-gateway.InternalApiGatewayStack.addTransform.parameter.transform"></a>
 
 - *Type:* string
 
@@ -142,7 +142,7 @@ The transform to add.
 
 ---
 
-##### `exportValue` <a name="exportValue" id="cdk-internal-gateway.ApiGatewayStack.exportValue"></a>
+##### `exportValue` <a name="exportValue" id="cdk-internal-gateway.InternalApiGatewayStack.exportValue"></a>
 
 ```typescript
 public exportValue(exportedValue: any, options?: ExportValueOptions): string
@@ -193,19 +193,19 @@ Instead, the process takes two deployments:
 - Don't forget to remove the `exportValue()` call as well.
 - Deploy again (this time only the `producerStack` will be changed -- the bucket will be deleted).
 
-###### `exportedValue`<sup>Required</sup> <a name="exportedValue" id="cdk-internal-gateway.ApiGatewayStack.exportValue.parameter.exportedValue"></a>
+###### `exportedValue`<sup>Required</sup> <a name="exportedValue" id="cdk-internal-gateway.InternalApiGatewayStack.exportValue.parameter.exportedValue"></a>
 
 - *Type:* any
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="cdk-internal-gateway.ApiGatewayStack.exportValue.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="cdk-internal-gateway.InternalApiGatewayStack.exportValue.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.ExportValueOptions
 
 ---
 
-##### `formatArn` <a name="formatArn" id="cdk-internal-gateway.ApiGatewayStack.formatArn"></a>
+##### `formatArn` <a name="formatArn" id="cdk-internal-gateway.InternalApiGatewayStack.formatArn"></a>
 
 ```typescript
 public formatArn(components: ArnComponents): string
@@ -227,13 +227,13 @@ The required ARN pieces that are omitted will be taken from the stack that
 the 'scope' is attached to. If all ARN pieces are supplied, the supplied scope
 can be 'undefined'.
 
-###### `components`<sup>Required</sup> <a name="components" id="cdk-internal-gateway.ApiGatewayStack.formatArn.parameter.components"></a>
+###### `components`<sup>Required</sup> <a name="components" id="cdk-internal-gateway.InternalApiGatewayStack.formatArn.parameter.components"></a>
 
 - *Type:* aws-cdk-lib.ArnComponents
 
 ---
 
-##### `getLogicalId` <a name="getLogicalId" id="cdk-internal-gateway.ApiGatewayStack.getLogicalId"></a>
+##### `getLogicalId` <a name="getLogicalId" id="cdk-internal-gateway.InternalApiGatewayStack.getLogicalId"></a>
 
 ```typescript
 public getLogicalId(element: CfnElement): string
@@ -249,7 +249,7 @@ This method uses the protected method `allocateLogicalId` to render the
 logical ID for an element. To modify the naming scheme, extend the `Stack`
 class and override this method.
 
-###### `element`<sup>Required</sup> <a name="element" id="cdk-internal-gateway.ApiGatewayStack.getLogicalId.parameter.element"></a>
+###### `element`<sup>Required</sup> <a name="element" id="cdk-internal-gateway.InternalApiGatewayStack.getLogicalId.parameter.element"></a>
 
 - *Type:* aws-cdk-lib.CfnElement
 
@@ -257,7 +257,7 @@ The CloudFormation element for which a logical identity is needed.
 
 ---
 
-##### `regionalFact` <a name="regionalFact" id="cdk-internal-gateway.ApiGatewayStack.regionalFact"></a>
+##### `regionalFact` <a name="regionalFact" id="cdk-internal-gateway.InternalApiGatewayStack.regionalFact"></a>
 
 ```typescript
 public regionalFact(factName: string, defaultValue?: string): string
@@ -281,19 +281,19 @@ not have to worry about regional facts.
 If `defaultValue` is not given, it is an error if the fact is unknown for
 the given region.
 
-###### `factName`<sup>Required</sup> <a name="factName" id="cdk-internal-gateway.ApiGatewayStack.regionalFact.parameter.factName"></a>
+###### `factName`<sup>Required</sup> <a name="factName" id="cdk-internal-gateway.InternalApiGatewayStack.regionalFact.parameter.factName"></a>
 
 - *Type:* string
 
 ---
 
-###### `defaultValue`<sup>Optional</sup> <a name="defaultValue" id="cdk-internal-gateway.ApiGatewayStack.regionalFact.parameter.defaultValue"></a>
+###### `defaultValue`<sup>Optional</sup> <a name="defaultValue" id="cdk-internal-gateway.InternalApiGatewayStack.regionalFact.parameter.defaultValue"></a>
 
 - *Type:* string
 
 ---
 
-##### `renameLogicalId` <a name="renameLogicalId" id="cdk-internal-gateway.ApiGatewayStack.renameLogicalId"></a>
+##### `renameLogicalId` <a name="renameLogicalId" id="cdk-internal-gateway.InternalApiGatewayStack.renameLogicalId"></a>
 
 ```typescript
 public renameLogicalId(oldId: string, newId: string): void
@@ -304,19 +304,19 @@ Rename a generated logical identities.
 To modify the naming scheme strategy, extend the `Stack` class and
 override the `allocateLogicalId` method.
 
-###### `oldId`<sup>Required</sup> <a name="oldId" id="cdk-internal-gateway.ApiGatewayStack.renameLogicalId.parameter.oldId"></a>
+###### `oldId`<sup>Required</sup> <a name="oldId" id="cdk-internal-gateway.InternalApiGatewayStack.renameLogicalId.parameter.oldId"></a>
 
 - *Type:* string
 
 ---
 
-###### `newId`<sup>Required</sup> <a name="newId" id="cdk-internal-gateway.ApiGatewayStack.renameLogicalId.parameter.newId"></a>
+###### `newId`<sup>Required</sup> <a name="newId" id="cdk-internal-gateway.InternalApiGatewayStack.renameLogicalId.parameter.newId"></a>
 
 - *Type:* string
 
 ---
 
-##### `reportMissingContextKey` <a name="reportMissingContextKey" id="cdk-internal-gateway.ApiGatewayStack.reportMissingContextKey"></a>
+##### `reportMissingContextKey` <a name="reportMissingContextKey" id="cdk-internal-gateway.InternalApiGatewayStack.reportMissingContextKey"></a>
 
 ```typescript
 public reportMissingContextKey(report: MissingContext): void
@@ -327,7 +327,7 @@ Indicate that a context key was expected.
 Contains instructions which will be emitted into the cloud assembly on how
 the key should be supplied.
 
-###### `report`<sup>Required</sup> <a name="report" id="cdk-internal-gateway.ApiGatewayStack.reportMissingContextKey.parameter.report"></a>
+###### `report`<sup>Required</sup> <a name="report" id="cdk-internal-gateway.InternalApiGatewayStack.reportMissingContextKey.parameter.report"></a>
 
 - *Type:* aws-cdk-lib.cloud_assembly_schema.MissingContext
 
@@ -335,7 +335,7 @@ The set of parameters needed to obtain the context.
 
 ---
 
-##### `resolve` <a name="resolve" id="cdk-internal-gateway.ApiGatewayStack.resolve"></a>
+##### `resolve` <a name="resolve" id="cdk-internal-gateway.InternalApiGatewayStack.resolve"></a>
 
 ```typescript
 public resolve(obj: any): any
@@ -343,13 +343,13 @@ public resolve(obj: any): any
 
 Resolve a tokenized value in the context of the current stack.
 
-###### `obj`<sup>Required</sup> <a name="obj" id="cdk-internal-gateway.ApiGatewayStack.resolve.parameter.obj"></a>
+###### `obj`<sup>Required</sup> <a name="obj" id="cdk-internal-gateway.InternalApiGatewayStack.resolve.parameter.obj"></a>
 
 - *Type:* any
 
 ---
 
-##### `splitArn` <a name="splitArn" id="cdk-internal-gateway.ApiGatewayStack.splitArn"></a>
+##### `splitArn` <a name="splitArn" id="cdk-internal-gateway.InternalApiGatewayStack.splitArn"></a>
 
 ```typescript
 public splitArn(arn: string, arnFormat: ArnFormat): ArnComponents
@@ -362,7 +362,7 @@ and a Token representing a dynamic CloudFormation expression
 (in which case the returned components will also be dynamic CloudFormation expressions,
 encoded as Tokens).
 
-###### `arn`<sup>Required</sup> <a name="arn" id="cdk-internal-gateway.ApiGatewayStack.splitArn.parameter.arn"></a>
+###### `arn`<sup>Required</sup> <a name="arn" id="cdk-internal-gateway.InternalApiGatewayStack.splitArn.parameter.arn"></a>
 
 - *Type:* string
 
@@ -370,7 +370,7 @@ the ARN to split into its components.
 
 ---
 
-###### `arnFormat`<sup>Required</sup> <a name="arnFormat" id="cdk-internal-gateway.ApiGatewayStack.splitArn.parameter.arnFormat"></a>
+###### `arnFormat`<sup>Required</sup> <a name="arnFormat" id="cdk-internal-gateway.InternalApiGatewayStack.splitArn.parameter.arnFormat"></a>
 
 - *Type:* aws-cdk-lib.ArnFormat
 
@@ -378,7 +378,7 @@ the expected format of 'arn' - depends on what format the service 'arn' represen
 
 ---
 
-##### `toJsonString` <a name="toJsonString" id="cdk-internal-gateway.ApiGatewayStack.toJsonString"></a>
+##### `toJsonString` <a name="toJsonString" id="cdk-internal-gateway.InternalApiGatewayStack.toJsonString"></a>
 
 ```typescript
 public toJsonString(obj: any, space?: number): string
@@ -386,13 +386,13 @@ public toJsonString(obj: any, space?: number): string
 
 Convert an object, potentially containing tokens, to a JSON string.
 
-###### `obj`<sup>Required</sup> <a name="obj" id="cdk-internal-gateway.ApiGatewayStack.toJsonString.parameter.obj"></a>
+###### `obj`<sup>Required</sup> <a name="obj" id="cdk-internal-gateway.InternalApiGatewayStack.toJsonString.parameter.obj"></a>
 
 - *Type:* any
 
 ---
 
-###### `space`<sup>Optional</sup> <a name="space" id="cdk-internal-gateway.ApiGatewayStack.toJsonString.parameter.space"></a>
+###### `space`<sup>Optional</sup> <a name="space" id="cdk-internal-gateway.InternalApiGatewayStack.toJsonString.parameter.space"></a>
 
 - *Type:* number
 
@@ -402,23 +402,23 @@ Convert an object, potentially containing tokens, to a JSON string.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.isStack">isStack</a></code> | Return whether the given object is a Stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.of">of</a></code> | Looks up the first stack scope in which `construct` is defined. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.isStack">isStack</a></code> | Return whether the given object is a Stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.of">of</a></code> | Looks up the first stack scope in which `construct` is defined. |
 
 ---
 
-##### ~~`isConstruct`~~ <a name="isConstruct" id="cdk-internal-gateway.ApiGatewayStack.isConstruct"></a>
+##### ~~`isConstruct`~~ <a name="isConstruct" id="cdk-internal-gateway.InternalApiGatewayStack.isConstruct"></a>
 
 ```typescript
-import { ApiGatewayStack } from 'cdk-internal-gateway'
+import { InternalApiGatewayStack } from 'cdk-internal-gateway'
 
-ApiGatewayStack.isConstruct(x: any)
+InternalApiGatewayStack.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
 
-###### `x`<sup>Required</sup> <a name="x" id="cdk-internal-gateway.ApiGatewayStack.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="cdk-internal-gateway.InternalApiGatewayStack.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -426,37 +426,37 @@ Any object.
 
 ---
 
-##### `isStack` <a name="isStack" id="cdk-internal-gateway.ApiGatewayStack.isStack"></a>
+##### `isStack` <a name="isStack" id="cdk-internal-gateway.InternalApiGatewayStack.isStack"></a>
 
 ```typescript
-import { ApiGatewayStack } from 'cdk-internal-gateway'
+import { InternalApiGatewayStack } from 'cdk-internal-gateway'
 
-ApiGatewayStack.isStack(x: any)
+InternalApiGatewayStack.isStack(x: any)
 ```
 
 Return whether the given object is a Stack.
 
 We do attribute detection since we can't reliably use 'instanceof'.
 
-###### `x`<sup>Required</sup> <a name="x" id="cdk-internal-gateway.ApiGatewayStack.isStack.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="cdk-internal-gateway.InternalApiGatewayStack.isStack.parameter.x"></a>
 
 - *Type:* any
 
 ---
 
-##### `of` <a name="of" id="cdk-internal-gateway.ApiGatewayStack.of"></a>
+##### `of` <a name="of" id="cdk-internal-gateway.InternalApiGatewayStack.of"></a>
 
 ```typescript
-import { ApiGatewayStack } from 'cdk-internal-gateway'
+import { InternalApiGatewayStack } from 'cdk-internal-gateway'
 
-ApiGatewayStack.of(construct: IConstruct)
+InternalApiGatewayStack.of(construct: IConstruct)
 ```
 
 Looks up the first stack scope in which `construct` is defined.
 
 Fails if there is no stack up the tree.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="cdk-internal-gateway.ApiGatewayStack.of.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="cdk-internal-gateway.InternalApiGatewayStack.of.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
@@ -468,31 +468,31 @@ The construct to start the search from.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.account">account</a></code> | <code>string</code> | The AWS account into which this stack will be deployed. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.artifactId">artifactId</a></code> | <code>string</code> | The ID of the cloud assembly artifact for this stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.availabilityZones">availabilityZones</a></code> | <code>string[]</code> | Returns the list of AZs that are available in the AWS environment (account/region) associated with this stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.bundlingRequired">bundlingRequired</a></code> | <code>boolean</code> | Indicates whether the stack requires bundling or not. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.dependencies">dependencies</a></code> | <code>aws-cdk-lib.Stack[]</code> | Return the stacks this stack depends on. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.environment">environment</a></code> | <code>string</code> | The environment coordinates in which this stack is deployed. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.nested">nested</a></code> | <code>boolean</code> | Indicates if this is a nested stack, in which case `parentStack` will include a reference to it's parent. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.notificationArns">notificationArns</a></code> | <code>string[]</code> | Returns the list of notification Amazon Resource Names (ARNs) for the current stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.partition">partition</a></code> | <code>string</code> | The partition in which this stack is defined. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.region">region</a></code> | <code>string</code> | The AWS region into which this stack will be deployed (e.g. `us-west-2`). |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.stackId">stackId</a></code> | <code>string</code> | The ID of the stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.stackName">stackName</a></code> | <code>string</code> | The concrete CloudFormation physical stack name. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method for this stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.tags">tags</a></code> | <code>aws-cdk-lib.TagManager</code> | Tags to be applied to the stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.templateFile">templateFile</a></code> | <code>string</code> | The name of the CloudFormation template file emitted to the output directory during synthesis. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.templateOptions">templateOptions</a></code> | <code>aws-cdk-lib.ITemplateOptions</code> | Options for CloudFormation template (like version, transform, description). |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.urlSuffix">urlSuffix</a></code> | <code>string</code> | The Amazon domain suffix for the region in which this stack is defined. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.nestedStackParent">nestedStackParent</a></code> | <code>aws-cdk-lib.Stack</code> | If this is a nested stack, returns it's parent stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.nestedStackResource">nestedStackResource</a></code> | <code>aws-cdk-lib.CfnResource</code> | If this is a nested stack, this represents its `AWS::CloudFormation::Stack` resource. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStack.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether termination protection is enabled for this stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.account">account</a></code> | <code>string</code> | The AWS account into which this stack will be deployed. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.artifactId">artifactId</a></code> | <code>string</code> | The ID of the cloud assembly artifact for this stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.availabilityZones">availabilityZones</a></code> | <code>string[]</code> | Returns the list of AZs that are available in the AWS environment (account/region) associated with this stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.bundlingRequired">bundlingRequired</a></code> | <code>boolean</code> | Indicates whether the stack requires bundling or not. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.dependencies">dependencies</a></code> | <code>aws-cdk-lib.Stack[]</code> | Return the stacks this stack depends on. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.environment">environment</a></code> | <code>string</code> | The environment coordinates in which this stack is deployed. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.nested">nested</a></code> | <code>boolean</code> | Indicates if this is a nested stack, in which case `parentStack` will include a reference to it's parent. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.notificationArns">notificationArns</a></code> | <code>string[]</code> | Returns the list of notification Amazon Resource Names (ARNs) for the current stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.partition">partition</a></code> | <code>string</code> | The partition in which this stack is defined. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.region">region</a></code> | <code>string</code> | The AWS region into which this stack will be deployed (e.g. `us-west-2`). |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.stackId">stackId</a></code> | <code>string</code> | The ID of the stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.stackName">stackName</a></code> | <code>string</code> | The concrete CloudFormation physical stack name. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method for this stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.tags">tags</a></code> | <code>aws-cdk-lib.TagManager</code> | Tags to be applied to the stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.templateFile">templateFile</a></code> | <code>string</code> | The name of the CloudFormation template file emitted to the output directory during synthesis. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.templateOptions">templateOptions</a></code> | <code>aws-cdk-lib.ITemplateOptions</code> | Options for CloudFormation template (like version, transform, description). |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.urlSuffix">urlSuffix</a></code> | <code>string</code> | The Amazon domain suffix for the region in which this stack is defined. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.nestedStackParent">nestedStackParent</a></code> | <code>aws-cdk-lib.Stack</code> | If this is a nested stack, returns it's parent stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.nestedStackResource">nestedStackResource</a></code> | <code>aws-cdk-lib.CfnResource</code> | If this is a nested stack, this represents its `AWS::CloudFormation::Stack` resource. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStack.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether termination protection is enabled for this stack. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="cdk-internal-gateway.ApiGatewayStack.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="cdk-internal-gateway.InternalApiGatewayStack.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -504,7 +504,7 @@ The tree node.
 
 ---
 
-##### `account`<sup>Required</sup> <a name="account" id="cdk-internal-gateway.ApiGatewayStack.property.account"></a>
+##### `account`<sup>Required</sup> <a name="account" id="cdk-internal-gateway.InternalApiGatewayStack.property.account"></a>
 
 ```typescript
 public readonly account: string;
@@ -533,7 +533,7 @@ implement some other region-agnostic behavior.
 
 ---
 
-##### `artifactId`<sup>Required</sup> <a name="artifactId" id="cdk-internal-gateway.ApiGatewayStack.property.artifactId"></a>
+##### `artifactId`<sup>Required</sup> <a name="artifactId" id="cdk-internal-gateway.InternalApiGatewayStack.property.artifactId"></a>
 
 ```typescript
 public readonly artifactId: string;
@@ -545,7 +545,7 @@ The ID of the cloud assembly artifact for this stack.
 
 ---
 
-##### `availabilityZones`<sup>Required</sup> <a name="availabilityZones" id="cdk-internal-gateway.ApiGatewayStack.property.availabilityZones"></a>
+##### `availabilityZones`<sup>Required</sup> <a name="availabilityZones" id="cdk-internal-gateway.InternalApiGatewayStack.property.availabilityZones"></a>
 
 ```typescript
 public readonly availabilityZones: string[];
@@ -568,7 +568,7 @@ To specify a different strategy for selecting availability zones override this m
 
 ---
 
-##### `bundlingRequired`<sup>Required</sup> <a name="bundlingRequired" id="cdk-internal-gateway.ApiGatewayStack.property.bundlingRequired"></a>
+##### `bundlingRequired`<sup>Required</sup> <a name="bundlingRequired" id="cdk-internal-gateway.InternalApiGatewayStack.property.bundlingRequired"></a>
 
 ```typescript
 public readonly bundlingRequired: boolean;
@@ -580,7 +580,7 @@ Indicates whether the stack requires bundling or not.
 
 ---
 
-##### `dependencies`<sup>Required</sup> <a name="dependencies" id="cdk-internal-gateway.ApiGatewayStack.property.dependencies"></a>
+##### `dependencies`<sup>Required</sup> <a name="dependencies" id="cdk-internal-gateway.InternalApiGatewayStack.property.dependencies"></a>
 
 ```typescript
 public readonly dependencies: Stack[];
@@ -592,7 +592,7 @@ Return the stacks this stack depends on.
 
 ---
 
-##### `environment`<sup>Required</sup> <a name="environment" id="cdk-internal-gateway.ApiGatewayStack.property.environment"></a>
+##### `environment`<sup>Required</sup> <a name="environment" id="cdk-internal-gateway.InternalApiGatewayStack.property.environment"></a>
 
 ```typescript
 public readonly environment: string;
@@ -616,7 +616,7 @@ region/account-agnostic.
 
 ---
 
-##### `nested`<sup>Required</sup> <a name="nested" id="cdk-internal-gateway.ApiGatewayStack.property.nested"></a>
+##### `nested`<sup>Required</sup> <a name="nested" id="cdk-internal-gateway.InternalApiGatewayStack.property.nested"></a>
 
 ```typescript
 public readonly nested: boolean;
@@ -628,7 +628,7 @@ Indicates if this is a nested stack, in which case `parentStack` will include a 
 
 ---
 
-##### `notificationArns`<sup>Required</sup> <a name="notificationArns" id="cdk-internal-gateway.ApiGatewayStack.property.notificationArns"></a>
+##### `notificationArns`<sup>Required</sup> <a name="notificationArns" id="cdk-internal-gateway.InternalApiGatewayStack.property.notificationArns"></a>
 
 ```typescript
 public readonly notificationArns: string[];
@@ -640,7 +640,7 @@ Returns the list of notification Amazon Resource Names (ARNs) for the current st
 
 ---
 
-##### `partition`<sup>Required</sup> <a name="partition" id="cdk-internal-gateway.ApiGatewayStack.property.partition"></a>
+##### `partition`<sup>Required</sup> <a name="partition" id="cdk-internal-gateway.InternalApiGatewayStack.property.partition"></a>
 
 ```typescript
 public readonly partition: string;
@@ -652,7 +652,7 @@ The partition in which this stack is defined.
 
 ---
 
-##### `region`<sup>Required</sup> <a name="region" id="cdk-internal-gateway.ApiGatewayStack.property.region"></a>
+##### `region`<sup>Required</sup> <a name="region" id="cdk-internal-gateway.InternalApiGatewayStack.property.region"></a>
 
 ```typescript
 public readonly region: string;
@@ -681,7 +681,7 @@ implement some other region-agnostic behavior.
 
 ---
 
-##### `stackId`<sup>Required</sup> <a name="stackId" id="cdk-internal-gateway.ApiGatewayStack.property.stackId"></a>
+##### `stackId`<sup>Required</sup> <a name="stackId" id="cdk-internal-gateway.InternalApiGatewayStack.property.stackId"></a>
 
 ```typescript
 public readonly stackId: string;
@@ -701,7 +701,7 @@ The ID of the stack.
 ```
 
 
-##### `stackName`<sup>Required</sup> <a name="stackName" id="cdk-internal-gateway.ApiGatewayStack.property.stackName"></a>
+##### `stackName`<sup>Required</sup> <a name="stackName" id="cdk-internal-gateway.InternalApiGatewayStack.property.stackName"></a>
 
 ```typescript
 public readonly stackName: string;
@@ -722,7 +722,7 @@ you can use `Aws.STACK_NAME` directly.
 
 ---
 
-##### `synthesizer`<sup>Required</sup> <a name="synthesizer" id="cdk-internal-gateway.ApiGatewayStack.property.synthesizer"></a>
+##### `synthesizer`<sup>Required</sup> <a name="synthesizer" id="cdk-internal-gateway.InternalApiGatewayStack.property.synthesizer"></a>
 
 ```typescript
 public readonly synthesizer: IStackSynthesizer;
@@ -734,7 +734,7 @@ Synthesis method for this stack.
 
 ---
 
-##### `tags`<sup>Required</sup> <a name="tags" id="cdk-internal-gateway.ApiGatewayStack.property.tags"></a>
+##### `tags`<sup>Required</sup> <a name="tags" id="cdk-internal-gateway.InternalApiGatewayStack.property.tags"></a>
 
 ```typescript
 public readonly tags: TagManager;
@@ -746,7 +746,7 @@ Tags to be applied to the stack.
 
 ---
 
-##### `templateFile`<sup>Required</sup> <a name="templateFile" id="cdk-internal-gateway.ApiGatewayStack.property.templateFile"></a>
+##### `templateFile`<sup>Required</sup> <a name="templateFile" id="cdk-internal-gateway.InternalApiGatewayStack.property.templateFile"></a>
 
 ```typescript
 public readonly templateFile: string;
@@ -760,7 +760,7 @@ Example value: `MyStack.template.json`
 
 ---
 
-##### `templateOptions`<sup>Required</sup> <a name="templateOptions" id="cdk-internal-gateway.ApiGatewayStack.property.templateOptions"></a>
+##### `templateOptions`<sup>Required</sup> <a name="templateOptions" id="cdk-internal-gateway.InternalApiGatewayStack.property.templateOptions"></a>
 
 ```typescript
 public readonly templateOptions: ITemplateOptions;
@@ -772,7 +772,7 @@ Options for CloudFormation template (like version, transform, description).
 
 ---
 
-##### `urlSuffix`<sup>Required</sup> <a name="urlSuffix" id="cdk-internal-gateway.ApiGatewayStack.property.urlSuffix"></a>
+##### `urlSuffix`<sup>Required</sup> <a name="urlSuffix" id="cdk-internal-gateway.InternalApiGatewayStack.property.urlSuffix"></a>
 
 ```typescript
 public readonly urlSuffix: string;
@@ -784,7 +784,7 @@ The Amazon domain suffix for the region in which this stack is defined.
 
 ---
 
-##### `nestedStackParent`<sup>Optional</sup> <a name="nestedStackParent" id="cdk-internal-gateway.ApiGatewayStack.property.nestedStackParent"></a>
+##### `nestedStackParent`<sup>Optional</sup> <a name="nestedStackParent" id="cdk-internal-gateway.InternalApiGatewayStack.property.nestedStackParent"></a>
 
 ```typescript
 public readonly nestedStackParent: Stack;
@@ -796,7 +796,7 @@ If this is a nested stack, returns it's parent stack.
 
 ---
 
-##### `nestedStackResource`<sup>Optional</sup> <a name="nestedStackResource" id="cdk-internal-gateway.ApiGatewayStack.property.nestedStackResource"></a>
+##### `nestedStackResource`<sup>Optional</sup> <a name="nestedStackResource" id="cdk-internal-gateway.InternalApiGatewayStack.property.nestedStackResource"></a>
 
 ```typescript
 public readonly nestedStackResource: CfnResource;
@@ -810,7 +810,7 @@ If this is a nested stack, this represents its `AWS::CloudFormation::Stack` reso
 
 ---
 
-##### `terminationProtection`<sup>Optional</sup> <a name="terminationProtection" id="cdk-internal-gateway.ApiGatewayStack.property.terminationProtection"></a>
+##### `terminationProtection`<sup>Optional</sup> <a name="terminationProtection" id="cdk-internal-gateway.InternalApiGatewayStack.property.terminationProtection"></a>
 
 ```typescript
 public readonly terminationProtection: boolean;
@@ -1672,37 +1672,37 @@ VPC Endpoint Id of the execute-api vpc endpoint.
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### ApiGatewayStackProps <a name="ApiGatewayStackProps" id="cdk-internal-gateway.ApiGatewayStackProps"></a>
+### InternalApiGatewayStackProps <a name="InternalApiGatewayStackProps" id="cdk-internal-gateway.InternalApiGatewayStackProps"></a>
 
 Properties for ApiGatewayStack.
 
-#### Initializer <a name="Initializer" id="cdk-internal-gateway.ApiGatewayStackProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="cdk-internal-gateway.InternalApiGatewayStackProps.Initializer"></a>
 
 ```typescript
-import { ApiGatewayStackProps } from 'cdk-internal-gateway'
+import { InternalApiGatewayStackProps } from 'cdk-internal-gateway'
 
-const apiGatewayStackProps: ApiGatewayStackProps = { ... }
+const internalApiGatewayStackProps: InternalApiGatewayStackProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.analyticsReporting">analyticsReporting</a></code> | <code>boolean</code> | Include runtime versioning information in this Stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.description">description</a></code> | <code>string</code> | A description of the stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | The AWS environment (account/region) where this stack will be deployed. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.stackName">stackName</a></code> | <code>string</code> | Name to deploy the stack with. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method to use while deploying this stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | Stack tags that will be applied to all the taggable resources and the stack itself. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether to enable termination protection for this stack. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.domains">domains</a></code> | <code>aws-cdk-lib.aws_apigateway.IDomainName[]</code> | List of custom domains names to be used for the API Gateway. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.stage">stage</a></code> | <code>string</code> | Stage name  used for all cloudformation resource names and internal aws resource names. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.vpcEndpointId">vpcEndpointId</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
-| <code><a href="#cdk-internal-gateway.ApiGatewayStackProps.property.apiBasePathMappingPath">apiBasePathMappingPath</a></code> | <code>string</code> | Path for custom domain base path mapping that will be attached to the api gateway. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.analyticsReporting">analyticsReporting</a></code> | <code>boolean</code> | Include runtime versioning information in this Stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.description">description</a></code> | <code>string</code> | A description of the stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | The AWS environment (account/region) where this stack will be deployed. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.stackName">stackName</a></code> | <code>string</code> | Name to deploy the stack with. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method to use while deploying this stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | Stack tags that will be applied to all the taggable resources and the stack itself. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether to enable termination protection for this stack. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.domains">domains</a></code> | <code>aws-cdk-lib.aws_apigateway.IDomainName[]</code> | List of custom domains names to be used for the API Gateway. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.stage">stage</a></code> | <code>string</code> | Stage name  used for all cloudformation resource names and internal aws resource names. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.vpcEndpointId">vpcEndpointId</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayStackProps.property.apiBasePathMappingPath">apiBasePathMappingPath</a></code> | <code>string</code> | Path for custom domain base path mapping that will be attached to the api gateway. |
 
 ---
 
-##### `analyticsReporting`<sup>Optional</sup> <a name="analyticsReporting" id="cdk-internal-gateway.ApiGatewayStackProps.property.analyticsReporting"></a>
+##### `analyticsReporting`<sup>Optional</sup> <a name="analyticsReporting" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.analyticsReporting"></a>
 
 ```typescript
 public readonly analyticsReporting: boolean;
@@ -1715,7 +1715,7 @@ Include runtime versioning information in this Stack.
 
 ---
 
-##### `description`<sup>Optional</sup> <a name="description" id="cdk-internal-gateway.ApiGatewayStackProps.property.description"></a>
+##### `description`<sup>Optional</sup> <a name="description" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.description"></a>
 
 ```typescript
 public readonly description: string;
@@ -1728,7 +1728,7 @@ A description of the stack.
 
 ---
 
-##### `env`<sup>Optional</sup> <a name="env" id="cdk-internal-gateway.ApiGatewayStackProps.property.env"></a>
+##### `env`<sup>Optional</sup> <a name="env" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.env"></a>
 
 ```typescript
 public readonly env: Environment;
@@ -1802,7 +1802,7 @@ new MyStack(app, 'Stack1');
 ```
 
 
-##### `stackName`<sup>Optional</sup> <a name="stackName" id="cdk-internal-gateway.ApiGatewayStackProps.property.stackName"></a>
+##### `stackName`<sup>Optional</sup> <a name="stackName" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.stackName"></a>
 
 ```typescript
 public readonly stackName: string;
@@ -1815,7 +1815,7 @@ Name to deploy the stack with.
 
 ---
 
-##### `synthesizer`<sup>Optional</sup> <a name="synthesizer" id="cdk-internal-gateway.ApiGatewayStackProps.property.synthesizer"></a>
+##### `synthesizer`<sup>Optional</sup> <a name="synthesizer" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.synthesizer"></a>
 
 ```typescript
 public readonly synthesizer: IStackSynthesizer;
@@ -1828,7 +1828,7 @@ Synthesis method to use while deploying this stack.
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="cdk-internal-gateway.ApiGatewayStackProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: string};
@@ -1841,7 +1841,7 @@ Stack tags that will be applied to all the taggable resources and the stack itse
 
 ---
 
-##### `terminationProtection`<sup>Optional</sup> <a name="terminationProtection" id="cdk-internal-gateway.ApiGatewayStackProps.property.terminationProtection"></a>
+##### `terminationProtection`<sup>Optional</sup> <a name="terminationProtection" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.terminationProtection"></a>
 
 ```typescript
 public readonly terminationProtection: boolean;
@@ -1854,7 +1854,7 @@ Whether to enable termination protection for this stack.
 
 ---
 
-##### `domains`<sup>Required</sup> <a name="domains" id="cdk-internal-gateway.ApiGatewayStackProps.property.domains"></a>
+##### `domains`<sup>Required</sup> <a name="domains" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.domains"></a>
 
 ```typescript
 public readonly domains: IDomainName[];
@@ -1866,7 +1866,7 @@ List of custom domains names to be used for the API Gateway.
 
 ---
 
-##### `stage`<sup>Required</sup> <a name="stage" id="cdk-internal-gateway.ApiGatewayStackProps.property.stage"></a>
+##### `stage`<sup>Required</sup> <a name="stage" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.stage"></a>
 
 ```typescript
 public readonly stage: string;
@@ -1878,7 +1878,7 @@ Stage name  used for all cloudformation resource names and internal aws resource
 
 ---
 
-##### `vpcEndpointId`<sup>Required</sup> <a name="vpcEndpointId" id="cdk-internal-gateway.ApiGatewayStackProps.property.vpcEndpointId"></a>
+##### `vpcEndpointId`<sup>Required</sup> <a name="vpcEndpointId" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.vpcEndpointId"></a>
 
 ```typescript
 public readonly vpcEndpointId: IInterfaceVpcEndpoint;
@@ -1892,7 +1892,7 @@ This endpoint will be used to forward requests from the load balancer`s target g
 
 ---
 
-##### `apiBasePathMappingPath`<sup>Optional</sup> <a name="apiBasePathMappingPath" id="cdk-internal-gateway.ApiGatewayStackProps.property.apiBasePathMappingPath"></a>
+##### `apiBasePathMappingPath`<sup>Optional</sup> <a name="apiBasePathMappingPath" id="cdk-internal-gateway.InternalApiGatewayStackProps.property.apiBasePathMappingPath"></a>
 
 ```typescript
 public readonly apiBasePathMappingPath: string;
