@@ -32,7 +32,6 @@ beforeAll(() => {
 });
 
 
-
 test('Api Gateway Stack provider', () => {
   const stack = new ApiGatewayStackTest(app, 'apiGatewayStack', {
     env: {
@@ -47,46 +46,46 @@ test('Api Gateway Stack provider', () => {
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
-    "EndpointConfiguration": {
-      "Types": [
-        "PRIVATE"
+    EndpointConfiguration: {
+      Types: [
+        'PRIVATE',
       ],
-    }
-  }
+    },
+  },
   ));
   template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
-    "Policy": {
-      "Statement": [
+    Policy: {
+      Statement: [
         {
-          "Action": "execute-api:Invoke",
-          "Condition": {
-            "StringNotEquals": {
-              "aws:sourceVpce": internalServiceStack.vpcEndpointId.vpcEndpointId,
+          Action: 'execute-api:Invoke',
+          Condition: {
+            StringNotEquals: {
+              'aws:sourceVpce': internalServiceStack.vpcEndpointId.vpcEndpointId,
             },
           },
-          "Effect": "Deny",
-          "Principal": {
-            "AWS": "*",
+          Effect: 'Deny',
+          Principal: {
+            AWS: '*',
           },
-          "Resource": "execute-api:/*/*/*",
+          Resource: 'execute-api:/*/*/*',
         },
         {
-          "Action": "execute-api:Invoke",
-          "Condition": {
-            "StringEquals": {
-              "aws:sourceVpce": internalServiceStack.vpcEndpointId.vpcEndpointId,
+          Action: 'execute-api:Invoke',
+          Condition: {
+            StringEquals: {
+              'aws:sourceVpce': internalServiceStack.vpcEndpointId.vpcEndpointId,
             },
           },
-          "Effect": "Allow",
-          "Principal": {
-            "AWS": "*",
+          Effect: 'Allow',
+          Principal: {
+            AWS: '*',
           },
-          "Resource": "execute-api:/*/*/*",
+          Resource: 'execute-api:/*/*/*',
         },
       ],
-      "Version": "2012-10-17",
+      Version: '2012-10-17',
     },
-  }
+  },
   ));
 
   expect(template).toMatchInlineSnapshot(`
