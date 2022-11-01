@@ -11,7 +11,7 @@ import { Construct } from 'constructs';
 /**
  * Properties for ApiGatewayStack
  */
-export interface ApiGatewayStackProps extends StackProps {
+export interface InternalApiGatewayStackProps extends StackProps {
   /**
    * Stage name  used for all cloudformation resource names and internal aws resource names.
    */
@@ -33,7 +33,7 @@ export interface ApiGatewayStackProps extends StackProps {
   readonly apiBasePathMappingPath?: string;
 }
 
-export abstract class ApiGatewayStack extends Stack {
+export abstract class InternalApiGatewayStack extends Stack {
 
   /**
    * Internal API Gateway
@@ -43,7 +43,7 @@ export abstract class ApiGatewayStack extends Stack {
    * It is only accessible from the load balancer`s target group.
    */
   protected readonly internalApiGateway: apigateway.LambdaRestApi;
-  constructor(scope: Construct, id: string, props: ApiGatewayStackProps) {
+  constructor(scope: Construct, id: string, props: InternalApiGatewayStackProps) {
     super(scope, id, props);
 
     const apiResourcePolicy = new iam.PolicyDocument({

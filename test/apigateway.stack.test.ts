@@ -1,11 +1,12 @@
 import * as cdk from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Construct } from 'constructs';
-import { ApiGatewayStack, ApiGatewayStackProps, InternalServiceStack } from '../src';
+import { InternalApiGatewayStack, InternalApiGatewayStackProps, InternalServiceStack } from '../src';
 
 
-export class ApiGatewayStackTest extends ApiGatewayStack {
-  constructor(scope: Construct, id: string, props: ApiGatewayStackProps) {
+export class ApiGatewayStackTest extends InternalApiGatewayStack {
+  internalApiGateway: any;
+  constructor(scope: Construct, id: string, props: InternalApiGatewayStackProps) {
     super(scope, id, props);
     this.internalApiGateway.root.addMethod('GET', undefined);
   }
