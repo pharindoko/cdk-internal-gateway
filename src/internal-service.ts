@@ -85,7 +85,7 @@ export class InternalService extends Construct {
       vpcId: props.vpc.vpcId,
     });
 
-    const cert = new certificatemanager.Certificate(this, `SSLCertificate-${uid}`, {
+    const certificate = new certificatemanager.Certificate(this, `SSLCertificate-${uid}`, {
       domainName: domainName,
       subjectAlternativeNames: props.subjectAlternativeNames,
       validation: certificatemanager.CertificateValidation.fromDnsMultiZone({
@@ -95,7 +95,7 @@ export class InternalService extends Construct {
 
     const domain = new apigateway.DomainName(this, `ApiGatewayCustomDomain-${uid}`, {
       domainName: `${props.subDomain}.${props.hostedZoneName}`,
-      certificate: cert,
+      certificate: certificate,
       endpointType: apigateway.EndpointType.REGIONAL,
       securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
     });
@@ -107,7 +107,7 @@ export class InternalService extends Construct {
         `Domain-${domainItem}-${uid}`,
         {
           domainName: domainItem,
-          certificate: cert,
+          certificate: certificate,
           endpointType: apigateway.EndpointType.REGIONAL,
           securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
         },
@@ -132,7 +132,7 @@ export class InternalService extends Construct {
       'allow HTTPS traffic from anywhere',
     );
 
-    const alb = new elb.ApplicationLoadBalancer(
+    const applicationLoadBalancer = new elb.ApplicationLoadBalancer(
       this,
       `ApplicationLoadBalancer-${uid}`,
       {
@@ -147,12 +147,12 @@ export class InternalService extends Construct {
     );
 
     // Add http-to-https redirect
-    alb.addRedirect();
+    applicationLoadBalancer.addRedirect();
 
     new route53.ARecord(this, `Route53Record-${uid}`, {
       zone: hostedZone,
       target: route53.RecordTarget.fromAlias(
-        new targets.LoadBalancerTarget(alb),
+        new targets.LoadBalancerTarget(applicationLoadBalancer),
       ),
       recordName: domainName,
     });
@@ -172,9 +172,9 @@ export class InternalService extends Construct {
       targetGroupName: `tg-${uid}`,
     });
 
-    const listener = alb.addListener(`Listener-${uid}`, {
+    const listener = applicationLoadBalancer.addListener(`Listener-${uid}`, {
       port: 443,
-      certificates: [cert],
+      certificates: [certificate],
     });
 
     listener.addTargetGroups(`TargetGroupAttachment-${uid}`, {
