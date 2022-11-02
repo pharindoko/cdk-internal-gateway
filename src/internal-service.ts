@@ -146,6 +146,9 @@ export class InternalService extends Construct {
       },
     );
 
+    // Add http-to-https redirect
+    alb.addRedirect();
+
     new route53.ARecord(this, `Route53Record-${uid}`, {
       zone: hostedZone,
       target: route53.RecordTarget.fromAlias(
