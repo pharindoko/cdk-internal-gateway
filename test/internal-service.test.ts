@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
-import { InternalServiceStack } from '../src';
+import { InternalService } from '../src';
 
 test('Internal Service provider', () => {
   const app = new cdk.App();;
@@ -12,7 +12,7 @@ test('Internal Service provider', () => {
   });
   const vpc = cdk.aws_ec2.Vpc.fromLookup(stack, 'vpc', { vpcId: 'vpc-1234567' });
   const internalSubnetIds = ['subnet-1234567890', 'subnet-1234567890'];
-  new InternalServiceStack(stack, 'internalServiceStack', {
+  new InternalService(stack, 'internalServiceStack', {
     vpc: vpc,
     subnetSelection: {
       subnets: internalSubnetIds.map((ip, index) =>

@@ -1,19 +1,19 @@
 import * as cdk from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Construct } from 'constructs';
-import { InternalApiGatewayStack, InternalApiGatewayStackProps, InternalServiceStack } from '../src';
+import { InternalApiGateway, InternalApiGatewayProps, InternalService } from '../src';
 
 
-export class ApiGatewayStackTest extends InternalApiGatewayStack {
+export class ApiGatewayStackTest extends InternalApiGateway {
   internalApiGateway: any;
-  constructor(scope: Construct, id: string, props: InternalApiGatewayStackProps) {
+  constructor(scope: Construct, id: string, props: InternalApiGatewayProps) {
     super(scope, id, props);
     this.internalApiGateway.root.addMethod('GET', undefined);
   }
 }
 
 let app = new cdk.App();
-let internalServiceStack: InternalServiceStack;
+let internalServiceStack: InternalService;
 const stack = new cdk.Stack(app, 'test', {
   env: {
     account: '123456789012',
@@ -25,7 +25,7 @@ beforeAll(() => {
 
   const vpc = cdk.aws_ec2.Vpc.fromLookup(stack, 'vpc', { vpcId: 'vpc-1234567' });
   const internalSubnetIds = ['subnet-1234567890', 'subnet-1234567890'];
-  internalServiceStack = new InternalServiceStack(stack, 'internalServiceStack', {
+  internalServiceStack = new InternalService(stack, 'internalServiceStack', {
     vpc: vpc,
     subnetSelection: {
       subnets: internalSubnetIds.map((ip, index) =>

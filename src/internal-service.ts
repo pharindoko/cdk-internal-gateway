@@ -15,7 +15,7 @@ import { Construct } from 'constructs';
 /**
  * Properties for InternalServiceStack
  */
-export interface InternalServiceStackProps {
+export interface InternalServiceProps {
   /**
    * VPC attached to the application load balancer.
    */
@@ -52,7 +52,7 @@ export interface InternalServiceStackProps {
   readonly hostedZoneName: string;
 }
 
-export class InternalServiceStack extends Construct {
+export class InternalService extends Construct {
   /**
    * List of domains created by the internal service stack and shared with the api gateway stack.
    */
@@ -63,7 +63,7 @@ export class InternalServiceStack extends Construct {
    */
   public readonly vpcEndpointId: ec2.IInterfaceVpcEndpoint;
 
-  constructor(scope: Construct, id: string, props: InternalServiceStackProps) {
+  constructor(scope: Construct, id: string, props: InternalServiceProps) {
     super(scope, id);
 
     const uid: string = Names.uniqueId(scope);
