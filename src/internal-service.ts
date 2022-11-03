@@ -7,7 +7,7 @@ import {
   aws_route53 as route53,
   aws_route53_targets as targets,
   CfnOutput,
-  Names,
+  Names
 } from 'aws-cdk-lib';
 import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
@@ -25,11 +25,6 @@ export interface InternalServiceProps {
    * Subnets attached to the application load balancer.
    */
   readonly subnetSelection: SubnetSelection;
-
-  /**
-   * VPC endpoint id of execute-api vpc endpoint. This endpoint will be used to forward requests from the load balancer`s target group to the api gateway.
-   */
-  readonly vpcEndpointId: string;
 
   /**
    * VPC endpoint ip addresses attached to the load balancer`s target group
@@ -58,25 +53,10 @@ export class InternalService extends Construct {
    */
   public readonly domains: apigateway.IDomainName[];
 
-  /**
-   * VPC Endpoint Id of the execute-api vpc endpoint.
-   */
-  public readonly vpcEndpointId: ec2.IInterfaceVpcEndpoint;
-
   constructor(scope: Construct, id: string, props: InternalServiceProps) {
     super(scope, id);
 
     const uid: string = Names.uniqueId(scope);
-
-    this.vpcEndpointId =
-      ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
-        this,
-        `VPCEndpoint-${uid}`,
-        {
-          port: 443,
-          vpcEndpointId: props.vpcEndpointId,
-        },
-      );
 
     const domainName = `${props.subDomain}.${props.hostedZoneName}`;
     const hostedZone = route53.HostedZone.fromLookup(this, `HostedZone-${uid}`, {

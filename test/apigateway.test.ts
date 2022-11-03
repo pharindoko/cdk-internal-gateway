@@ -1,4 +1,4 @@
-import * as cdk from 'aws-cdk-lib';
+import { App, aws_ec2 as ec2, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Construct } from 'constructs';
 import { InternalApiGateway, InternalApiGatewayProps, InternalService } from '../src';
@@ -12,9 +12,9 @@ export class ApiGatewayStackTest extends InternalApiGateway {
   }
 }
 
-let app = new cdk.App();
+let app = new App();
 let internalServiceStack: InternalService;
-const stack = new cdk.Stack(app, 'test', {
+const stack = new Stack(app, 'test', {
   env: {
     account: '123456789012',
     region: 'us-east-1',
@@ -23,30 +23,39 @@ const stack = new cdk.Stack(app, 'test', {
 
 beforeAll(() => {
 
-  const vpc = cdk.aws_ec2.Vpc.fromLookup(stack, 'vpc', { vpcId: 'vpc-1234567' });
+  const vpc = ec2.Vpc.fromLookup(stack, 'vpc', { vpcId: 'vpc-1234567' });
   const internalSubnetIds = ['subnet-1234567890', 'subnet-1234567890'];
   internalServiceStack = new InternalService(stack, 'internalServiceStack', {
     vpc: vpc,
     subnetSelection: {
       subnets: internalSubnetIds.map((ip, index) =>
-        cdk.aws_ec2.Subnet.fromSubnetId(stack, `Subnet${index}`, ip),
+        ec2.Subnet.fromSubnetId(stack, `Subnet${index}`, ip),
       ),
     },
-    vpcEndpointId: 'vpce-1234567890',
     vpcEndpointIPAddresses: ['192.168.2.1', '192.168.2.2'],
     subjectAlternativeNames: ['internalservice-dev.test.com', 'internalservice-dev.test2.com'],
     hostedZoneName: 'test.aws1234.com',
     subDomain: 'internalservice-dev',
   });
+
 });
 
 
 test('Api Gateway Stack provider', () => {
+  const vpcEndpointId =
+    ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
+      stack,
+      'vpcEndpoint',
+      {
+        port: 443,
+        vpcEndpointId: 'vpce-1234567890',
+      },
+    );
 
   new ApiGatewayStackTest(stack, 'apiGatewayStack', {
     stage: 'dev',
     domains: internalServiceStack.domains,
-    vpcEndpointId: internalServiceStack.vpcEndpointId,
+    vpcEndpointId: vpcEndpointId,
   });
 
 
@@ -66,7 +75,7 @@ test('Api Gateway Stack provider', () => {
           Action: 'execute-api:Invoke',
           Condition: {
             StringNotEquals: {
-              'aws:sourceVpce': internalServiceStack.vpcEndpointId.vpcEndpointId,
+              'aws:sourceVpce': vpcEndpointId.vpcEndpointId,
             },
           },
           Effect: 'Deny',
@@ -79,7 +88,7 @@ test('Api Gateway Stack provider', () => {
           Action: 'execute-api:Invoke',
           Condition: {
             StringEquals: {
-              'aws:sourceVpce': internalServiceStack.vpcEndpointId.vpcEndpointId,
+              'aws:sourceVpce': vpcEndpointId.vpcEndpointId,
             },
           },
           Effect: 'Allow',
@@ -391,6 +400,26 @@ Object {
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
     },
+    "internalServiceStackApplicationLoadBalancertestRedirect80To443AC430414": Object {
+      "Properties": Object {
+        "DefaultActions": Array [
+          Object {
+            "RedirectConfig": Object {
+              "Port": "443",
+              "Protocol": "HTTPS",
+              "StatusCode": "HTTP_301",
+            },
+            "Type": "redirect",
+          },
+        ],
+        "LoadBalancerArn": Object {
+          "Ref": "internalServiceStackApplicationLoadBalancertestF81D1559",
+        },
+        "Port": 80,
+        "Protocol": "HTTP",
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+    },
     "internalServiceStackDomaininternalservicedevtest2comtestCB38E02B": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test2.com",
@@ -439,6 +468,13 @@ Object {
             "FromPort": 443,
             "IpProtocol": "tcp",
             "ToPort": 443,
+          },
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow from anyone on port 80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80,
           },
         ],
         "VpcId": "vpc-12345",
