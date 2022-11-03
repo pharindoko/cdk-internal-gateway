@@ -217,7 +217,7 @@ List of domains created by the internal service stack and shared with the api ga
 
 ### InternalApiGatewayProps <a name="InternalApiGatewayProps" id="cdk-internal-gateway.InternalApiGatewayProps"></a>
 
-Properties for ApiGatewayStack.
+Properties for ApiGateway.
 
 #### Initializer <a name="Initializer" id="cdk-internal-gateway.InternalApiGatewayProps.Initializer"></a>
 
@@ -233,7 +233,7 @@ const internalApiGatewayProps: InternalApiGatewayProps = { ... }
 | --- | --- | --- |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.domains">domains</a></code> | <code>aws-cdk-lib.aws_apigateway.IDomainName[]</code> | List of custom domains names to be used for the API Gateway. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.stage">stage</a></code> | <code>string</code> | Stage name  used for all cloudformation resource names and internal aws resource names. |
-| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.vpcEndpointId">vpcEndpointId</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.apiBasePathMappingPath">apiBasePathMappingPath</a></code> | <code>string</code> | Path for custom domain base path mapping that will be attached to the api gateway. |
 
 ---
@@ -262,10 +262,10 @@ Stage name  used for all cloudformation resource names and internal aws resource
 
 ---
 
-##### `vpcEndpointId`<sup>Required</sup> <a name="vpcEndpointId" id="cdk-internal-gateway.InternalApiGatewayProps.property.vpcEndpointId"></a>
+##### `vpcEndpoint`<sup>Required</sup> <a name="vpcEndpoint" id="cdk-internal-gateway.InternalApiGatewayProps.property.vpcEndpoint"></a>
 
 ```typescript
-public readonly vpcEndpointId: IInterfaceVpcEndpoint;
+public readonly vpcEndpoint: IInterfaceVpcEndpoint;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
@@ -290,7 +290,7 @@ Path for custom domain base path mapping that will be attached to the api gatewa
 
 ### InternalServiceProps <a name="InternalServiceProps" id="cdk-internal-gateway.InternalServiceProps"></a>
 
-Properties for InternalServiceStack.
+Properties for InternalService.
 
 #### Initializer <a name="Initializer" id="cdk-internal-gateway.InternalServiceProps.Initializer"></a>
 
