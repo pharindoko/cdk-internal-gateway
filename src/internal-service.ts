@@ -13,9 +13,9 @@ import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
 
 /**
- * Properties for InternalServiceStack
+ * Properties for InternalService
  */
-export interface InternalServiceStackProps {
+export interface InternalServiceProps {
   /**
    * VPC attached to the application load balancer.
    */
@@ -25,11 +25,6 @@ export interface InternalServiceStackProps {
    * Subnets attached to the application load balancer.
    */
   readonly subnetSelection: SubnetSelection;
-
-  /**
-   * VPC endpoint id of execute-api vpc endpoint. This endpoint will be used to forward requests from the load balancer`s target group to the api gateway.
-   */
-  readonly vpcEndpointId: string;
 
   /**
    * VPC endpoint ip addresses attached to the load balancer`s target group
@@ -52,31 +47,16 @@ export interface InternalServiceStackProps {
   readonly hostedZoneName: string;
 }
 
-export class InternalServiceStack extends Construct {
+export class InternalService extends Construct {
   /**
    * List of domains created by the internal service stack and shared with the api gateway stack.
    */
   public readonly domains: apigateway.IDomainName[];
 
-  /**
-   * VPC Endpoint Id of the execute-api vpc endpoint.
-   */
-  public readonly vpcEndpointId: ec2.IInterfaceVpcEndpoint;
-
-  constructor(scope: Construct, id: string, props: InternalServiceStackProps) {
+  constructor(scope: Construct, id: string, props: InternalServiceProps) {
     super(scope, id);
 
     const uid: string = Names.uniqueId(scope);
-
-    this.vpcEndpointId =
-      ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
-        this,
-        `VPCEndpoint-${uid}`,
-        {
-          port: 443,
-          vpcEndpointId: props.vpcEndpointId,
-        },
-      );
 
     const domainName = `${props.subDomain}.${props.hostedZoneName}`;
     const hostedZone = route53.HostedZone.fromLookup(this, `HostedZone-${uid}`, {
@@ -85,7 +65,7 @@ export class InternalServiceStack extends Construct {
       vpcId: props.vpc.vpcId,
     });
 
-    const cert = new certificatemanager.Certificate(this, `SSLCertificate-${uid}`, {
+    const certificate = new certificatemanager.Certificate(this, `SSLCertificate-${uid}`, {
       domainName: domainName,
       subjectAlternativeNames: props.subjectAlternativeNames,
       validation: certificatemanager.CertificateValidation.fromDnsMultiZone({
@@ -95,7 +75,7 @@ export class InternalServiceStack extends Construct {
 
     const domain = new apigateway.DomainName(this, `ApiGatewayCustomDomain-${uid}`, {
       domainName: `${props.subDomain}.${props.hostedZoneName}`,
-      certificate: cert,
+      certificate: certificate,
       endpointType: apigateway.EndpointType.REGIONAL,
       securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
     });
@@ -107,7 +87,7 @@ export class InternalServiceStack extends Construct {
         `Domain-${domainItem}-${uid}`,
         {
           domainName: domainItem,
-          certificate: cert,
+          certificate: certificate,
           endpointType: apigateway.EndpointType.REGIONAL,
           securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
         },
@@ -132,7 +112,7 @@ export class InternalServiceStack extends Construct {
       'allow HTTPS traffic from anywhere',
     );
 
-    const alb = new elb.ApplicationLoadBalancer(
+    const applicationLoadBalancer = new elb.ApplicationLoadBalancer(
       this,
       `ApplicationLoadBalancer-${uid}`,
       {
@@ -146,10 +126,13 @@ export class InternalServiceStack extends Construct {
       },
     );
 
+    // Add http-to-https redirect
+    applicationLoadBalancer.addRedirect();
+
     new route53.ARecord(this, `Route53Record-${uid}`, {
       zone: hostedZone,
       target: route53.RecordTarget.fromAlias(
-        new targets.LoadBalancerTarget(alb),
+        new targets.LoadBalancerTarget(applicationLoadBalancer),
       ),
       recordName: domainName,
     });
@@ -169,9 +152,9 @@ export class InternalServiceStack extends Construct {
       targetGroupName: `tg-${uid}`,
     });
 
-    const listener = alb.addListener(`Listener-${uid}`, {
+    const listener = applicationLoadBalancer.addListener(`Listener-${uid}`, {
       port: 443,
-      certificates: [cert],
+      certificates: [certificate],
     });
 
     listener.addTargetGroups(`TargetGroupAttachment-${uid}`, {

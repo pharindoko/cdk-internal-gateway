@@ -1,2 +1,2 @@
-export * from './apigateway.stack';
-export * from './internal-service.stack';
+export * from './internal-apigateway';
+export * from './internal-service';

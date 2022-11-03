@@ -8,9 +8,9 @@ import { Construct } from 'constructs';
 
 
 /**
- * Properties for ApiGatewayStack
+ * Properties for ApiGateway
  */
-export interface InternalApiGatewayStackProps {
+export interface InternalApiGatewayProps {
   /**
    * Stage name  used for all cloudformation resource names and internal aws resource names.
    */
@@ -24,7 +24,7 @@ export interface InternalApiGatewayStackProps {
   /**
    * VPC endpoint id of execute-api vpc endpoint. This endpoint will be used to forward requests from the load balancer`s target group to the api gateway.
    */
-  readonly vpcEndpointId: IInterfaceVpcEndpoint;
+  readonly vpcEndpoint: IInterfaceVpcEndpoint;
 
   /**
    * Path for custom domain base path mapping that will be attached to the api gateway
@@ -32,7 +32,7 @@ export interface InternalApiGatewayStackProps {
   readonly apiBasePathMappingPath?: string;
 }
 
-export abstract class InternalApiGatewayStack extends Construct {
+export abstract class InternalApiGateway extends Construct {
 
   /**
    * Internal API Gateway
@@ -42,7 +42,7 @@ export abstract class InternalApiGatewayStack extends Construct {
    * It is only accessible from the load balancer`s target group.
    */
   protected readonly internalApiGateway: apigateway.LambdaRestApi;
-  constructor(scope: Construct, id: string, props: InternalApiGatewayStackProps) {
+  constructor(scope: Construct, id: string, props: InternalApiGatewayProps) {
     super(scope, id);
     const uid: string = Names.uniqueId(scope);
     const apiResourcePolicy = new iam.PolicyDocument({
@@ -54,7 +54,7 @@ export abstract class InternalApiGatewayStack extends Construct {
           resources: ['execute-api:/*/*/*'],
           conditions: {
             StringNotEquals: {
-              'aws:sourceVpce': props.vpcEndpointId.vpcEndpointId,
+              'aws:sourceVpce': props.vpcEndpoint.vpcEndpointId,
             },
           },
         }),
@@ -65,7 +65,7 @@ export abstract class InternalApiGatewayStack extends Construct {
           resources: ['execute-api:/*/*/*'],
           conditions: {
             StringEquals: {
-              'aws:sourceVpce': props.vpcEndpointId.vpcEndpointId,
+              'aws:sourceVpce': props.vpcEndpoint.vpcEndpointId,
             },
           },
         }),
@@ -80,7 +80,7 @@ export abstract class InternalApiGatewayStack extends Construct {
         description: 'This service serves an internal api gateway',
         endpointConfiguration: {
           types: [apigateway.EndpointType.PRIVATE],
-          vpcEndpoints: [props.vpcEndpointId],
+          vpcEndpoints: [props.vpcEndpoint],
         },
         policy: apiResourcePolicy,
         deployOptions: {

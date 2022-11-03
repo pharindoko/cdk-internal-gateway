@@ -11,6 +11,5 @@ const project = new awscdk.AwsCdkConstructLibrary({
   description: 'CDK construct to create an internal aws api-gateway to ease the creation of internal websites, apis or applications',
   sampleCode: false,
   keywords: ['cdk', 'apigateway', 'internal', 'gateway', 'vpc', 'network', 'api', 'website', 'application'],
-  prerelease: 'beta',
 });
 project.synth();
