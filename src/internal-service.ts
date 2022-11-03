@@ -7,7 +7,7 @@ import {
   aws_route53 as route53,
   aws_route53_targets as targets,
   CfnOutput,
-  Names
+  Names,
 } from 'aws-cdk-lib';
 import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
