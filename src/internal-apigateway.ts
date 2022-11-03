@@ -8,7 +8,7 @@ import { Construct } from 'constructs';
 
 
 /**
- * Properties for ApiGatewayStack
+ * Properties for ApiGateway
  */
 export interface InternalApiGatewayProps {
   /**
@@ -24,7 +24,7 @@ export interface InternalApiGatewayProps {
   /**
    * VPC endpoint id of execute-api vpc endpoint. This endpoint will be used to forward requests from the load balancer`s target group to the api gateway.
    */
-  readonly vpcEndpointId: IInterfaceVpcEndpoint;
+  readonly vpcEndpoint: IInterfaceVpcEndpoint;
 
   /**
    * Path for custom domain base path mapping that will be attached to the api gateway
@@ -54,7 +54,7 @@ export abstract class InternalApiGateway extends Construct {
           resources: ['execute-api:/*/*/*'],
           conditions: {
             StringNotEquals: {
-              'aws:sourceVpce': props.vpcEndpointId.vpcEndpointId,
+              'aws:sourceVpce': props.vpcEndpoint.vpcEndpointId,
             },
           },
         }),
@@ -65,7 +65,7 @@ export abstract class InternalApiGateway extends Construct {
           resources: ['execute-api:/*/*/*'],
           conditions: {
             StringEquals: {
-              'aws:sourceVpce': props.vpcEndpointId.vpcEndpointId,
+              'aws:sourceVpce': props.vpcEndpoint.vpcEndpointId,
             },
           },
         }),
@@ -80,7 +80,7 @@ export abstract class InternalApiGateway extends Construct {
         description: 'This service serves an internal api gateway',
         endpointConfiguration: {
           types: [apigateway.EndpointType.PRIVATE],
-          vpcEndpoints: [props.vpcEndpointId],
+          vpcEndpoints: [props.vpcEndpoint],
         },
         policy: apiResourcePolicy,
         deployOptions: {

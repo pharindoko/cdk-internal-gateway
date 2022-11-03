@@ -13,7 +13,7 @@ import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
 
 /**
- * Properties for InternalServiceStack
+ * Properties for InternalService
  */
 export interface InternalServiceProps {
   /**

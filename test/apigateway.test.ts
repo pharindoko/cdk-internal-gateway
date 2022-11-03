@@ -1,5 +1,6 @@
 import { App, aws_ec2 as ec2, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
+import { MockIntegration, PassthroughBehavior } from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 import { InternalApiGateway, InternalApiGatewayProps, InternalService } from '../src';
 
@@ -8,7 +9,19 @@ export class ApiGatewayStackTest extends InternalApiGateway {
   internalApiGateway: any;
   constructor(scope: Construct, id: string, props: InternalApiGatewayProps) {
     super(scope, id, props);
-    this.internalApiGateway.root.addMethod('GET', undefined);
+    this.internalApiGateway.root.addMethod('GET', new MockIntegration(
+      {
+        integrationResponses: [
+          {
+            statusCode: '200',
+          },
+        ],
+        passthroughBehavior: PassthroughBehavior.WHEN_NO_MATCH,
+        requestTemplates: {
+          'application/json': '{"statusCode": 200}',
+        },
+      },
+    ));
   }
 }
 
@@ -55,7 +68,7 @@ test('Api Gateway Stack provider', () => {
   new ApiGatewayStackTest(stack, 'apiGatewayStack', {
     stage: 'dev',
     domains: internalServiceStack.domains,
-    vpcEndpointId: vpcEndpointId,
+    vpcEndpoint: vpcEndpointId,
   });
 
 
@@ -243,7 +256,7 @@ Object {
       "Type": "AWS::IAM::Role",
       "UpdateReplacePolicy": "Retain",
     },
-    "apiGatewayStackGatewaytestDeployment476DB131a3c4cb9f65381809a154d2f99199ffde": Object {
+    "apiGatewayStackGatewaytestDeployment476DB131ece923dbf5d8c9cdacaf528a759f2763": Object {
       "DependsOn": Array [
         "apiGatewayStackGatewaytestGET54FBF6E8",
       ],
@@ -261,7 +274,7 @@ Object {
       ],
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "apiGatewayStackGatewaytestDeployment476DB131a3c4cb9f65381809a154d2f99199ffde",
+          "Ref": "apiGatewayStackGatewaytestDeployment476DB131ece923dbf5d8c9cdacaf528a759f2763",
         },
         "RestApiId": Object {
           "Ref": "apiGatewayStackGatewaytestB21206F6",
@@ -275,6 +288,15 @@ Object {
         "AuthorizationType": "NONE",
         "HttpMethod": "GET",
         "Integration": Object {
+          "IntegrationResponses": Array [
+            Object {
+              "StatusCode": "200",
+            },
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestTemplates": Object {
+            "application/json": "{\\"statusCode\\": 200}",
+          },
           "Type": "MOCK",
         },
         "ResourceId": Object {
