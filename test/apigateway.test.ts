@@ -1,40 +1,29 @@
 import { App, aws_ec2 as ec2, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { MockIntegration, PassthroughBehavior } from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 import { InternalApiGateway, InternalApiGatewayProps, InternalService } from '../src';
 
 
 export class ApiGatewayStackTest extends InternalApiGateway {
-  internalApiGateway: any;
   constructor(scope: Construct, id: string, props: InternalApiGatewayProps) {
     super(scope, id, props);
-    this.internalApiGateway.root.addMethod('GET', new MockIntegration(
-      {
-        integrationResponses: [
-          {
-            statusCode: '200',
-          },
-        ],
-        passthroughBehavior: PassthroughBehavior.WHEN_NO_MATCH,
-        requestTemplates: {
-          'application/json': '{"statusCode": 200}',
-        },
-      },
-    ));
+    this.apiGateway.root.addMethod('GET', undefined);
   }
 }
-
-let app = new App();
+let app: App;
+let stack: Stack;
 let internalServiceStack: InternalService;
-const stack = new Stack(app, 'test', {
-  env: {
-    account: '123456789012',
-    region: 'us-east-1',
-  },
-});
+let vpcEndpointId: ec2.IInterfaceVpcEndpoint;
 
-beforeAll(() => {
+beforeEach(() => {
+  app = new App();
+  internalServiceStack: InternalService;
+  stack = new Stack(app, 'test', {
+    env: {
+      account: '123456789012',
+      region: 'us-east-1',
+    },
+  });
 
   const vpc = ec2.Vpc.fromLookup(stack, 'vpc', { vpcId: 'vpc-1234567' });
   const internalSubnetIds = ['subnet-1234567890', 'subnet-1234567890'];
@@ -50,12 +39,7 @@ beforeAll(() => {
     hostedZoneName: 'test.aws1234.com',
     subDomain: 'internalservice-dev',
   });
-
-});
-
-
-test('Api Gateway Stack provider', () => {
-  const vpcEndpointId =
+  vpcEndpointId =
     ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
       stack,
       'vpcEndpoint',
@@ -64,13 +48,16 @@ test('Api Gateway Stack provider', () => {
         vpcEndpointId: 'vpce-1234567890',
       },
     );
+});
+
+
+test('Api Gateway Stack provider - set default values', () => {
 
   new ApiGatewayStackTest(stack, 'apiGatewayStack', {
     stage: 'dev',
     domains: internalServiceStack.domains,
     vpcEndpoint: vpcEndpointId,
   });
-
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
@@ -81,6 +68,12 @@ test('Api Gateway Stack provider', () => {
     },
   },
   ));
+
+  template.hasResourceProperties('AWS::ApiGateway::BasePathMapping', Match.objectLike({
+    BasePath: '',
+  },
+  ));
+
   template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
     Policy: {
       Statement: [
@@ -119,14 +112,14 @@ test('Api Gateway Stack provider', () => {
   expect(template).toMatchInlineSnapshot(`
 Object {
   "Outputs": Object {
-    "apiGatewayStackGatewaytestEndpointDBCBAA9A": Object {
+    "apiGatewayStackGatewayapiGatewayStackEndpointD06AFED4": Object {
       "Value": Object {
         "Fn::Join": Array [
           "",
           Array [
             "https://",
             Object {
-              "Ref": "apiGatewayStackGatewaytestB21206F6",
+              "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
             },
             ".execute-api.us-east-1.",
             Object {
@@ -134,14 +127,14 @@ Object {
             },
             "/",
             Object {
-              "Ref": "apiGatewayStackGatewaytestDeploymentStagedev417B627A",
+              "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA",
             },
             "/",
           ],
         ],
       },
     },
-    "internalServiceStackDomainUrltest2935E3B3": Object {
+    "internalServiceStackDomainUrlinternalServiceStackB921B240": Object {
       "Description": "service url",
       "Export": Object {
         "Name": "-DomainUrl",
@@ -157,15 +150,15 @@ Object {
     },
   },
   "Resources": Object {
-    "apiGatewayStackGatewaytestAccount62BFF2F7": Object {
+    "apiGatewayStackGatewayapiGatewayStackAccount7F19EDD7": Object {
       "DeletionPolicy": "Retain",
       "DependsOn": Array [
-        "apiGatewayStackGatewaytestB21206F6",
+        "apiGatewayStackGatewayapiGatewayStackC685BA6E",
       ],
       "Properties": Object {
         "CloudWatchRoleArn": Object {
           "Fn::GetAtt": Array [
-            "apiGatewayStackGatewaytestCloudWatchRoleA79896DE",
+            "apiGatewayStackGatewayapiGatewayStackCloudWatchRole492310A9",
             "Arn",
           ],
         },
@@ -173,11 +166,8 @@ Object {
       "Type": "AWS::ApiGateway::Account",
       "UpdateReplacePolicy": "Retain",
     },
-    "apiGatewayStackGatewaytestB21206F6": Object {
+    "apiGatewayStackGatewayapiGatewayStackC685BA6E": Object {
       "Properties": Object {
-        "BinaryMediaTypes": Array [
-          "*/*",
-        ],
         "Description": "This service serves an internal api gateway",
         "EndpointConfiguration": Object {
           "Types": Array [
@@ -187,8 +177,7 @@ Object {
             "vpce-1234567890",
           ],
         },
-        "MinimumCompressionSize": 1000,
-        "Name": "gateway-test",
+        "Name": "gateway-apiGatewayStack",
         "Policy": Object {
           "Statement": Array [
             Object {
@@ -223,7 +212,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "apiGatewayStackGatewaytestCloudWatchRoleA79896DE": Object {
+    "apiGatewayStackGatewayapiGatewayStackCloudWatchRole492310A9": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
@@ -256,107 +245,98 @@ Object {
       "Type": "AWS::IAM::Role",
       "UpdateReplacePolicy": "Retain",
     },
-    "apiGatewayStackGatewaytestDeployment476DB131ece923dbf5d8c9cdacaf528a759f2763": Object {
+    "apiGatewayStackGatewayapiGatewayStackDeployment62F75EF65a7060afb32f6c45f7e741ade92eab17": Object {
       "DependsOn": Array [
-        "apiGatewayStackGatewaytestGET54FBF6E8",
+        "apiGatewayStackGatewayapiGatewayStackGETF8D24D55",
       ],
       "Properties": Object {
         "Description": "This service serves an internal api gateway",
         "RestApiId": Object {
-          "Ref": "apiGatewayStackGatewaytestB21206F6",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
         },
       },
       "Type": "AWS::ApiGateway::Deployment",
     },
-    "apiGatewayStackGatewaytestDeploymentStagedev417B627A": Object {
+    "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA": Object {
       "DependsOn": Array [
-        "apiGatewayStackGatewaytestAccount62BFF2F7",
+        "apiGatewayStackGatewayapiGatewayStackAccount7F19EDD7",
       ],
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "apiGatewayStackGatewaytestDeployment476DB131ece923dbf5d8c9cdacaf528a759f2763",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackDeployment62F75EF65a7060afb32f6c45f7e741ade92eab17",
         },
         "RestApiId": Object {
-          "Ref": "apiGatewayStackGatewaytestB21206F6",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
         },
         "StageName": "dev",
       },
       "Type": "AWS::ApiGateway::Stage",
     },
-    "apiGatewayStackGatewaytestGET54FBF6E8": Object {
+    "apiGatewayStackGatewayapiGatewayStackGETF8D24D55": Object {
       "Properties": Object {
         "AuthorizationType": "NONE",
         "HttpMethod": "GET",
         "Integration": Object {
-          "IntegrationResponses": Array [
-            Object {
-              "StatusCode": "200",
-            },
-          ],
-          "PassthroughBehavior": "WHEN_NO_MATCH",
-          "RequestTemplates": Object {
-            "application/json": "{\\"statusCode\\": 200}",
-          },
           "Type": "MOCK",
         },
         "ResourceId": Object {
           "Fn::GetAtt": Array [
-            "apiGatewayStackGatewaytestB21206F6",
+            "apiGatewayStackGatewayapiGatewayStackC685BA6E",
             "RootResourceId",
           ],
         },
         "RestApiId": Object {
-          "Ref": "apiGatewayStackGatewaytestB21206F6",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
         },
       },
       "Type": "AWS::ApiGateway::Method",
     },
-    "apiGatewayStacktestinternalServiceStackApiGatewayCustomDomaintest5FD0C666": Object {
+    "apiGatewayStacktestinternalServiceStackApiGatewayCustomDomaininternalServiceStack4041A8F9": Object {
       "Properties": Object {
         "BasePath": "",
         "DomainName": Object {
-          "Ref": "internalServiceStackApiGatewayCustomDomaintest813BB8C2",
+          "Ref": "internalServiceStackApiGatewayCustomDomaininternalServiceStack836326F5",
         },
         "RestApiId": Object {
-          "Ref": "apiGatewayStackGatewaytestB21206F6",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
         },
         "Stage": Object {
-          "Ref": "apiGatewayStackGatewaytestDeploymentStagedev417B627A",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA",
         },
       },
       "Type": "AWS::ApiGateway::BasePathMapping",
     },
-    "apiGatewayStacktestinternalServiceStackDomaininternalservicedevtest2comtest2D55BBDF": Object {
+    "apiGatewayStacktestinternalServiceStackDomaininternalservicedevtest2cominternalServiceStackBE72A12C": Object {
       "Properties": Object {
         "BasePath": "",
         "DomainName": Object {
-          "Ref": "internalServiceStackDomaininternalservicedevtest2comtestCB38E02B",
+          "Ref": "internalServiceStackDomaininternalservicedevtest2cominternalServiceStack5EFB1D61",
         },
         "RestApiId": Object {
-          "Ref": "apiGatewayStackGatewaytestB21206F6",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
         },
         "Stage": Object {
-          "Ref": "apiGatewayStackGatewaytestDeploymentStagedev417B627A",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA",
         },
       },
       "Type": "AWS::ApiGateway::BasePathMapping",
     },
-    "apiGatewayStacktestinternalServiceStackDomaininternalservicedevtestcomtestD3261655": Object {
+    "apiGatewayStacktestinternalServiceStackDomaininternalservicedevtestcominternalServiceStack5EFA7076": Object {
       "Properties": Object {
         "BasePath": "",
         "DomainName": Object {
-          "Ref": "internalServiceStackDomaininternalservicedevtestcomtest2CE9FA76",
+          "Ref": "internalServiceStackDomaininternalservicedevtestcominternalServiceStackB6868874",
         },
         "RestApiId": Object {
-          "Ref": "apiGatewayStackGatewaytestB21206F6",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
         },
         "Stage": Object {
-          "Ref": "apiGatewayStackGatewaytestDeploymentStagedev417B627A",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA",
         },
       },
       "Type": "AWS::ApiGateway::BasePathMapping",
     },
-    "internalServiceStackApiGatewayCustomDomaintest813BB8C2": Object {
+    "internalServiceStackApiGatewayCustomDomaininternalServiceStack836326F5": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test.aws1234.com",
         "EndpointConfiguration": Object {
@@ -365,13 +345,13 @@ Object {
           ],
         },
         "RegionalCertificateArn": Object {
-          "Ref": "internalServiceStackSSLCertificatetest1C36642E",
+          "Ref": "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
         },
         "SecurityPolicy": "TLS_1_2",
       },
       "Type": "AWS::ApiGateway::DomainName",
     },
-    "internalServiceStackApplicationLoadBalancertestF81D1559": Object {
+    "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3": Object {
       "Properties": Object {
         "LoadBalancerAttributes": Array [
           Object {
@@ -379,12 +359,12 @@ Object {
             "Value": "false",
           },
         ],
-        "Name": "lb-test",
+        "Name": "lb-internalServiceStack",
         "Scheme": "internal",
         "SecurityGroups": Array [
           Object {
             "Fn::GetAtt": Array [
-              "internalServiceStackLoadBalancerSecurityGrouptestC15E9D39",
+              "internalServiceStackLoadBalancerSecurityGroupinternalServiceStackB6066852",
               "GroupId",
             ],
           },
@@ -397,32 +377,32 @@ Object {
       },
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
     },
-    "internalServiceStackApplicationLoadBalancertestListenertestAB9280FB": Object {
+    "internalServiceStackApplicationLoadBalancerinternalServiceStackListenerinternalServiceStackAC542223": Object {
       "Properties": Object {
         "Certificates": Array [
           Object {
             "CertificateArn": Object {
-              "Ref": "internalServiceStackSSLCertificatetest1C36642E",
+              "Ref": "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
             },
           },
         ],
         "DefaultActions": Array [
           Object {
             "TargetGroupArn": Object {
-              "Ref": "internalServiceStackTargetGrouptestB800F1B7",
+              "Ref": "internalServiceStackTargetGroupinternalServiceStackB131C63B",
             },
             "Type": "forward",
           },
         ],
         "LoadBalancerArn": Object {
-          "Ref": "internalServiceStackApplicationLoadBalancertestF81D1559",
+          "Ref": "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3",
         },
         "Port": 443,
         "Protocol": "HTTPS",
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
     },
-    "internalServiceStackApplicationLoadBalancertestRedirect80To443AC430414": Object {
+    "internalServiceStackApplicationLoadBalancerinternalServiceStackRedirect80To4439382502D": Object {
       "Properties": Object {
         "DefaultActions": Array [
           Object {
@@ -435,14 +415,14 @@ Object {
           },
         ],
         "LoadBalancerArn": Object {
-          "Ref": "internalServiceStackApplicationLoadBalancertestF81D1559",
+          "Ref": "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3",
         },
         "Port": 80,
         "Protocol": "HTTP",
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
     },
-    "internalServiceStackDomaininternalservicedevtest2comtestCB38E02B": Object {
+    "internalServiceStackDomaininternalservicedevtest2cominternalServiceStack5EFB1D61": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test2.com",
         "EndpointConfiguration": Object {
@@ -451,13 +431,13 @@ Object {
           ],
         },
         "RegionalCertificateArn": Object {
-          "Ref": "internalServiceStackSSLCertificatetest1C36642E",
+          "Ref": "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
         },
         "SecurityPolicy": "TLS_1_2",
       },
       "Type": "AWS::ApiGateway::DomainName",
     },
-    "internalServiceStackDomaininternalservicedevtestcomtest2CE9FA76": Object {
+    "internalServiceStackDomaininternalservicedevtestcominternalServiceStackB6868874": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test.com",
         "EndpointConfiguration": Object {
@@ -466,13 +446,13 @@ Object {
           ],
         },
         "RegionalCertificateArn": Object {
-          "Ref": "internalServiceStackSSLCertificatetest1C36642E",
+          "Ref": "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
         },
         "SecurityPolicy": "TLS_1_2",
       },
       "Type": "AWS::ApiGateway::DomainName",
     },
-    "internalServiceStackLoadBalancerSecurityGrouptestC15E9D39": Object {
+    "internalServiceStackLoadBalancerSecurityGroupinternalServiceStackB6066852": Object {
       "Properties": Object {
         "GroupDescription": "security group for a load balancer",
         "GroupName": "-lb-sg",
@@ -503,7 +483,7 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "internalServiceStackRoute53Recordtest42769C99": Object {
+    "internalServiceStackRoute53RecordinternalServiceStack0A03BF43": Object {
       "Properties": Object {
         "AliasTarget": Object {
           "DNSName": Object {
@@ -513,7 +493,7 @@ Object {
                 "dualstack.",
                 Object {
                   "Fn::GetAtt": Array [
-                    "internalServiceStackApplicationLoadBalancertestF81D1559",
+                    "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3",
                     "DNSName",
                   ],
                 },
@@ -522,7 +502,7 @@ Object {
           },
           "HostedZoneId": Object {
             "Fn::GetAtt": Array [
-              "internalServiceStackApplicationLoadBalancertestF81D1559",
+              "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3",
               "CanonicalHostedZoneID",
             ],
           },
@@ -533,7 +513,7 @@ Object {
       },
       "Type": "AWS::Route53::RecordSet",
     },
-    "internalServiceStackSSLCertificatetest1C36642E": Object {
+    "internalServiceStackSSLCertificateinternalServiceStack283B9A17": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test.aws1234.com",
         "SubjectAlternativeNames": Array [
@@ -543,16 +523,16 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "test/internalServiceStack/SSLCertificate-test",
+            "Value": "test/internalServiceStack/SSLCertificate-internalServiceStack",
           },
         ],
         "ValidationMethod": "DNS",
       },
       "Type": "AWS::CertificateManager::Certificate",
     },
-    "internalServiceStackTargetGrouptestB800F1B7": Object {
+    "internalServiceStackTargetGroupinternalServiceStackB131C63B": Object {
       "Properties": Object {
-        "Name": "tg-test",
+        "Name": "tg-internalServiceStack",
         "Port": 443,
         "Protocol": "HTTPS",
         "TargetGroupAttributes": Array [
@@ -604,5 +584,35 @@ Object {
   },
 }
 `);
+});
+
+test('Api Gateway Stack provider - set optional parameters', () => {
+
+  new ApiGatewayStackTest(stack, 'apiGatewayStackOptionalParameters', {
+    stage: 'dev',
+    domains: internalServiceStack.domains,
+    vpcEndpoint: vpcEndpointId,
+    minimumCompressionSize: 1024,
+    binaryMediaTypes: ['application/octet-stream'],
+    apiBasePathMappingPath: 'test',
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
+    MinimumCompressionSize: 1024,
+  },
+  ));
+
+  template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
+    BinaryMediaTypes: [
+      'application/octet-stream',
+    ],
+  },
+  ));
+
+  template.hasResourceProperties('AWS::ApiGateway::BasePathMapping', Match.objectLike({
+    BasePath: 'test',
+  },
+  ));
 });
 

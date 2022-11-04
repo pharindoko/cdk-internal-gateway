@@ -29,7 +29,7 @@ test('Internal Service provider', () => {
   expect(template).toMatchInlineSnapshot(`
 Object {
   "Outputs": Object {
-    "internalServiceStackDomainUrltest2935E3B3": Object {
+    "internalServiceStackDomainUrlinternalServiceStackB921B240": Object {
       "Description": "service url",
       "Export": Object {
         "Name": "-DomainUrl",
@@ -45,7 +45,7 @@ Object {
     },
   },
   "Resources": Object {
-    "internalServiceStackApiGatewayCustomDomaintest813BB8C2": Object {
+    "internalServiceStackApiGatewayCustomDomaininternalServiceStack836326F5": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test.aws1234.com",
         "EndpointConfiguration": Object {
@@ -54,13 +54,13 @@ Object {
           ],
         },
         "RegionalCertificateArn": Object {
-          "Ref": "internalServiceStackSSLCertificatetest1C36642E",
+          "Ref": "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
         },
         "SecurityPolicy": "TLS_1_2",
       },
       "Type": "AWS::ApiGateway::DomainName",
     },
-    "internalServiceStackApplicationLoadBalancertestF81D1559": Object {
+    "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3": Object {
       "Properties": Object {
         "LoadBalancerAttributes": Array [
           Object {
@@ -68,12 +68,12 @@ Object {
             "Value": "false",
           },
         ],
-        "Name": "lb-test",
+        "Name": "lb-internalServiceStack",
         "Scheme": "internal",
         "SecurityGroups": Array [
           Object {
             "Fn::GetAtt": Array [
-              "internalServiceStackLoadBalancerSecurityGrouptestC15E9D39",
+              "internalServiceStackLoadBalancerSecurityGroupinternalServiceStackB6066852",
               "GroupId",
             ],
           },
@@ -86,32 +86,32 @@ Object {
       },
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
     },
-    "internalServiceStackApplicationLoadBalancertestListenertestAB9280FB": Object {
+    "internalServiceStackApplicationLoadBalancerinternalServiceStackListenerinternalServiceStackAC542223": Object {
       "Properties": Object {
         "Certificates": Array [
           Object {
             "CertificateArn": Object {
-              "Ref": "internalServiceStackSSLCertificatetest1C36642E",
+              "Ref": "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
             },
           },
         ],
         "DefaultActions": Array [
           Object {
             "TargetGroupArn": Object {
-              "Ref": "internalServiceStackTargetGrouptestB800F1B7",
+              "Ref": "internalServiceStackTargetGroupinternalServiceStackB131C63B",
             },
             "Type": "forward",
           },
         ],
         "LoadBalancerArn": Object {
-          "Ref": "internalServiceStackApplicationLoadBalancertestF81D1559",
+          "Ref": "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3",
         },
         "Port": 443,
         "Protocol": "HTTPS",
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
     },
-    "internalServiceStackApplicationLoadBalancertestRedirect80To443AC430414": Object {
+    "internalServiceStackApplicationLoadBalancerinternalServiceStackRedirect80To4439382502D": Object {
       "Properties": Object {
         "DefaultActions": Array [
           Object {
@@ -124,14 +124,14 @@ Object {
           },
         ],
         "LoadBalancerArn": Object {
-          "Ref": "internalServiceStackApplicationLoadBalancertestF81D1559",
+          "Ref": "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3",
         },
         "Port": 80,
         "Protocol": "HTTP",
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
     },
-    "internalServiceStackDomaininternalservicedevtest2comtestCB38E02B": Object {
+    "internalServiceStackDomaininternalservicedevtest2cominternalServiceStack5EFB1D61": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test2.com",
         "EndpointConfiguration": Object {
@@ -140,13 +140,13 @@ Object {
           ],
         },
         "RegionalCertificateArn": Object {
-          "Ref": "internalServiceStackSSLCertificatetest1C36642E",
+          "Ref": "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
         },
         "SecurityPolicy": "TLS_1_2",
       },
       "Type": "AWS::ApiGateway::DomainName",
     },
-    "internalServiceStackDomaininternalservicedevtestcomtest2CE9FA76": Object {
+    "internalServiceStackDomaininternalservicedevtestcominternalServiceStackB6868874": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test.com",
         "EndpointConfiguration": Object {
@@ -155,13 +155,13 @@ Object {
           ],
         },
         "RegionalCertificateArn": Object {
-          "Ref": "internalServiceStackSSLCertificatetest1C36642E",
+          "Ref": "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
         },
         "SecurityPolicy": "TLS_1_2",
       },
       "Type": "AWS::ApiGateway::DomainName",
     },
-    "internalServiceStackLoadBalancerSecurityGrouptestC15E9D39": Object {
+    "internalServiceStackLoadBalancerSecurityGroupinternalServiceStackB6066852": Object {
       "Properties": Object {
         "GroupDescription": "security group for a load balancer",
         "GroupName": "-lb-sg",
@@ -192,7 +192,7 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "internalServiceStackRoute53Recordtest42769C99": Object {
+    "internalServiceStackRoute53RecordinternalServiceStack0A03BF43": Object {
       "Properties": Object {
         "AliasTarget": Object {
           "DNSName": Object {
@@ -202,7 +202,7 @@ Object {
                 "dualstack.",
                 Object {
                   "Fn::GetAtt": Array [
-                    "internalServiceStackApplicationLoadBalancertestF81D1559",
+                    "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3",
                     "DNSName",
                   ],
                 },
@@ -211,7 +211,7 @@ Object {
           },
           "HostedZoneId": Object {
             "Fn::GetAtt": Array [
-              "internalServiceStackApplicationLoadBalancertestF81D1559",
+              "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3",
               "CanonicalHostedZoneID",
             ],
           },
@@ -222,7 +222,7 @@ Object {
       },
       "Type": "AWS::Route53::RecordSet",
     },
-    "internalServiceStackSSLCertificatetest1C36642E": Object {
+    "internalServiceStackSSLCertificateinternalServiceStack283B9A17": Object {
       "Properties": Object {
         "DomainName": "internalservice-dev.test.aws1234.com",
         "SubjectAlternativeNames": Array [
@@ -232,16 +232,16 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "test/internalServiceStack/SSLCertificate-test",
+            "Value": "test/internalServiceStack/SSLCertificate-internalServiceStack",
           },
         ],
         "ValidationMethod": "DNS",
       },
       "Type": "AWS::CertificateManager::Certificate",
     },
-    "internalServiceStackTargetGrouptestB800F1B7": Object {
+    "internalServiceStackTargetGroupinternalServiceStackB131C63B": Object {
       "Properties": Object {
-        "Name": "tg-test",
+        "Name": "tg-internalServiceStack",
         "Port": 443,
         "Protocol": "HTTPS",
         "TargetGroupAttributes": Array [

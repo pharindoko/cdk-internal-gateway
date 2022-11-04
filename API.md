@@ -235,6 +235,8 @@ const internalApiGatewayProps: InternalApiGatewayProps = { ... }
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.stage">stage</a></code> | <code>string</code> | Stage name  used for all cloudformation resource names and internal aws resource names. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.apiBasePathMappingPath">apiBasePathMappingPath</a></code> | <code>string</code> | Path for custom domain base path mapping that will be attached to the api gateway. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.binaryMediaTypes">binaryMediaTypes</a></code> | <code>string[]</code> | Binary media types for the internal api gateway. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | minimum compression size for the internal api gateway. |
 
 ---
 
@@ -285,6 +287,30 @@ public readonly apiBasePathMappingPath: string;
 - *Type:* string
 
 Path for custom domain base path mapping that will be attached to the api gateway.
+
+---
+
+##### `binaryMediaTypes`<sup>Optional</sup> <a name="binaryMediaTypes" id="cdk-internal-gateway.InternalApiGatewayProps.property.binaryMediaTypes"></a>
+
+```typescript
+public readonly binaryMediaTypes: string[];
+```
+
+- *Type:* string[]
+
+Binary media types for the internal api gateway.
+
+---
+
+##### `minimumCompressionSize`<sup>Optional</sup> <a name="minimumCompressionSize" id="cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize"></a>
+
+```typescript
+public readonly minimumCompressionSize: number;
+```
+
+- *Type:* number
+
+minimum compression size for the internal api gateway.
 
 ---
 
