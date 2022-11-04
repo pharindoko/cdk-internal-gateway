@@ -1,4 +1,4 @@
-import { App, aws_ec2 as ec2, Stack } from 'aws-cdk-lib';
+import { App, aws_ec2 as ec2, aws_route53 as route53, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Construct } from 'constructs';
 import { InternalApiGateway, InternalApiGatewayProps, InternalService } from '../src';
@@ -27,6 +27,12 @@ beforeEach(() => {
 
   const vpc = ec2.Vpc.fromLookup(stack, 'vpc', { vpcId: 'vpc-1234567' });
   const internalSubnetIds = ['subnet-1234567890', 'subnet-1234567890'];
+  const hostedZone = route53.HostedZone.fromLookup(stack, 'hostedzone', {
+    domainName: 'test.aws1234.com',
+    privateZone: true,
+    vpcId: vpc.vpcId,
+  });
+
   internalServiceStack = new InternalService(stack, 'internalServiceStack', {
     vpc: vpc,
     subnetSelection: {
@@ -36,7 +42,7 @@ beforeEach(() => {
     },
     vpcEndpointIPAddresses: ['192.168.2.1', '192.168.2.2'],
     subjectAlternativeNames: ['internalservice-dev.test.com', 'internalservice-dev.test2.com'],
-    hostedZoneName: 'test.aws1234.com',
+    hostedZone: hostedZone,
     subDomain: 'internalservice-dev',
   });
   vpcEndpointId =

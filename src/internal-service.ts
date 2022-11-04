@@ -41,9 +41,9 @@ export interface InternalServiceProps {
   readonly subDomain: string;
 
   /**
-   * Name of hosted zone that will be used for the custom domain.
+   * Hosted zone that will be used for the custom domain.
    */
-  readonly hostedZoneName: string;
+  readonly hostedZone: route53.IHostedZone;
 }
 
 export class InternalService extends Construct {
@@ -55,23 +55,18 @@ export class InternalService extends Construct {
   constructor(scope: Construct, id: string, props: InternalServiceProps) {
     super(scope, id);
 
-    const domainName = `${props.subDomain}.${props.hostedZoneName}`;
-    const hostedZone = route53.HostedZone.fromLookup(this, `HostedZone-${id}`, {
-      domainName: `${props.hostedZoneName}`,
-      privateZone: true,
-      vpcId: props.vpc.vpcId,
-    });
+    const domainName = `${props.subDomain}.${props.hostedZone.zoneName}`;
 
     const certificate = new certificatemanager.Certificate(this, `SSLCertificate-${id}`, {
       domainName: domainName,
       subjectAlternativeNames: props.subjectAlternativeNames,
       validation: certificatemanager.CertificateValidation.fromDnsMultiZone({
-        domainName: hostedZone,
+        domainName: props.hostedZone,
       }),
     });
 
     const domain = new apigateway.DomainName(this, `ApiGatewayCustomDomain-${id}`, {
-      domainName: `${props.subDomain}.${props.hostedZoneName}`,
+      domainName: `${props.subDomain}.${props.hostedZone.zoneName}`,
       certificate: certificate,
       endpointType: apigateway.EndpointType.REGIONAL,
       securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
@@ -128,7 +123,7 @@ export class InternalService extends Construct {
     applicationLoadBalancer.addRedirect();
 
     new route53.ARecord(this, `Route53Record-${id}`, {
-      zone: hostedZone,
+      zone: props.hostedZone,
       target: route53.RecordTarget.fromAlias(
         new targets.LoadBalancerTarget(applicationLoadBalancer),
       ),

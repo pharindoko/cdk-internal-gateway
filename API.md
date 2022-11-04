@@ -330,7 +330,7 @@ const internalServiceProps: InternalServiceProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-internal-gateway.InternalServiceProps.property.hostedZoneName">hostedZoneName</a></code> | <code>string</code> | Name of hosted zone that will be used for the custom domain. |
+| <code><a href="#cdk-internal-gateway.InternalServiceProps.property.hostedZone">hostedZone</a></code> | <code>aws-cdk-lib.aws_route53.IHostedZone</code> | Hosted zone that will be used for the custom domain. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.subDomain">subDomain</a></code> | <code>string</code> | Subdomain attached to hosted zone name. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.subjectAlternativeNames">subjectAlternativeNames</a></code> | <code>string[]</code> | List of alternative domains attached to the solution. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.subnetSelection">subnetSelection</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | Subnets attached to the application load balancer. |
@@ -339,15 +339,15 @@ const internalServiceProps: InternalServiceProps = { ... }
 
 ---
 
-##### `hostedZoneName`<sup>Required</sup> <a name="hostedZoneName" id="cdk-internal-gateway.InternalServiceProps.property.hostedZoneName"></a>
+##### `hostedZone`<sup>Required</sup> <a name="hostedZone" id="cdk-internal-gateway.InternalServiceProps.property.hostedZone"></a>
 
 ```typescript
-public readonly hostedZoneName: string;
+public readonly hostedZone: IHostedZone;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_route53.IHostedZone
 
-Name of hosted zone that will be used for the custom domain.
+Hosted zone that will be used for the custom domain.
 
 ---
 
