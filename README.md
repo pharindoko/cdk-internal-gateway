@@ -4,22 +4,11 @@ This CDK construct simplifies the setup of **internal serverless applications** 
 
 ## Features
 
-- creates all aws components needed to allow only access from the internal network of your company
-- modularized into separate constructs
-  - add multiple api gateways to the same internal service
+- creates all aws components needed to allow access only from the internal network of your company in a secure manner
+- modularized approach with separate constructs
+  - add multiple internal api gateways to the same internal service to save costs and keep flexibility
 
------------
-
-### Technical Details
-
-- creates an internal loadbalancer
-  - forwards traffic to VPC endpoints  
-- provides a securely configured apigateway resource out of the box
-  - attach your aws components to the internal apigateway resource
-  - sets api gateway to PRIVATE mode
-  - sets resource policies to only allow traffic from vpc endpoint
-- generates and attaches custom domains to the API Gateway
-- generates and attaches certificates to the the API Gateway and the loadbalancer
+---
 
 ## Requirements
 
@@ -40,6 +29,20 @@ npm i cdk-internal-gateway
 ## Architecture
 
 ![cdk-internal-gateway-architecture](cdk-internal-gateway.drawio.png )
+
+### Technical Details
+
+- creates an internal application loadbalancer
+  - forwards traffic to VPC endpoint for execute-api
+  - redirect http to https
+- provides a securely configured apigateway resource out of the box
+  - attach your aws components to the internal apigateway resource
+  - sets api gateway to PRIVATE mode
+  - sets resource policies to only allow traffic from vpc endpoint
+- generates and attaches custom domains to the API Gateway
+- generates and attaches certificates to the the API Gateway and the loadbalancer
+
+---
 
 ## Usage
 
@@ -88,18 +91,30 @@ npm i cdk-internal-gateway
 
             // get all parameters to create the internal service stack
             const vpc = ec2.Vpc.fromLookup(this, 'vpcLookup', { vpcId: 'vpc-1234567890' });
-            const internalSubnetIds = ['subnet-0b1e1c6c7d8e9f0a2', 'subnet-0b1e1c6c7d8e9f0a3'];
             const subnetSelection = {
-                subnets: internalSubnetIds.map((ip, index) =>
+                subnets: ['subnet-0b1e1c6c7d8e9f0a2', 'subnet-0b1e1c6c7d8e9f0a3'].map((ip, index) =>
                     ec2.Subnet.fromSubnetId(this, `Subnet${index}`, ip),
                 ),
             };
+            const hostedZone = route53.HostedZone.fromLookup(stack, 'hostedzone', {
+                domainName: 'test.aws1234.com',
+                privateZone: true,
+                vpcId: vpc.vpcId,
+            });
+            const vpcEndpoint =
+                ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
+                stack,
+                'vpcEndpoint',
+                {
+                    port: 443,
+                    vpcEndpointId: 'vpce-1234567890',
+                },
+                );
 
             // create the internal service stack
             const internalServiceStack = new InternalServiceStack(this, 'InternalServiceStack', {
-                hostedZoneName: 'example.com',
+                hostedZone: hostedZone,
                 subnetSelection: subnetSelection,
-                vpcEndpointId: 'vpce-1234567890',
                 vpcEndpointIPAddresses: ['192.168.2.1', '192.168.2.2'],
                 vpc: vpc,
                 subjectAlternativeNames: ['internal.example.com'],
@@ -110,7 +125,7 @@ npm i cdk-internal-gateway
             new ServerlessStack(this, 'MyProjectStack', {
                 domains: serviceStack.domains,
                 stage: "dev",
-                vpcEndpointId: serviceStack.vpcEndpointId,
+                vpcEndpoint: vpcEndpoint,
             })
         }
     }
@@ -126,6 +141,8 @@ npm i cdk-internal-gateway
         region: process.env.CDK_DEPLOY_REGION || process.env.CDK_DEFAULT_REGION
     }
     ```
+
+---
 
 ## Background
 
