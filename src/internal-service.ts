@@ -7,7 +7,6 @@ import {
   aws_route53 as route53,
   aws_route53_targets as targets,
   CfnOutput,
-  Names,
 } from 'aws-cdk-lib';
 import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
@@ -42,9 +41,9 @@ export interface InternalServiceProps {
   readonly subDomain: string;
 
   /**
-   * Name of hosted zone that will be used for the custom domain.
+   * Hosted zone that will be used for the custom domain.
    */
-  readonly hostedZoneName: string;
+  readonly hostedZone: route53.IHostedZone;
 }
 
 export class InternalService extends Construct {
@@ -56,35 +55,29 @@ export class InternalService extends Construct {
   constructor(scope: Construct, id: string, props: InternalServiceProps) {
     super(scope, id);
 
-    const uid: string = Names.uniqueId(scope);
+    const domainName = `${props.subDomain}.${props.hostedZone.zoneName}`;
 
-    const domainName = `${props.subDomain}.${props.hostedZoneName}`;
-    const hostedZone = route53.HostedZone.fromLookup(this, `HostedZone-${uid}`, {
-      domainName: `${props.hostedZoneName}`,
-      privateZone: true,
-      vpcId: props.vpc.vpcId,
-    });
-
-    const certificate = new certificatemanager.Certificate(this, `SSLCertificate-${uid}`, {
+    const certificate = new certificatemanager.Certificate(this, `SSLCertificate-${id}`, {
       domainName: domainName,
       subjectAlternativeNames: props.subjectAlternativeNames,
       validation: certificatemanager.CertificateValidation.fromDnsMultiZone({
-        domainName: hostedZone,
+        domainName: props.hostedZone,
       }),
     });
 
-    const domain = new apigateway.DomainName(this, `ApiGatewayCustomDomain-${uid}`, {
-      domainName: `${props.subDomain}.${props.hostedZoneName}`,
+    const domain = new apigateway.DomainName(this, `ApiGatewayCustomDomain-${id}`, {
+      domainName: `${props.subDomain}.${props.hostedZone.zoneName}`,
       certificate: certificate,
       endpointType: apigateway.EndpointType.REGIONAL,
       securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
     });
+
     this.domains = [domain];
 
     for (const domainItem of props.subjectAlternativeNames) {
       const sanDomain = new apigateway.DomainName(
         this,
-        `Domain-${domainItem}-${uid}`,
+        `Domain-${domainItem}-${id}`,
         {
           domainName: domainItem,
           certificate: certificate,
@@ -97,7 +90,7 @@ export class InternalService extends Construct {
 
     const loadBalancerSecurityGroup = new ec2.SecurityGroup(
       this,
-      `LoadBalancerSecurityGroup-${uid}`,
+      `LoadBalancerSecurityGroup-${id}`,
       {
         securityGroupName: '-lb-sg',
         vpc: props.vpc,
@@ -114,7 +107,7 @@ export class InternalService extends Construct {
 
     const applicationLoadBalancer = new elb.ApplicationLoadBalancer(
       this,
-      `ApplicationLoadBalancer-${uid}`,
+      `ApplicationLoadBalancer-${id}`,
       {
         vpc: props.vpc,
         vpcSubnets: {
@@ -122,15 +115,15 @@ export class InternalService extends Construct {
         },
         internetFacing: false,
         securityGroup: loadBalancerSecurityGroup,
-        loadBalancerName: `lb-${uid}`,
+        loadBalancerName: `lb-${id}`,
       },
     );
 
     // Add http-to-https redirect
     applicationLoadBalancer.addRedirect();
 
-    new route53.ARecord(this, `Route53Record-${uid}`, {
-      zone: hostedZone,
+    new route53.ARecord(this, `Route53Record-${id}`, {
+      zone: props.hostedZone,
       target: route53.RecordTarget.fromAlias(
         new targets.LoadBalancerTarget(applicationLoadBalancer),
       ),
@@ -143,25 +136,25 @@ export class InternalService extends Construct {
       targetGroupTargets.push(new elasticloadbalancingv2targets.IpTarget(ip));
     }
 
-    const targetGroup = new elb.ApplicationTargetGroup(this, `TargetGroup-${uid}`, {
+    const targetGroup = new elb.ApplicationTargetGroup(this, `TargetGroup-${id}`, {
       port: 443,
       vpc: props.vpc,
       protocol: elb.ApplicationProtocol.HTTPS,
       targetType: elb.TargetType.IP,
       targets: targetGroupTargets,
-      targetGroupName: `tg-${uid}`,
+      targetGroupName: `tg-${id}`,
     });
 
-    const listener = applicationLoadBalancer.addListener(`Listener-${uid}`, {
+    const listener = applicationLoadBalancer.addListener(`Listener-${id}`, {
       port: 443,
       certificates: [certificate],
     });
 
-    listener.addTargetGroups(`TargetGroupAttachment-${uid}`, {
+    listener.addTargetGroups(`TargetGroupAttachment-${id}`, {
       targetGroups: [targetGroup],
     });
 
-    new CfnOutput(this, `DomainUrl-${uid}`, {
+    new CfnOutput(this, `DomainUrl-${id}`, {
       value: `https://${domainName}`,
       description: 'service url',
       exportName: '-DomainUrl',

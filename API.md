@@ -235,6 +235,8 @@ const internalApiGatewayProps: InternalApiGatewayProps = { ... }
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.stage">stage</a></code> | <code>string</code> | Stage name  used for all cloudformation resource names and internal aws resource names. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.apiBasePathMappingPath">apiBasePathMappingPath</a></code> | <code>string</code> | Path for custom domain base path mapping that will be attached to the api gateway. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.binaryMediaTypes">binaryMediaTypes</a></code> | <code>string[]</code> | Binary media types for the internal api gateway. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | minimum compression size for the internal api gateway. |
 
 ---
 
@@ -288,6 +290,30 @@ Path for custom domain base path mapping that will be attached to the api gatewa
 
 ---
 
+##### `binaryMediaTypes`<sup>Optional</sup> <a name="binaryMediaTypes" id="cdk-internal-gateway.InternalApiGatewayProps.property.binaryMediaTypes"></a>
+
+```typescript
+public readonly binaryMediaTypes: string[];
+```
+
+- *Type:* string[]
+
+Binary media types for the internal api gateway.
+
+---
+
+##### `minimumCompressionSize`<sup>Optional</sup> <a name="minimumCompressionSize" id="cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize"></a>
+
+```typescript
+public readonly minimumCompressionSize: number;
+```
+
+- *Type:* number
+
+minimum compression size for the internal api gateway.
+
+---
+
 ### InternalServiceProps <a name="InternalServiceProps" id="cdk-internal-gateway.InternalServiceProps"></a>
 
 Properties for InternalService.
@@ -304,7 +330,7 @@ const internalServiceProps: InternalServiceProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-internal-gateway.InternalServiceProps.property.hostedZoneName">hostedZoneName</a></code> | <code>string</code> | Name of hosted zone that will be used for the custom domain. |
+| <code><a href="#cdk-internal-gateway.InternalServiceProps.property.hostedZone">hostedZone</a></code> | <code>aws-cdk-lib.aws_route53.IHostedZone</code> | Hosted zone that will be used for the custom domain. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.subDomain">subDomain</a></code> | <code>string</code> | Subdomain attached to hosted zone name. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.subjectAlternativeNames">subjectAlternativeNames</a></code> | <code>string[]</code> | List of alternative domains attached to the solution. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.subnetSelection">subnetSelection</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | Subnets attached to the application load balancer. |
@@ -313,15 +339,15 @@ const internalServiceProps: InternalServiceProps = { ... }
 
 ---
 
-##### `hostedZoneName`<sup>Required</sup> <a name="hostedZoneName" id="cdk-internal-gateway.InternalServiceProps.property.hostedZoneName"></a>
+##### `hostedZone`<sup>Required</sup> <a name="hostedZone" id="cdk-internal-gateway.InternalServiceProps.property.hostedZone"></a>
 
 ```typescript
-public readonly hostedZoneName: string;
+public readonly hostedZone: IHostedZone;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_route53.IHostedZone
 
-Name of hosted zone that will be used for the custom domain.
+Hosted zone that will be used for the custom domain.
 
 ---
 

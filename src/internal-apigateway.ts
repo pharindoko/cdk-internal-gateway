@@ -1,7 +1,6 @@
 import {
   aws_apigateway as apigateway,
   aws_iam as iam,
-  Names,
 } from 'aws-cdk-lib';
 import { IInterfaceVpcEndpoint } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
@@ -30,6 +29,16 @@ export interface InternalApiGatewayProps {
    * Path for custom domain base path mapping that will be attached to the api gateway
    */
   readonly apiBasePathMappingPath?: string;
+
+  /**
+   * Binary media types for the internal api gateway
+   */
+  readonly binaryMediaTypes?: string[] | undefined;
+
+  /**
+   * minimum compression size for the internal api gateway
+   */
+  readonly minimumCompressionSize?: number | undefined;
 }
 
 export abstract class InternalApiGateway extends Construct {
@@ -41,10 +50,10 @@ export abstract class InternalApiGateway extends Construct {
    * It is not exposed to the internet.
    * It is only accessible from the load balancer`s target group.
    */
-  protected readonly internalApiGateway: apigateway.LambdaRestApi;
+  protected readonly apiGateway: apigateway.LambdaRestApi;
   constructor(scope: Construct, id: string, props: InternalApiGatewayProps) {
     super(scope, id);
-    const uid: string = Names.uniqueId(scope);
+
     const apiResourcePolicy = new iam.PolicyDocument({
       statements: [
         new iam.PolicyStatement({
@@ -72,11 +81,11 @@ export abstract class InternalApiGateway extends Construct {
       ],
     });
 
-    this.internalApiGateway = new apigateway.RestApi(
+    this.apiGateway = new apigateway.RestApi(
       this,
-      `Gateway-${uid}`,
+      `Gateway-${id}`,
       {
-        restApiName: `gateway-${uid}`,
+        restApiName: `gateway-${id}`,
         description: 'This service serves an internal api gateway',
         endpointConfiguration: {
           types: [apigateway.EndpointType.PRIVATE],
@@ -86,8 +95,8 @@ export abstract class InternalApiGateway extends Construct {
         deployOptions: {
           stageName: props.stage,
         },
-        binaryMediaTypes: ['*/*'],
-        minimumCompressionSize: 1000,
+        binaryMediaTypes: props.binaryMediaTypes,
+        minimumCompressionSize: props.minimumCompressionSize,
       },
     );
 
@@ -97,8 +106,8 @@ export abstract class InternalApiGateway extends Construct {
         `-${domainItem}`,
         {
           domainName: domainItem,
-          restApi: this.internalApiGateway,
-          stage: this.internalApiGateway.deploymentStage,
+          restApi: this.apiGateway,
+          stage: this.apiGateway.deploymentStage,
           basePath: props.apiBasePathMappingPath ? props.apiBasePathMappingPath : '',
         },
       );
