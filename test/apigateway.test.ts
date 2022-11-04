@@ -17,7 +17,6 @@ let vpcEndpointId: ec2.IInterfaceVpcEndpoint;
 
 beforeEach(() => {
   app = new App();
-  internalServiceStack: InternalService;
   stack = new Stack(app, 'test', {
     env: {
       account: '123456789012',
