@@ -121,7 +121,7 @@ npm i cdk-internal-gateway
                 vpcEndpoint: vpcEndpoint,
             })
 
-            // create your another stack that inherits from the InternalApiGateway
+            // create another stack that inherits from the InternalApiGateway
             ... 
             ...
         }
