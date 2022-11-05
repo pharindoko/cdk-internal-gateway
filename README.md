@@ -45,21 +45,20 @@ npm i cdk-internal-gateway
 1. Create a file called `/lib/my-new-stack.ts`
 
     ```typescript
-    import { aws_apigateway as apigateway, aws_ec2 as ec2, aws_lambda as lambda, Stack, StackProps } from 'aws-cdk-lib';
+    import { aws_apigateway as apigateway, aws_ec2 as ec2, aws_lambda as lambda, aws_route53 as route53, Stack, StackProps } from 'aws-cdk-lib';
     import { HttpMethod } from 'aws-cdk-lib/aws-events';
-    import { InternalApiGatewayStack, InternalApiGatewayStackProps, InternalServiceStack } from 'cdk-internal-gateway';
+    import { InternalApiGateway, InternalApiGatewayProps, InternalService } from 'cdk-internal-gateway';
     import { Construct } from 'constructs';
     import * as path from 'path';
 
-
     // Create a new stack that inherits from the InternalApiGateway Construct
-    export class ServerlessStack extends InternalApiGatewayStack {
-        constructor(scope: Construct, id: string, props: InternalApiGatewayStackProps) {
+    export class ServerlessStack extends InternalApiGateway {
+        constructor(scope: Construct, id: string, props: InternalApiGatewayProps) {
             super(scope, id, props);
 
             // The internal api gateway is available as member variable
             // Attach your lambda function to the this.internalApiGateway
-            const defaultLambdaJavascript = this.internalApiGateway.root.resourceForPath("hey-js");
+            const defaultLambdaJavascript = this.apiGateway.root.resourceForPath("hey-js");
             const defaultHandlerJavascript = new lambda.Function(
                 this,
                 `backendLambdaJavascript`,
@@ -90,23 +89,23 @@ npm i cdk-internal-gateway
                     ec2.Subnet.fromSubnetId(this, `Subnet${index}`, ip),
                 ),
             };
-            const hostedZone = route53.HostedZone.fromLookup(stack, 'hostedzone', {
+            const hostedZone = route53.HostedZone.fromLookup(this, 'hostedzone', {
                 domainName: 'test.aws1234.com',
                 privateZone: true,
                 vpcId: vpc.vpcId,
             });
             const vpcEndpoint =
                 ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
-                stack,
-                'vpcEndpoint',
-                {
-                    port: 443,
-                    vpcEndpointId: 'vpce-1234567890',
-                },
+                    this,
+                    'vpcEndpoint',
+                    {
+                        port: 443,
+                        vpcEndpointId: 'vpce-1234567890',
+                    },
                 );
 
             // create the internal service stack
-            const internalServiceStack = new InternalServiceStack(this, 'InternalServiceStack', {
+            const serviceStack = new InternalService(this, 'InternalServiceStack', {
                 hostedZone: hostedZone,
                 subnetSelection: subnetSelection,
                 vpcEndpointIPAddresses: ['192.168.2.1', '192.168.2.2'],
