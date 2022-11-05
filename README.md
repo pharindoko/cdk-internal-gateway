@@ -140,7 +140,7 @@ npm i cdk-internal-gateway
 You have to expect basic infra costs for 2 components in this setup:  
 
 | Count |  Type |  Estimated Costs |
-||||
+|---|---|---|
 |1 x| application load balancer  | 20 $  |
 |2 x| network interfaces for the vpc endpoint  | 16 $  |
 
