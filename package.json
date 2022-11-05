@@ -1,6 +1,6 @@
 {
   "name": "cdk-internal-gateway",
-  "description": "CDK construct to create an internal aws api-gateway to ease the creation of internal websites, apis or applications",
+  "description": "CDK construct to create to create internal serverless applications.",
   "repository": {
     "type": "git",
     "url": "https://github.com/pharindoko/cdk-internal-gateway.git"
@@ -66,9 +66,12 @@
     "apigateway",
     "application",
     "cdk",
+    "company",
+    "enterprise",
     "gateway",
     "internal",
     "network",
+    "private",
     "vpc",
     "website"
   ],
