@@ -57,7 +57,7 @@ npm i cdk-internal-gateway
             super(scope, id, props);
 
             // The internal api gateway is available as member variable
-            // Attach your lambda function to the this.internalApiGateway
+            // Attach your lambda function to the this.apiGateway
             const defaultLambdaJavascript = this.apiGateway.root.resourceForPath("hey-js");
             const defaultHandlerJavascript = new lambda.Function(
                 this,
@@ -114,12 +114,16 @@ npm i cdk-internal-gateway
                 subDomain: "internal-service"
             })
 
-            // create your stack that inherits from the InternalApiGatewayStack
+            // create your stack that inherits from the InternalApiGateway
             new ServerlessStack(this, 'MyProjectStack', {
                 domains: serviceStack.domains,
                 stage: "dev",
                 vpcEndpoint: vpcEndpoint,
             })
+
+            // create your another stack that inherits from the InternalApiGateway
+            ... 
+            ...
         }
     }
     ```
