@@ -11,5 +11,40 @@ const project = new awscdk.AwsCdkConstructLibrary({
   description: 'CDK construct to create an internal aws api-gateway to ease the creation of internal websites, apis or applications',
   sampleCode: false,
   keywords: ['cdk', 'apigateway', 'internal', 'gateway', 'vpc', 'network', 'api', 'website', 'application'],
+  gitignore: [
+    'cdk.out',
+    'cdk.context.json',
+    '/.idea',
+    'status.json',
+  ],
+  sampleCode: false,
+  compat: true,
+  depsUpgradeOptions: {
+    workflowOptions: {
+      labels: ['auto-approve'],
+      schedule: {
+        cron: ['0 0 * * 1'],
+      },
+    },
+  },
+  githubOptions: {
+    pullRequestLintOptions: {
+      semanticTitleOptions: {
+        types: [
+          'feat',
+          'fix',
+          'chore',
+          'docs',
+        ],
+      },
+    },
+  },
+  pullRequestTemplate: false,
 });
+
+
+// disable automatic releases, but keep workflow that can be triggered manually
+const releaseWorkflow = project.github.tryFindWorkflow('release');
+releaseWorkflow.file.addDeletionOverride('on.push');
+
 project.synth();
