@@ -92,7 +92,6 @@ export class InternalService extends Construct {
       this,
       `LoadBalancerSecurityGroup-${id}`,
       {
-        securityGroupName: '-lb-sg',
         vpc: props.vpc,
         allowAllOutbound: true,
         description: 'security group for a load balancer',
@@ -115,7 +114,6 @@ export class InternalService extends Construct {
         },
         internetFacing: false,
         securityGroup: loadBalancerSecurityGroup,
-        loadBalancerName: `lb-${id}`,
       },
     );
 
@@ -142,7 +140,6 @@ export class InternalService extends Construct {
       protocol: elb.ApplicationProtocol.HTTPS,
       targetType: elb.TargetType.IP,
       targets: targetGroupTargets,
-      targetGroupName: `tg-${id}`,
     });
 
     const listener = applicationLoadBalancer.addListener(`Listener-${id}`, {

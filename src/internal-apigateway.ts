@@ -85,7 +85,6 @@ export abstract class InternalApiGateway extends Construct {
       this,
       `Gateway-${id}`,
       {
-        restApiName: `gateway-${id}`,
         description: 'This service serves an internal api gateway',
         endpointConfiguration: {
           types: [apigateway.EndpointType.PRIVATE],
