@@ -1,22 +1,8 @@
 # CDK Internal Gateway
 
-This CDK construct simplifies the setup of **internal serverless applications** for large companies and enterprises.
+Use this CDK construct to create **internal serverless applications**.
 
-## Features
-
-- creates all aws components needed to allow access only from the internal network of your company in a secure manner
-- modularized approach with separate constructs
-  - add multiple internal api gateways to the same internal service to save costs and keep flexibility
-
----
-
-## Requirements
-
-- CDK V2 (2.46.0)
-- A VPC
-- A VPC Endpoint for execute-api
-- A Hosted Zone
-- Internally accessible subnets (for the load balancer)
+Useful for larger companies to create internal  serverless applications that are not exposed to the internet and only accessible from the internal network.
 
 ## Installation
 
@@ -41,8 +27,16 @@ npm i cdk-internal-gateway
   - sets resource policies to only allow traffic from vpc endpoint
 - generates and attaches custom domains to the API Gateway
 - generates and attaches certificates to the the API Gateway and the loadbalancer
+- modularized approach with separate constructs
+  - add multiple internal api gateways to the same internal service to save costs and keep flexibility
 
----
+## Requirements
+
+- CDK V2 (2.46.0)
+- A VPC
+- A VPC Endpoint for execute-api
+- A Hosted Zone
+- Internally accessible subnets (for the load balancer)
 
 ## Usage
 
@@ -142,22 +136,12 @@ npm i cdk-internal-gateway
     }
     ```
 
----
-
-## Background
-
-By default the aws api gateway endpoints are public and accessible from the internet.
-
-Even in times of zero trust, for larger companies with a lof of engineering teams it makes sense to have an additional network security layer for internal applications to reduce the attack surface.
-
-It is still a huge effort to configure and implement all aws components in a secure manner and this is why I created this construct.
-
 ## Costs
 
 You have to expect basic infra costs for 2 components in this setup:  
 
 | Count |  Type |  Estimated Costs |
-|---|---|---|
+||||
 |1 x| application load balancer  | 20 $  |
 |2 x| network interfaces for the vpc endpoint  | 16 $  |
 
