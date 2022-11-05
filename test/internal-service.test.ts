@@ -75,7 +75,6 @@ Object {
             "Value": "false",
           },
         ],
-        "Name": "lb-internalServiceStack",
         "Scheme": "internal",
         "SecurityGroups": Array [
           Object {
@@ -171,7 +170,6 @@ Object {
     "internalServiceStackLoadBalancerSecurityGroupinternalServiceStackB6066852": Object {
       "Properties": Object {
         "GroupDescription": "security group for a load balancer",
-        "GroupName": "-lb-sg",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -248,7 +246,6 @@ Object {
     },
     "internalServiceStackTargetGroupinternalServiceStackB131C63B": Object {
       "Properties": Object {
-        "Name": "tg-internalServiceStack",
         "Port": 443,
         "Protocol": "HTTPS",
         "TargetGroupAttributes": Array [

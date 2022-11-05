@@ -182,7 +182,7 @@ Object {
             "vpce-1234567890",
           ],
         },
-        "Name": "gateway-apiGatewayStack",
+        "Name": "Gateway-apiGatewayStack",
         "Policy": Object {
           "Statement": Array [
             Object {
@@ -250,7 +250,7 @@ Object {
       "Type": "AWS::IAM::Role",
       "UpdateReplacePolicy": "Retain",
     },
-    "apiGatewayStackGatewayapiGatewayStackDeployment62F75EF65a7060afb32f6c45f7e741ade92eab17": Object {
+    "apiGatewayStackGatewayapiGatewayStackDeployment62F75EF6b20d8bd5867435b4751c15cd81903998": Object {
       "DependsOn": Array [
         "apiGatewayStackGatewayapiGatewayStackGETF8D24D55",
       ],
@@ -268,7 +268,7 @@ Object {
       ],
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "apiGatewayStackGatewayapiGatewayStackDeployment62F75EF65a7060afb32f6c45f7e741ade92eab17",
+          "Ref": "apiGatewayStackGatewayapiGatewayStackDeployment62F75EF6b20d8bd5867435b4751c15cd81903998",
         },
         "RestApiId": Object {
           "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
@@ -364,7 +364,6 @@ Object {
             "Value": "false",
           },
         ],
-        "Name": "lb-internalServiceStack",
         "Scheme": "internal",
         "SecurityGroups": Array [
           Object {
@@ -460,7 +459,6 @@ Object {
     "internalServiceStackLoadBalancerSecurityGroupinternalServiceStackB6066852": Object {
       "Properties": Object {
         "GroupDescription": "security group for a load balancer",
-        "GroupName": "-lb-sg",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -537,7 +535,6 @@ Object {
     },
     "internalServiceStackTargetGroupinternalServiceStackB131C63B": Object {
       "Properties": Object {
-        "Name": "tg-internalServiceStack",
         "Port": 443,
         "Protocol": "HTTPS",
         "TargetGroupAttributes": Array [
