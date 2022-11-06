@@ -12,6 +12,12 @@ Using Typescript for aws cdk
 npm i cdk-internal-gateway
 ```
 
+Using Python for aws cdk
+
+```bash
+pip install pharindoko.cdk-internal-gateway
+```
+
 ## Architecture
 
 ![cdk-internal-gateway-architecture](cdk-internal-gateway.drawio.png )
