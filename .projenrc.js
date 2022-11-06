@@ -17,6 +17,11 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '/.idea',
     'status.json',
   ],
+  releaseToNpm: true,
+  publishToPypi: {
+    distName: 'pharindoko.cdk-internal-gateway',
+    module: 'pharindoko.cdk_internal_gateway',
+  },
   sampleCode: false,
   compat: true,
   depsUpgradeOptions: {
