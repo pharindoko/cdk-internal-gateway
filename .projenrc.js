@@ -45,6 +45,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     },
   },
   pullRequestTemplate: false,
+  prettier: true
 });
 
 
