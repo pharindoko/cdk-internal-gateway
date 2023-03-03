@@ -7,9 +7,9 @@ import {
   aws_route53 as route53,
   aws_route53_targets as targets,
   CfnOutput,
-} from 'aws-cdk-lib';
-import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
-import { Construct } from 'constructs';
+} from "aws-cdk-lib";
+import { IVpc, SubnetSelection } from "aws-cdk-lib/aws-ec2";
+import { Construct } from "constructs";
 
 /**
  * Properties for InternalService
@@ -57,20 +57,28 @@ export class InternalService extends Construct {
 
     const domainName = `${props.subDomain}.${props.hostedZone.zoneName}`;
 
-    const certificate = new certificatemanager.Certificate(this, `SSLCertificate-${id}`, {
-      domainName: domainName,
-      subjectAlternativeNames: props.subjectAlternativeNames,
-      validation: certificatemanager.CertificateValidation.fromDnsMultiZone({
-        domainName: props.hostedZone,
-      }),
-    });
+    const certificate = new certificatemanager.Certificate(
+      this,
+      `SSLCertificate-${id}`,
+      {
+        domainName: domainName,
+        subjectAlternativeNames: props.subjectAlternativeNames,
+        validation: certificatemanager.CertificateValidation.fromDnsMultiZone({
+          domainName: props.hostedZone,
+        }),
+      }
+    );
 
-    const domain = new apigateway.DomainName(this, `ApiGatewayCustomDomain-${id}`, {
-      domainName: `${props.subDomain}.${props.hostedZone.zoneName}`,
-      certificate: certificate,
-      endpointType: apigateway.EndpointType.REGIONAL,
-      securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
-    });
+    const domain = new apigateway.DomainName(
+      this,
+      `ApiGatewayCustomDomain-${id}`,
+      {
+        domainName: `${props.subDomain}.${props.hostedZone.zoneName}`,
+        certificate: certificate,
+        endpointType: apigateway.EndpointType.REGIONAL,
+        securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
+      }
+    );
 
     this.domains = [domain];
 
@@ -83,7 +91,7 @@ export class InternalService extends Construct {
           certificate: certificate,
           endpointType: apigateway.EndpointType.REGIONAL,
           securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
-        },
+        }
       );
       this.domains.push(sanDomain);
     }
@@ -94,14 +102,14 @@ export class InternalService extends Construct {
       {
         vpc: props.vpc,
         allowAllOutbound: true,
-        description: 'security group for a load balancer',
-      },
+        description: "security group for a load balancer",
+      }
     );
 
     loadBalancerSecurityGroup.addIngressRule(
       ec2.Peer.anyIpv4(),
       ec2.Port.tcp(443),
-      'allow HTTPS traffic from anywhere',
+      "allow HTTPS traffic from anywhere"
     );
 
     const applicationLoadBalancer = new elb.ApplicationLoadBalancer(
@@ -114,7 +122,7 @@ export class InternalService extends Construct {
         },
         internetFacing: false,
         securityGroup: loadBalancerSecurityGroup,
-      },
+      }
     );
 
     // Add http-to-https redirect
@@ -123,7 +131,7 @@ export class InternalService extends Construct {
     new route53.ARecord(this, `Route53Record-${id}`, {
       zone: props.hostedZone,
       target: route53.RecordTarget.fromAlias(
-        new targets.LoadBalancerTarget(applicationLoadBalancer),
+        new targets.LoadBalancerTarget(applicationLoadBalancer)
       ),
       recordName: domainName,
     });
@@ -134,13 +142,17 @@ export class InternalService extends Construct {
       targetGroupTargets.push(new elasticloadbalancingv2targets.IpTarget(ip));
     }
 
-    const targetGroup = new elb.ApplicationTargetGroup(this, `TargetGroup-${id}`, {
-      port: 443,
-      vpc: props.vpc,
-      protocol: elb.ApplicationProtocol.HTTPS,
-      targetType: elb.TargetType.IP,
-      targets: targetGroupTargets,
-    });
+    const targetGroup = new elb.ApplicationTargetGroup(
+      this,
+      `TargetGroup-${id}`,
+      {
+        port: 443,
+        vpc: props.vpc,
+        protocol: elb.ApplicationProtocol.HTTPS,
+        targetType: elb.TargetType.IP,
+        targets: targetGroupTargets,
+      }
+    );
 
     const listener = applicationLoadBalancer.addListener(`Listener-${id}`, {
       port: 443,
@@ -153,8 +165,8 @@ export class InternalService extends Construct {
 
     new CfnOutput(this, `DomainUrl-${id}`, {
       value: `https://${domainName}`,
-      description: 'service url',
-      exportName: '-DomainUrl',
+      description: "service url",
+      exportName: "-DomainUrl",
     });
   }
 }

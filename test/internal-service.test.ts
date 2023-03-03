@@ -1,35 +1,42 @@
-import { App, aws_ec2 as ec2, aws_route53 as route53, Stack } from 'aws-cdk-lib';
-import { Template } from 'aws-cdk-lib/assertions';
-import { InternalService } from '../src';
+import {
+  App,
+  aws_ec2 as ec2,
+  aws_route53 as route53,
+  Stack,
+} from "aws-cdk-lib";
+import { Template } from "aws-cdk-lib/assertions";
+import { InternalService } from "../src";
 
-test('Internal Service provider', () => {
-  const app = new App();;
-  const stack = new Stack(app, 'test', {
+test("Internal Service provider", () => {
+  const app = new App();
+  const stack = new Stack(app, "test", {
     env: {
-      account: '123456789012',
-      region: 'us-east-1',
+      account: "123456789012",
+      region: "us-east-1",
     },
   });
-  const vpc = ec2.Vpc.fromLookup(stack, 'vpc', { vpcId: 'vpc-1234567' });
-  const internalSubnetIds = ['subnet-1234567890', 'subnet-1234567890'];
-  const hostedZone = route53.HostedZone.fromLookup(stack, 'hostedzone', {
-    domainName: 'test.aws1234.com',
+  const vpc = ec2.Vpc.fromLookup(stack, "vpc", { vpcId: "vpc-1234567" });
+  const internalSubnetIds = ["subnet-1234567890", "subnet-1234567890"];
+  const hostedZone = route53.HostedZone.fromLookup(stack, "hostedzone", {
+    domainName: "test.aws1234.com",
     privateZone: true,
     vpcId: vpc.vpcId,
   });
 
-
-  new InternalService(stack, 'internalServiceStack', {
+  new InternalService(stack, "internalServiceStack", {
     vpc: vpc,
     subnetSelection: {
       subnets: internalSubnetIds.map((ip, index) =>
-        ec2.Subnet.fromSubnetId(stack, `Subnet${index}`, ip),
+        ec2.Subnet.fromSubnetId(stack, `Subnet${index}`, ip)
       ),
     },
-    vpcEndpointIPAddresses: ['192.168.2.1', '192.168.2.2'],
-    subjectAlternativeNames: ['internalservice-dev.test.com', 'internalservice-dev.test2.com'],
+    vpcEndpointIPAddresses: ["192.168.2.1", "192.168.2.2"],
+    subjectAlternativeNames: [
+      "internalservice-dev.test.com",
+      "internalservice-dev.test2.com",
+    ],
     hostedZone: hostedZone,
-    subDomain: 'internalservice-dev',
+    subDomain: "internalservice-dev",
   });
 
   const template = Template.fromStack(stack);
@@ -298,4 +305,3 @@ Object {
 }
 `);
 });
-

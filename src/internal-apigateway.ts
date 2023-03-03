@@ -1,10 +1,6 @@
-import {
-  aws_apigateway as apigateway,
-  aws_iam as iam,
-} from 'aws-cdk-lib';
-import { IInterfaceVpcEndpoint } from 'aws-cdk-lib/aws-ec2';
-import { Construct } from 'constructs';
-
+import { aws_apigateway as apigateway, aws_iam as iam } from "aws-cdk-lib";
+import { IInterfaceVpcEndpoint } from "aws-cdk-lib/aws-ec2";
+import { Construct } from "constructs";
 
 /**
  * Properties for ApiGateway
@@ -42,7 +38,6 @@ export interface InternalApiGatewayProps {
 }
 
 export abstract class InternalApiGateway extends Construct {
-
   /**
    * Internal API Gateway
    * This private api gateway is used to serve internal solutions (websites, apis, applications).
@@ -59,57 +54,51 @@ export abstract class InternalApiGateway extends Construct {
         new iam.PolicyStatement({
           effect: iam.Effect.DENY,
           principals: [new iam.AnyPrincipal()],
-          actions: ['execute-api:Invoke'],
-          resources: ['execute-api:/*/*/*'],
+          actions: ["execute-api:Invoke"],
+          resources: ["execute-api:/*/*/*"],
           conditions: {
             StringNotEquals: {
-              'aws:sourceVpce': props.vpcEndpoint.vpcEndpointId,
+              "aws:sourceVpce": props.vpcEndpoint.vpcEndpointId,
             },
           },
         }),
         new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
           principals: [new iam.AnyPrincipal()],
-          actions: ['execute-api:Invoke'],
-          resources: ['execute-api:/*/*/*'],
+          actions: ["execute-api:Invoke"],
+          resources: ["execute-api:/*/*/*"],
           conditions: {
             StringEquals: {
-              'aws:sourceVpce': props.vpcEndpoint.vpcEndpointId,
+              "aws:sourceVpce": props.vpcEndpoint.vpcEndpointId,
             },
           },
         }),
       ],
     });
 
-    this.apiGateway = new apigateway.RestApi(
-      this,
-      `Gateway-${id}`,
-      {
-        description: 'This service serves an internal api gateway',
-        endpointConfiguration: {
-          types: [apigateway.EndpointType.PRIVATE],
-          vpcEndpoints: [props.vpcEndpoint],
-        },
-        policy: apiResourcePolicy,
-        deployOptions: {
-          stageName: props.stage,
-        },
-        binaryMediaTypes: props.binaryMediaTypes,
-        minimumCompressionSize: props.minimumCompressionSize,
+    this.apiGateway = new apigateway.RestApi(this, `Gateway-${id}`, {
+      description: "This service serves an internal api gateway",
+      endpointConfiguration: {
+        types: [apigateway.EndpointType.PRIVATE],
+        vpcEndpoints: [props.vpcEndpoint],
       },
-    );
+      policy: apiResourcePolicy,
+      deployOptions: {
+        stageName: props.stage,
+      },
+      binaryMediaTypes: props.binaryMediaTypes,
+      minimumCompressionSize: props.minimumCompressionSize,
+    });
 
     for (const domainItem of props.domains) {
-      new apigateway.BasePathMapping(
-        this,
-        `-${domainItem}`,
-        {
-          domainName: domainItem,
-          restApi: this.apiGateway,
-          stage: this.apiGateway.deploymentStage,
-          basePath: props.apiBasePathMappingPath ? props.apiBasePathMappingPath : '',
-        },
-      );
+      new apigateway.BasePathMapping(this, `-${domainItem}`, {
+        domainName: domainItem,
+        restApi: this.apiGateway,
+        stage: this.apiGateway.deploymentStage,
+        basePath: props.apiBasePathMappingPath
+          ? props.apiBasePathMappingPath
+          : "",
+      });
     }
   }
 }

@@ -1,13 +1,21 @@
-import { App, aws_ec2 as ec2, aws_route53 as route53, Stack } from 'aws-cdk-lib';
-import { Match, Template } from 'aws-cdk-lib/assertions';
-import { Construct } from 'constructs';
-import { InternalApiGateway, InternalApiGatewayProps, InternalService } from '../src';
-
+import {
+  App,
+  aws_ec2 as ec2,
+  aws_route53 as route53,
+  Stack,
+} from "aws-cdk-lib";
+import { Match, Template } from "aws-cdk-lib/assertions";
+import { Construct } from "constructs";
+import {
+  InternalApiGateway,
+  InternalApiGatewayProps,
+  InternalService,
+} from "../src";
 
 export class ApiGatewayStackTest extends InternalApiGateway {
   constructor(scope: Construct, id: string, props: InternalApiGatewayProps) {
     super(scope, id, props);
-    this.apiGateway.root.addMethod('GET', undefined);
+    this.apiGateway.root.addMethod("GET", undefined);
   }
 }
 let app: App;
@@ -17,102 +25,106 @@ let vpcEndpointId: ec2.IInterfaceVpcEndpoint;
 
 beforeEach(() => {
   app = new App();
-  stack = new Stack(app, 'test', {
+  stack = new Stack(app, "test", {
     env: {
-      account: '123456789012',
-      region: 'us-east-1',
+      account: "123456789012",
+      region: "us-east-1",
     },
   });
 
-  const vpc = ec2.Vpc.fromLookup(stack, 'vpc', { vpcId: 'vpc-1234567' });
-  const internalSubnetIds = ['subnet-1234567890', 'subnet-1234567890'];
-  const hostedZone = route53.HostedZone.fromLookup(stack, 'hostedzone', {
-    domainName: 'test.aws1234.com',
+  const vpc = ec2.Vpc.fromLookup(stack, "vpc", { vpcId: "vpc-1234567" });
+  const internalSubnetIds = ["subnet-1234567890", "subnet-1234567890"];
+  const hostedZone = route53.HostedZone.fromLookup(stack, "hostedzone", {
+    domainName: "test.aws1234.com",
     privateZone: true,
     vpcId: vpc.vpcId,
   });
 
-  internalServiceStack = new InternalService(stack, 'internalServiceStack', {
+  internalServiceStack = new InternalService(stack, "internalServiceStack", {
     vpc: vpc,
     subnetSelection: {
       subnets: internalSubnetIds.map((ip, index) =>
-        ec2.Subnet.fromSubnetId(stack, `Subnet${index}`, ip),
+        ec2.Subnet.fromSubnetId(stack, `Subnet${index}`, ip)
       ),
     },
-    vpcEndpointIPAddresses: ['192.168.2.1', '192.168.2.2'],
-    subjectAlternativeNames: ['internalservice-dev.test.com', 'internalservice-dev.test2.com'],
+    vpcEndpointIPAddresses: ["192.168.2.1", "192.168.2.2"],
+    subjectAlternativeNames: [
+      "internalservice-dev.test.com",
+      "internalservice-dev.test2.com",
+    ],
     hostedZone: hostedZone,
-    subDomain: 'internalservice-dev',
+    subDomain: "internalservice-dev",
   });
-  vpcEndpointId =
-    ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
-      stack,
-      'vpcEndpoint',
-      {
-        port: 443,
-        vpcEndpointId: 'vpce-1234567890',
-      },
-    );
+  vpcEndpointId = ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
+    stack,
+    "vpcEndpoint",
+    {
+      port: 443,
+      vpcEndpointId: "vpce-1234567890",
+    }
+  );
 });
 
-
-test('Api Gateway Stack provider - set default values', () => {
-
-  new ApiGatewayStackTest(stack, 'apiGatewayStack', {
-    stage: 'dev',
+test("Api Gateway Stack provider - set default values", () => {
+  new ApiGatewayStackTest(stack, "apiGatewayStack", {
+    stage: "dev",
     domains: internalServiceStack.domains,
     vpcEndpoint: vpcEndpointId,
   });
 
   const template = Template.fromStack(stack);
-  template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
-    EndpointConfiguration: {
-      Types: [
-        'PRIVATE',
-      ],
-    },
-  },
-  ));
+  template.hasResourceProperties(
+    "AWS::ApiGateway::RestApi",
+    Match.objectLike({
+      EndpointConfiguration: {
+        Types: ["PRIVATE"],
+      },
+    })
+  );
 
-  template.hasResourceProperties('AWS::ApiGateway::BasePathMapping', Match.objectLike({
-    BasePath: '',
-  },
-  ));
+  template.hasResourceProperties(
+    "AWS::ApiGateway::BasePathMapping",
+    Match.objectLike({
+      BasePath: "",
+    })
+  );
 
-  template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
-    Policy: {
-      Statement: [
-        {
-          Action: 'execute-api:Invoke',
-          Condition: {
-            StringNotEquals: {
-              'aws:sourceVpce': vpcEndpointId.vpcEndpointId,
+  template.hasResourceProperties(
+    "AWS::ApiGateway::RestApi",
+    Match.objectLike({
+      Policy: {
+        Statement: [
+          {
+            Action: "execute-api:Invoke",
+            Condition: {
+              StringNotEquals: {
+                "aws:sourceVpce": vpcEndpointId.vpcEndpointId,
+              },
             },
-          },
-          Effect: 'Deny',
-          Principal: {
-            AWS: '*',
-          },
-          Resource: 'execute-api:/*/*/*',
-        },
-        {
-          Action: 'execute-api:Invoke',
-          Condition: {
-            StringEquals: {
-              'aws:sourceVpce': vpcEndpointId.vpcEndpointId,
+            Effect: "Deny",
+            Principal: {
+              AWS: "*",
             },
+            Resource: "execute-api:/*/*/*",
           },
-          Effect: 'Allow',
-          Principal: {
-            AWS: '*',
+          {
+            Action: "execute-api:Invoke",
+            Condition: {
+              StringEquals: {
+                "aws:sourceVpce": vpcEndpointId.vpcEndpointId,
+              },
+            },
+            Effect: "Allow",
+            Principal: {
+              AWS: "*",
+            },
+            Resource: "execute-api:/*/*/*",
           },
-          Resource: 'execute-api:/*/*/*',
-        },
-      ],
-      Version: '2012-10-17',
-    },
-  },
-  ));
+        ],
+        Version: "2012-10-17",
+      },
+    })
+  );
 
   expect(template).toMatchInlineSnapshot(`
 Object {
@@ -588,33 +600,35 @@ Object {
 `);
 });
 
-test('Api Gateway Stack provider - set optional parameters', () => {
-
-  new ApiGatewayStackTest(stack, 'apiGatewayStackOptionalParameters', {
-    stage: 'dev',
+test("Api Gateway Stack provider - set optional parameters", () => {
+  new ApiGatewayStackTest(stack, "apiGatewayStackOptionalParameters", {
+    stage: "dev",
     domains: internalServiceStack.domains,
     vpcEndpoint: vpcEndpointId,
     minimumCompressionSize: 1024,
-    binaryMediaTypes: ['application/octet-stream'],
-    apiBasePathMappingPath: 'test',
+    binaryMediaTypes: ["application/octet-stream"],
+    apiBasePathMappingPath: "test",
   });
 
   const template = Template.fromStack(stack);
-  template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
-    MinimumCompressionSize: 1024,
-  },
-  ));
+  template.hasResourceProperties(
+    "AWS::ApiGateway::RestApi",
+    Match.objectLike({
+      MinimumCompressionSize: 1024,
+    })
+  );
 
-  template.hasResourceProperties('AWS::ApiGateway::RestApi', Match.objectLike({
-    BinaryMediaTypes: [
-      'application/octet-stream',
-    ],
-  },
-  ));
+  template.hasResourceProperties(
+    "AWS::ApiGateway::RestApi",
+    Match.objectLike({
+      BinaryMediaTypes: ["application/octet-stream"],
+    })
+  );
 
-  template.hasResourceProperties('AWS::ApiGateway::BasePathMapping', Match.objectLike({
-    BasePath: 'test',
-  },
-  ));
+  template.hasResourceProperties(
+    "AWS::ApiGateway::BasePathMapping",
+    Match.objectLike({
+      BasePath: "test",
+    })
+  );
 });
-
