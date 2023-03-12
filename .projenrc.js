@@ -54,6 +54,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   jestOptions: {
     updateSnapshot: false,
   },
+  majorVersion: 1,
 });
 
 // disable automatic releases, but keep workflow that can be triggered manually
