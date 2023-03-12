@@ -52,6 +52,12 @@ export interface InternalServiceProps {
    */
   readonly loadBalancerListenerSSLPolicy?: elb.SslPolicy;
 
+  /**
+   * SSLPolicy attached to the apigateway custom domain.
+   *
+   * @default apigateway.SslPolicy.TLS_1_2
+   */
+  readonly customDomainSSLPolicy?: apigateway.SecurityPolicy;
 }
 
 export class InternalService extends Construct {
@@ -84,7 +90,8 @@ export class InternalService extends Construct {
         domainName: `${props.subDomain}.${props.hostedZone.zoneName}`,
         certificate: certificate,
         endpointType: apigateway.EndpointType.REGIONAL,
-        securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
+        securityPolicy:
+          props?.customDomainSSLPolicy ?? apigateway.SecurityPolicy.TLS_1_2,
       }
     );
 
