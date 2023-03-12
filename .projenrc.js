@@ -2,7 +2,7 @@ const { awscdk } = require("projen");
 const { Stability } = require("projen/lib/cdk/jsii-project");
 const project = new awscdk.AwsCdkConstructLibrary({
   author: "Florian Fuß",
-  stability: Stability.EXPERIMENTAL,
+  stability: Stability.STABLE,
   cdkVersion: "2.46.0",
   defaultReleaseBranch: "main",
   name: "cdk-internal-gateway",
