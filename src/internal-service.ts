@@ -44,6 +44,14 @@ export interface InternalServiceProps {
    * Hosted zone that will be used for the custom domain.
    */
   readonly hostedZone: route53.IHostedZone;
+
+  /**
+   * SSLPolicy attached to the load balancer listener.
+   *
+   * @default elb.SslPolicy.FORWARD_SECRECY_TLS12_RES_GCM
+   */
+  readonly loadBalancerListenerSSLPolicy?: elb.SslPolicy;
+
 }
 
 export class InternalService extends Construct {
@@ -157,6 +165,9 @@ export class InternalService extends Construct {
     const listener = applicationLoadBalancer.addListener(`Listener-${id}`, {
       port: 443,
       certificates: [certificate],
+      sslPolicy:
+        props?.loadBalancerListenerSSLPolicy ??
+        elb.SslPolicy.FORWARD_SECRECY_TLS12_RES_GCM,
     });
 
     listener.addTargetGroups(`TargetGroupAttachment-${id}`, {
