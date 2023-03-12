@@ -415,6 +415,7 @@ test("Api Gateway Stack provider - set default values", () => {
             },
             "Port": 443,
             "Protocol": "HTTPS",
+            "SslPolicy": "ELBSecurityPolicy-FS-1-2-Res-2020-10",
           },
           "Type": "AWS::ElasticLoadBalancingV2::Listener",
         },

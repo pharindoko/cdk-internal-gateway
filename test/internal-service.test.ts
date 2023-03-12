@@ -3,6 +3,7 @@ import {
   aws_apigateway as apigateway,
   aws_ec2 as ec2,
   aws_route53 as route53,
+  aws_elasticloadbalancingv2 as elb,
   Stack,
 } from "aws-cdk-lib";
 import { Match, Template } from "aws-cdk-lib/assertions";
@@ -122,6 +123,7 @@ test("Internal Service provider", () => {
             },
             "Port": 443,
             "Protocol": "HTTPS",
+            "SslPolicy": "ELBSecurityPolicy-FS-1-2-Res-2020-10",
           },
           "Type": "AWS::ElasticLoadBalancingV2::Listener",
         },
@@ -338,6 +340,7 @@ test("Internal Service Stack provider - set optional parameters", () => {
     hostedZone: hostedZone,
     subDomain: "internalservice-dev",
     customDomainSSLPolicy: apigateway.SecurityPolicy.TLS_1_0,
+    loadBalancerListenerSSLPolicy: elb.SslPolicy.FORWARD_SECRECY_TLS12_RES,
   });
 
   const template = Template.fromStack(stack);
@@ -353,6 +356,33 @@ test("Internal Service Stack provider - set optional parameters", () => {
         Ref: "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
       },
       SecurityPolicy: "TLS_1_0",
+    })
+  );
+
+  template.hasResourceProperties(
+    "AWS::ElasticLoadBalancingV2::Listener",
+    Match.objectEquals({
+      Certificates: [
+        {
+          CertificateArn: {
+            Ref: "internalServiceStackSSLCertificateinternalServiceStack283B9A17",
+          },
+        },
+      ],
+      DefaultActions: [
+        {
+          TargetGroupArn: {
+            Ref: "internalServiceStackTargetGroupinternalServiceStackB131C63B",
+          },
+          Type: "forward",
+        },
+      ],
+      LoadBalancerArn: {
+        Ref: "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3",
+      },
+      Port: 443,
+      Protocol: "HTTPS",
+      SslPolicy: "ELBSecurityPolicy-FS-1-2-Res-2019-08",
     })
   );
 });
