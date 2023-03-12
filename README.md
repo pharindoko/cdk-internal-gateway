@@ -29,17 +29,34 @@ pip install pharindoko.cdk-internal-gateway
 
 ### Technical Details
 
+Modularized approach with separate constructs
+
+- attach multiple InternalApiGateway and InternalWebsite constructs to the same Internal Service to save costs and keep flexibility
+
+**Internal Service Construct (mandatory construct):**
+
 - creates an internal application loadbalancer
   - forwards traffic to VPC endpoint for execute-api
   - redirect http to https
+- generates custom domains for the API Gateway
+- generates certificates for the loadbalancer listener
+
+**Internal Api Gateway Construct:**
+
 - provides a securely configured apigateway resource out of the box
   - attach your aws components to the internal apigateway resource
   - sets api gateway to PRIVATE mode
   - sets resource policies to only allow traffic from vpc endpoint
-- generates and attaches custom domains to the API Gateway
-- generates and attaches certificates to the the API Gateway and the loadbalancer
-- modularized approach with separate constructs
-  - add multiple internal api gateways to the same internal service to save costs and keep flexibility
+- attaches custom domains to the API Gateway
+- attaches certificates to the the API Gateway and the loadbalancer
+
+**Internal Website Construct:**
+
+- makes your website internally accessible
+- redeploys your website with a single cdk deploy
+- provides a securely configured private s3 bucket out of box
+- works with SPA applications (written with Vue, Angular) and static websites
+- is an extension of the InternalApiGateway Construct
 
 ## Requirements
 
@@ -133,7 +150,7 @@ pip install pharindoko.cdk-internal-gateway
             })
 
             // create another stack that inherits from the InternalApiGateway
-            ... 
+            ...
             ...
         }
     }
@@ -152,11 +169,11 @@ pip install pharindoko.cdk-internal-gateway
 
 ## Costs
 
-You have to expect basic infra costs for 2 components in this setup:  
+You have to expect basic infra costs for 2 components in this setup:
 
 | Count |  Type |  Estimated Costs |
 |---|---|---|
 |1 x| application load balancer  | 20 $  |
 |2 x| network interfaces for the vpc endpoint  | 16 $  |
 
-A shared vpc can lower the costs as vpc endpoint and their network interfaces can be used together...  
+A shared vpc can lower the costs as vpc endpoint and their network interfaces can be used together...
