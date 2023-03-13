@@ -47,9 +47,6 @@ test("Internal Service provider", () => {
       "Outputs": Object {
         "internalServiceStackDomainUrlinternalServiceStackB921B240": Object {
           "Description": "service url",
-          "Export": Object {
-            "Name": "-DomainUrl",
-          },
           "Value": "https://internalservice-dev.test.aws1234.com",
         },
       },
