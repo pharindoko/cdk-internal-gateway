@@ -184,7 +184,6 @@ export class InternalService extends Construct {
     new CfnOutput(this, `DomainUrl-${id}`, {
       value: `https://${domainName}`,
       description: "service url",
-      exportName: "-DomainUrl",
     });
   }
 }
