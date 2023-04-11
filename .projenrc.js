@@ -3,7 +3,7 @@ const { Stability } = require("projen/lib/cdk/jsii-project");
 const project = new awscdk.AwsCdkConstructLibrary({
   author: "Florian Fuß",
   stability: Stability.STABLE,
-  cdkVersion: "2.46.0",
+  cdkVersion: "2.45.0",
   defaultReleaseBranch: "main",
   name: "cdk-internal-gateway",
   repositoryUrl: "https://github.com/pharindoko/cdk-internal-gateway.git",
@@ -47,6 +47,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
         types: ["feat", "fix", "chore", "docs"],
       },
     },
+    mergify: true,
+    mergifyOptions: {
+      autoMergeLabel: "auto-approve",
+      strict: true,
+      requiredStatusChecks: ["build"],
+    },
   },
   pullRequestTemplate: false,
   prettier: true,
@@ -56,9 +62,5 @@ const project = new awscdk.AwsCdkConstructLibrary({
   },
   majorVersion: 1,
 });
-
-// disable automatic releases, but keep workflow that can be triggered manually
-const releaseWorkflow = project.github.tryFindWorkflow("release");
-releaseWorkflow.file.addDeletionOverride("on.push");
 
 project.synth();
