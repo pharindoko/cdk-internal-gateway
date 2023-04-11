@@ -533,12 +533,6 @@ test("Api Gateway Stack provider - set default values", () => {
               "internalservice-dev.test.com",
               "internalservice-dev.test2.com",
             ],
-            "Tags": Array [
-              Object {
-                "Key": "Name",
-                "Value": "test/internalServiceStack/SSLCertificate-internalServiceStack",
-              },
-            ],
             "ValidationMethod": "DNS",
           },
           "Type": "AWS::CertificateManager::Certificate",

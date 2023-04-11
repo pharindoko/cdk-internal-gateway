@@ -253,7 +253,7 @@ test("Internal Website provider - set default values", () => {
           "Properties": Object {
             "Code": Object {
               "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
-              "S3Key": "6babbac1f25446ab4660ead0ad5972e3a7742f50c6d8326af98a8bcd5d485335.zip",
+              "S3Key": "e57c1acaa363d7d2b81736776007a7091bc73dff4aeb8135627c4511a51e7dca.zip",
             },
             "Description": Object {
               "Fn::Join": Array [
@@ -995,12 +995,6 @@ test("Internal Website provider - set default values", () => {
             "SubjectAlternativeNames": Array [
               "internalservice-dev.test.com",
               "internalservice-dev.test2.com",
-            ],
-            "Tags": Array [
-              Object {
-                "Key": "Name",
-                "Value": "test/internalServiceStack/SSLCertificate-internalServiceStack",
-              },
             ],
             "ValidationMethod": "DNS",
           },
