@@ -18,6 +18,11 @@ import {
  */
 export interface InternalWebsiteProps extends InternalApiGatewayProps {
   /**
+   * Enable/disable bucket deployment of website`s sources
+   */
+  readonly enableSourceDeployment: boolean;
+  
+  /**
    * Path of website folder containing the website`s sources
    */
   readonly sourcePath: string;
@@ -49,10 +54,12 @@ export class InternalWebsite extends InternalApiGateway {
       autoDeleteObjects: true,
     });
 
-    new s3deploy.BucketDeployment(this, `WebsiteDeployment-${id}`, {
-      sources: [s3deploy.Source.asset(path.normalize(props.sourcePath))],
-      destinationBucket: bucket,
-    });
+    if( enableSourceDeployment){
+      new s3deploy.BucketDeployment(this, `WebsiteDeployment-${id}`, {
+        sources: [s3deploy.Source.asset(path.normalize(props.sourcePath))],
+        destinationBucket: bucket,
+      });
+    }
 
     const role = new iam.Role(this, `ApiGatewayReadOnlyRole-${id}`, {
       assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
