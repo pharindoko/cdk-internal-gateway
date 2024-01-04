@@ -18,10 +18,12 @@ import {
  */
 export interface InternalWebsiteProps extends InternalApiGatewayProps {
   /**
-   * Enable/disable bucket deployment of website`s sources
+   * Enable/disable automatic sync of the website`s sources to the S3bucket
+   *
+   * @default true
    */
-  readonly enableSourceDeployment: boolean;
-  
+  readonly enableSourceDeployment?: boolean;
+
   /**
    * Path of website folder containing the website`s sources
    */
@@ -54,9 +56,11 @@ export class InternalWebsite extends InternalApiGateway {
       autoDeleteObjects: true,
     });
 
-    if( enableSourceDeployment){
+    const enableSourceDeployment = props.enableSourceDeployment ?? true;
+
+    if (enableSourceDeployment) {
       new s3deploy.BucketDeployment(this, `WebsiteDeployment-${id}`, {
-        sources: [s3deploy.Source.asset(path.normalize(props.sourcePath))],
+        sources: [s3deploy.Source.asset(path.normalize(props?.sourcePath))],
         destinationBucket: bucket,
       });
     }
