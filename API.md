@@ -742,6 +742,7 @@ const internalWebsiteProps: InternalWebsiteProps = { ... }
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | minimum compression size for the internal api gateway. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.sourcePath">sourcePath</a></code> | <code>string</code> | Path of website folder containing the website`s sources. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.bucketName">bucketName</a></code> | <code>string</code> | Name of s3 bucket to use for the website deployment. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.enableSourceDeployment">enableSourceDeployment</a></code> | <code>boolean</code> | Enable/disable automatic sync of the website`s sources to the S3bucket. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.websiteIndexDocument">websiteIndexDocument</a></code> | <code>string</code> | Name of html index document used for the website. |
 
 ---
@@ -841,6 +842,19 @@ public readonly bucketName: string;
 - *Type:* string
 
 Name of s3 bucket to use for the website deployment.
+
+---
+
+##### `enableSourceDeployment`<sup>Optional</sup> <a name="enableSourceDeployment" id="cdk-internal-gateway.InternalWebsiteProps.property.enableSourceDeployment"></a>
+
+```typescript
+public readonly enableSourceDeployment: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Enable/disable automatic sync of the website`s sources to the S3bucket.
 
 ---
 

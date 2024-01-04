@@ -1053,6 +1053,27 @@ test("Internal Website provider - set default values", () => {
       },
     }
   `);
+
+  template.resourcePropertiesCountIs(
+    "Custom::CDKBucketDeployment",
+    Match.objectLike({
+      ServiceToken: {
+        "Fn::GetAtt": [
+          "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+          "Arn",
+        ],
+      },
+      SourceBucketNames: ["cdk-hnb659fds-assets-123456789012-us-east-1"],
+      SourceObjectKeys: [
+        "387c754ea2daf522842e23f74232b2c455937afe2e90e7c8d173275b0706342a.zip",
+      ],
+      DestinationBucketName: {
+        Ref: "internalGatewayStackWebsiteBucketinternalGatewayStackBF609A09",
+      },
+      Prune: true,
+    }),
+    1
+  );
 });
 
 test("Api Gateway Stack provider - set optional parameters", () => {
@@ -1063,6 +1084,7 @@ test("Api Gateway Stack provider - set optional parameters", () => {
     sourcePath: "./test/website-sample",
     websiteIndexDocument: "test.html",
     bucketName: "test-bucket",
+    enableSourceDeployment: false,
   });
 
   const template = Template.fromStack(stack);
@@ -1073,6 +1095,27 @@ test("Api Gateway Stack provider - set optional parameters", () => {
         IndexDocument: "test.html",
       },
     })
+  );
+
+  template.resourcePropertiesCountIs(
+    "Custom::CDKBucketDeployment",
+    Match.objectLike({
+      ServiceToken: {
+        "Fn::GetAtt": [
+          "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+          "Arn",
+        ],
+      },
+      SourceBucketNames: ["cdk-hnb659fds-assets-123456789012-us-east-1"],
+      SourceObjectKeys: [
+        "387c754ea2daf522842e23f74232b2c455937afe2e90e7c8d173275b0706342a.zip",
+      ],
+      DestinationBucketName: {
+        Ref: "internalApiGatewayStackOptionalParametersWebsiteBucketinternalApiGatewayStackOptionalParameters2269B1C9",
+      },
+      Prune: true,
+    }),
+    0
   );
 
   template.hasResourceProperties(

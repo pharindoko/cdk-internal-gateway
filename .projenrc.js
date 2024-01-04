@@ -63,4 +63,13 @@ const project = new awscdk.AwsCdkConstructLibrary({
   majorVersion: 1,
 });
 
+project.vscode.settings.addSettings({
+  "editor.formatOnSave": true,
+  "eslint.format.enable": false,
+  "prettier.enable": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+});
+
 project.synth();
