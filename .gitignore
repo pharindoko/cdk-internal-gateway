@@ -55,3 +55,4 @@ junit.xml
 .jsii
 tsconfig.json
 !/API.md
+!/.vscode/settings.json
