@@ -21,6 +21,10 @@
       "type": "build"
     },
     {
+      "name": "cdk-nag",
+      "type": "build"
+    },
+    {
       "name": "eslint-config-prettier",
       "type": "build"
     },
@@ -107,7 +111,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.45.0",
+      "version": "^2.78.0",
       "type": "peer"
     },
     {

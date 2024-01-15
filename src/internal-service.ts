@@ -6,7 +6,9 @@ import {
   aws_elasticloadbalancingv2_targets as elasticloadbalancingv2targets,
   aws_route53 as route53,
   aws_route53_targets as targets,
+  aws_s3 as s3,
   CfnOutput,
+  RemovalPolicy,
 } from "aws-cdk-lib";
 import { IVpc, SubnetSelection } from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
@@ -58,6 +60,28 @@ export interface InternalServiceProps {
    * @default apigateway.SslPolicy.TLS_1_2
    */
   readonly customDomainSSLPolicy?: apigateway.SecurityPolicy;
+
+  /**
+   * Use a custom security group used for the load balancer.
+   * By default, a security group will be created with inbound access to the typical private network CIDR ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 and port 443.
+   * Any inbound access (0.0.0.0/0) is blocked by default to follow AWS best practices for security.
+   * Outbound traffic is allowed to all destinations.
+   */
+  readonly loadBalancerSecurityGroup?: ec2.ISecurityGroup;
+
+  /**
+   * Enable or disable access logs for the load balancer to follow AWS best practices for security.
+   *
+   * @default true
+   */
+  readonly enableLoadBalancerAccessLogs?: boolean;
+
+  /**
+   * Add load balancer redirect from port 80 to 443.
+   *
+   * @default true
+   */
+  readonly addLoadBalancerRedirect?: boolean;
 }
 
 export class InternalService extends Construct {
@@ -111,21 +135,49 @@ export class InternalService extends Construct {
       this.domains.push(sanDomain);
     }
 
-    const loadBalancerSecurityGroup = new ec2.SecurityGroup(
-      this,
-      `LoadBalancerSecurityGroup-${id}`,
-      {
-        vpc: props.vpc,
-        allowAllOutbound: true,
-        description: "security group for a load balancer",
-      }
-    );
+    let sgImmutable: ec2.ISecurityGroup;
 
-    loadBalancerSecurityGroup.addIngressRule(
-      ec2.Peer.anyIpv4(),
-      ec2.Port.tcp(443),
-      "allow HTTPS traffic from anywhere"
-    );
+    if (props.loadBalancerSecurityGroup) {
+      sgImmutable = ec2.SecurityGroup.fromSecurityGroupId(
+        this,
+        "LoadBalancerSecurityGroupImmutable",
+        props.loadBalancerSecurityGroup?.securityGroupId,
+        { mutable: false }
+      );
+    } else {
+      const loadBalancerSecurityGroup = new ec2.SecurityGroup(
+        this,
+        `LoadBalancerSecurityGroup-${id}`,
+        {
+          vpc: props.vpc,
+          allowAllOutbound: true,
+          description: "security group for a load balancer",
+        }
+      );
+
+      loadBalancerSecurityGroup.addIngressRule(
+        ec2.Peer.ipv4("10.0.0.0/8"),
+        ec2.Port.tcp(443),
+        "allow HTTPS traffic from private CIDR range"
+      );
+      loadBalancerSecurityGroup.addIngressRule(
+        ec2.Peer.ipv4("172.16.0.0/12"),
+        ec2.Port.tcp(443),
+        "allow HTTPS traffic from private CIDR range"
+      );
+      loadBalancerSecurityGroup.addIngressRule(
+        ec2.Peer.ipv4("192.168.0.0/16"),
+        ec2.Port.tcp(443),
+        "allow HTTPS traffic from private CIDR range"
+      );
+
+      sgImmutable = ec2.SecurityGroup.fromSecurityGroupId(
+        this,
+        "LoadBalancerSecurityGroupImmutable",
+        loadBalancerSecurityGroup.securityGroupId,
+        { mutable: false }
+      );
+    }
 
     const applicationLoadBalancer = new elb.ApplicationLoadBalancer(
       this,
@@ -136,12 +188,29 @@ export class InternalService extends Construct {
           subnets: props.subnetSelection.subnets,
         },
         internetFacing: false,
-        securityGroup: loadBalancerSecurityGroup,
+        securityGroup: sgImmutable,
       }
     );
-
+    const enableLoadBalancerAccessLogs =
+      props.enableLoadBalancerAccessLogs ?? true;
+    if (enableLoadBalancerAccessLogs) {
+      //create a private s3 bucket
+      const bucket = new s3.Bucket(this, "ApplicationLoadBalancerLogs-${id}", {
+        versioned: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        enforceSSL: true,
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        autoDeleteObjects: true,
+      });
+      //create access logs for the load balancer
+      applicationLoadBalancer.logAccessLogs(bucket);
+    }
     // Add http-to-https redirect
-    applicationLoadBalancer.addRedirect();
+    const addLoadBalancerRedirect = props.addLoadBalancerRedirect ?? true;
+    if (addLoadBalancerRedirect) {
+      applicationLoadBalancer.addRedirect();
+    }
 
     new route53.ARecord(this, `Route53Record-${id}`, {
       zone: props.hostedZone,
@@ -175,6 +244,7 @@ export class InternalService extends Construct {
       sslPolicy:
         props?.loadBalancerListenerSSLPolicy ??
         elb.SslPolicy.FORWARD_SECRECY_TLS12_RES_GCM,
+      open: false,
     });
 
     listener.addTargetGroups(`TargetGroupAttachment-${id}`, {
