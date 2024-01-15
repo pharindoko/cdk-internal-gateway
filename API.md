@@ -615,8 +615,11 @@ const internalServiceProps: InternalServiceProps = { ... }
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.subnetSelection">subnetSelection</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | Subnets attached to the application load balancer. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | VPC attached to the application load balancer. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.vpcEndpointIPAddresses">vpcEndpointIPAddresses</a></code> | <code>string[]</code> | VPC endpoint ip addresses attached to the load balancer`s target group. |
+| <code><a href="#cdk-internal-gateway.InternalServiceProps.property.addLoadBalancerRedirect">addLoadBalancerRedirect</a></code> | <code>boolean</code> | Add load balancer redirect from port 80 to 443. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.customDomainSSLPolicy">customDomainSSLPolicy</a></code> | <code>aws-cdk-lib.aws_apigateway.SecurityPolicy</code> | SSLPolicy attached to the apigateway custom domain. |
+| <code><a href="#cdk-internal-gateway.InternalServiceProps.property.enableLoadBalancerAccessLogs">enableLoadBalancerAccessLogs</a></code> | <code>boolean</code> | Enable or disable access logs for the load balancer to follow AWS best practices for security. |
 | <code><a href="#cdk-internal-gateway.InternalServiceProps.property.loadBalancerListenerSSLPolicy">loadBalancerListenerSSLPolicy</a></code> | <code>aws-cdk-lib.aws_elasticloadbalancingv2.SslPolicy</code> | SSLPolicy attached to the load balancer listener. |
+| <code><a href="#cdk-internal-gateway.InternalServiceProps.property.loadBalancerSecurityGroup">loadBalancerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | Use a custom security group used for the load balancer. |
 
 ---
 
@@ -692,6 +695,19 @@ VPC endpoint ip addresses attached to the load balancer`s target group.
 
 ---
 
+##### `addLoadBalancerRedirect`<sup>Optional</sup> <a name="addLoadBalancerRedirect" id="cdk-internal-gateway.InternalServiceProps.property.addLoadBalancerRedirect"></a>
+
+```typescript
+public readonly addLoadBalancerRedirect: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Add load balancer redirect from port 80 to 443.
+
+---
+
 ##### `customDomainSSLPolicy`<sup>Optional</sup> <a name="customDomainSSLPolicy" id="cdk-internal-gateway.InternalServiceProps.property.customDomainSSLPolicy"></a>
 
 ```typescript
@@ -705,6 +721,19 @@ SSLPolicy attached to the apigateway custom domain.
 
 ---
 
+##### `enableLoadBalancerAccessLogs`<sup>Optional</sup> <a name="enableLoadBalancerAccessLogs" id="cdk-internal-gateway.InternalServiceProps.property.enableLoadBalancerAccessLogs"></a>
+
+```typescript
+public readonly enableLoadBalancerAccessLogs: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Enable or disable access logs for the load balancer to follow AWS best practices for security.
+
+---
+
 ##### `loadBalancerListenerSSLPolicy`<sup>Optional</sup> <a name="loadBalancerListenerSSLPolicy" id="cdk-internal-gateway.InternalServiceProps.property.loadBalancerListenerSSLPolicy"></a>
 
 ```typescript
@@ -715,6 +744,22 @@ public readonly loadBalancerListenerSSLPolicy: SslPolicy;
 - *Default:* elb.SslPolicy.FORWARD_SECRECY_TLS12_RES_GCM
 
 SSLPolicy attached to the load balancer listener.
+
+---
+
+##### `loadBalancerSecurityGroup`<sup>Optional</sup> <a name="loadBalancerSecurityGroup" id="cdk-internal-gateway.InternalServiceProps.property.loadBalancerSecurityGroup"></a>
+
+```typescript
+public readonly loadBalancerSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+Use a custom security group used for the load balancer.
+
+By default, a security group will be created with inbound access to the typical private network CIDR ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 and port 443.
+Any inbound access (0.0.0.0/0) is blocked by default to follow AWS best practices for security.
+Outbound traffic is allowed to all destinations.
 
 ---
 

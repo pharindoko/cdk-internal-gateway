@@ -109,7 +109,12 @@ test("Internal Website provider - set default values", () => {
           "Properties": Object {
             "Code": Object {
               "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
-              "S3Key": "6ddcf10002539818a9256eff3fb2b22aa09298d8f946e26ba121c175a600c44e.zip",
+              "S3Key": "9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip",
+            },
+            "Environment": Object {
+              "Variables": Object {
+                "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem",
+              },
             },
             "Handler": "index.handler",
             "Layers": Array [
@@ -253,7 +258,7 @@ test("Internal Website provider - set default values", () => {
           "Properties": Object {
             "Code": Object {
               "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
-              "S3Key": "e57c1acaa363d7d2b81736776007a7091bc73dff4aeb8135627c4511a51e7dca.zip",
+              "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip",
             },
             "Description": Object {
               "Fn::Join": Array [
@@ -261,7 +266,7 @@ test("Internal Website provider - set default values", () => {
                 Array [
                   "Lambda function for auto-deleting objects in ",
                   Object {
-                    "Ref": "internalGatewayStackWebsiteBucketinternalGatewayStackBF609A09",
+                    "Ref": "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
                   },
                   " S3 bucket.",
                 ],
@@ -275,7 +280,7 @@ test("Internal Website provider - set default values", () => {
                 "Arn",
               ],
             },
-            "Runtime": "nodejs14.x",
+            "Runtime": "nodejs16.x",
             "Timeout": 900,
           },
           "Type": "AWS::Lambda::Function",
@@ -739,7 +744,7 @@ test("Internal Website provider - set default values", () => {
           "Properties": Object {
             "Content": Object {
               "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
-              "S3Key": "c409e6c5845f1f349df8cd84e160bf6f1c35d2b060b63e1f032f9bd39d4542cc.zip",
+              "S3Key": "3fb6287214999ddeafa7cd0e3e58bc5144c8678bb720f3b5e45e8fd32f333eb3.zip",
             },
             "Description": "/opt/awscli/aws",
           },
@@ -828,12 +833,237 @@ test("Internal Website provider - set default values", () => {
           },
           "Type": "AWS::ApiGateway::DomainName",
         },
+        "internalServiceStackApplicationLoadBalancerLogsid63B637FA": Object {
+          "DeletionPolicy": "Delete",
+          "Properties": Object {
+            "BucketEncryption": Object {
+              "ServerSideEncryptionConfiguration": Array [
+                Object {
+                  "ServerSideEncryptionByDefault": Object {
+                    "SSEAlgorithm": "AES256",
+                  },
+                },
+              ],
+            },
+            "PublicAccessBlockConfiguration": Object {
+              "BlockPublicAcls": true,
+              "BlockPublicPolicy": true,
+              "IgnorePublicAcls": true,
+              "RestrictPublicBuckets": true,
+            },
+            "Tags": Array [
+              Object {
+                "Key": "aws-cdk:auto-delete-objects",
+                "Value": "true",
+              },
+            ],
+            "VersioningConfiguration": Object {
+              "Status": "Enabled",
+            },
+          },
+          "Type": "AWS::S3::Bucket",
+          "UpdateReplacePolicy": "Delete",
+        },
+        "internalServiceStackApplicationLoadBalancerLogsidAutoDeleteObjectsCustomResourceBEEA6E8A": Object {
+          "DeletionPolicy": "Delete",
+          "DependsOn": Array [
+            "internalServiceStackApplicationLoadBalancerLogsidPolicyA6863BEF",
+          ],
+          "Properties": Object {
+            "BucketName": Object {
+              "Ref": "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+            },
+            "ServiceToken": Object {
+              "Fn::GetAtt": Array [
+                "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+                "Arn",
+              ],
+            },
+          },
+          "Type": "Custom::S3AutoDeleteObjects",
+          "UpdateReplacePolicy": "Delete",
+        },
+        "internalServiceStackApplicationLoadBalancerLogsidPolicyA6863BEF": Object {
+          "Properties": Object {
+            "Bucket": Object {
+              "Ref": "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+            },
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "s3:*",
+                  "Condition": Object {
+                    "Bool": Object {
+                      "aws:SecureTransport": "false",
+                    },
+                  },
+                  "Effect": "Deny",
+                  "Principal": Object {
+                    "AWS": "*",
+                  },
+                  "Resource": Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+                        "Arn",
+                      ],
+                    },
+                    Object {
+                      "Fn::Join": Array [
+                        "",
+                        Array [
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+                              "Arn",
+                            ],
+                          },
+                          "/*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Action": Array [
+                    "s3:GetBucket*",
+                    "s3:List*",
+                    "s3:DeleteObject*",
+                  ],
+                  "Effect": "Allow",
+                  "Principal": Object {
+                    "AWS": Object {
+                      "Fn::GetAtt": Array [
+                        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                        "Arn",
+                      ],
+                    },
+                  },
+                  "Resource": Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+                        "Arn",
+                      ],
+                    },
+                    Object {
+                      "Fn::Join": Array [
+                        "",
+                        Array [
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+                              "Arn",
+                            ],
+                          },
+                          "/*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Action": "s3:PutObject",
+                  "Effect": "Allow",
+                  "Principal": Object {
+                    "AWS": Object {
+                      "Fn::Join": Array [
+                        "",
+                        Array [
+                          "arn:",
+                          Object {
+                            "Ref": "AWS::Partition",
+                          },
+                          ":iam::127311923021:root",
+                        ],
+                      ],
+                    },
+                  },
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        Object {
+                          "Fn::GetAtt": Array [
+                            "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+                            "Arn",
+                          ],
+                        },
+                        "/AWSLogs/123456789012/*",
+                      ],
+                    ],
+                  },
+                },
+                Object {
+                  "Action": "s3:PutObject",
+                  "Condition": Object {
+                    "StringEquals": Object {
+                      "s3:x-amz-acl": "bucket-owner-full-control",
+                    },
+                  },
+                  "Effect": "Allow",
+                  "Principal": Object {
+                    "Service": "delivery.logs.amazonaws.com",
+                  },
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        Object {
+                          "Fn::GetAtt": Array [
+                            "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+                            "Arn",
+                          ],
+                        },
+                        "/AWSLogs/123456789012/*",
+                      ],
+                    ],
+                  },
+                },
+                Object {
+                  "Action": "s3:GetBucketAcl",
+                  "Effect": "Allow",
+                  "Principal": Object {
+                    "Service": "delivery.logs.amazonaws.com",
+                  },
+                  "Resource": Object {
+                    "Fn::GetAtt": Array [
+                      "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+                      "Arn",
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+          },
+          "Type": "AWS::S3::BucketPolicy",
+        },
         "internalServiceStackApplicationLoadBalancerinternalServiceStackA9484EF3": Object {
+          "DependsOn": Array [
+            "internalServiceStackApplicationLoadBalancerLogsidAutoDeleteObjectsCustomResourceBEEA6E8A",
+            "internalServiceStackApplicationLoadBalancerLogsidPolicyA6863BEF",
+            "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+          ],
           "Properties": Object {
             "LoadBalancerAttributes": Array [
               Object {
                 "Key": "deletion_protection.enabled",
                 "Value": "false",
+              },
+              Object {
+                "Key": "access_logs.s3.enabled",
+                "Value": "true",
+              },
+              Object {
+                "Key": "access_logs.s3.bucket",
+                "Value": Object {
+                  "Ref": "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+                },
+              },
+              Object {
+                "Key": "access_logs.s3.prefix",
+                "Value": "",
               },
             ],
             "Scheme": "internal",
@@ -854,6 +1084,11 @@ test("Internal Website provider - set default values", () => {
           "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
         },
         "internalServiceStackApplicationLoadBalancerinternalServiceStackListenerinternalServiceStackAC542223": Object {
+          "DependsOn": Array [
+            "internalServiceStackApplicationLoadBalancerLogsidAutoDeleteObjectsCustomResourceBEEA6E8A",
+            "internalServiceStackApplicationLoadBalancerLogsidPolicyA6863BEF",
+            "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+          ],
           "Properties": Object {
             "Certificates": Array [
               Object {
@@ -880,6 +1115,11 @@ test("Internal Website provider - set default values", () => {
           "Type": "AWS::ElasticLoadBalancingV2::Listener",
         },
         "internalServiceStackApplicationLoadBalancerinternalServiceStackRedirect80To4439382502D": Object {
+          "DependsOn": Array [
+            "internalServiceStackApplicationLoadBalancerLogsidAutoDeleteObjectsCustomResourceBEEA6E8A",
+            "internalServiceStackApplicationLoadBalancerLogsidPolicyA6863BEF",
+            "internalServiceStackApplicationLoadBalancerLogsid63B637FA",
+          ],
           "Properties": Object {
             "DefaultActions": Array [
               Object {
@@ -941,18 +1181,25 @@ test("Internal Website provider - set default values", () => {
             ],
             "SecurityGroupIngress": Array [
               Object {
-                "CidrIp": "0.0.0.0/0",
-                "Description": "allow HTTPS traffic from anywhere",
+                "CidrIp": "10.0.0.0/8",
+                "Description": "allow HTTPS traffic from private CIDR range",
                 "FromPort": 443,
                 "IpProtocol": "tcp",
                 "ToPort": 443,
               },
               Object {
-                "CidrIp": "0.0.0.0/0",
-                "Description": "Allow from anyone on port 80",
-                "FromPort": 80,
+                "CidrIp": "172.16.0.0/12",
+                "Description": "allow HTTPS traffic from private CIDR range",
+                "FromPort": 443,
                 "IpProtocol": "tcp",
-                "ToPort": 80,
+                "ToPort": 443,
+              },
+              Object {
+                "CidrIp": "192.168.0.0/16",
+                "Description": "allow HTTPS traffic from private CIDR range",
+                "FromPort": 443,
+                "IpProtocol": "tcp",
+                "ToPort": 443,
               },
             ],
             "VpcId": "vpc-12345",
@@ -995,6 +1242,12 @@ test("Internal Website provider - set default values", () => {
             "SubjectAlternativeNames": Array [
               "internalservice-dev.test.com",
               "internalservice-dev.test2.com",
+            ],
+            "Tags": Array [
+              Object {
+                "Key": "Name",
+                "Value": "test/internalServiceStack/SSLCertificate-internalServiceStack",
+              },
             ],
             "ValidationMethod": "DNS",
           },

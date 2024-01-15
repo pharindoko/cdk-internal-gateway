@@ -3,7 +3,7 @@ const { Stability } = require("projen/lib/cdk/jsii-project");
 const project = new awscdk.AwsCdkConstructLibrary({
   author: "Florian Fuß",
   stability: Stability.STABLE,
-  cdkVersion: "2.45.0",
+  cdkVersion: "2.78.0",
   defaultReleaseBranch: "main",
   name: "cdk-internal-gateway",
   repositoryUrl: "https://github.com/pharindoko/cdk-internal-gateway.git",
@@ -11,6 +11,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   description:
     "CDK construct to create to create internal serverless applications.",
   sampleCode: false,
+  devDeps: ["cdk-nag"],
   keywords: [
     "cdk",
     "apigateway",
