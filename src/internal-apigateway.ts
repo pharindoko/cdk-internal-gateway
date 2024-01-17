@@ -1,4 +1,8 @@
-import { aws_apigateway as apigateway, aws_iam as iam } from "aws-cdk-lib";
+import {
+  Size,
+  aws_apigateway as apigateway,
+  aws_iam as iam,
+} from "aws-cdk-lib";
 import { IInterfaceVpcEndpoint } from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
 
@@ -32,7 +36,7 @@ export interface InternalApiGatewayProps {
   readonly binaryMediaTypes?: string[] | undefined;
 
   /**
-   * minimum compression size for the internal api gateway
+   * minimum compression size for the internal api gateway in kilobytes
    */
   readonly minimumCompressionSize?: number | undefined;
 }
@@ -87,7 +91,9 @@ export abstract class InternalApiGateway extends Construct {
         stageName: props.stage,
       },
       binaryMediaTypes: props.binaryMediaTypes,
-      minimumCompressionSize: props.minimumCompressionSize,
+      minCompressionSize: props.minimumCompressionSize
+        ? Size.kibibytes(props.minimumCompressionSize!)
+        : undefined,
     });
 
     for (const domainItem of props.domains) {

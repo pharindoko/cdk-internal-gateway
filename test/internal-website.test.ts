@@ -1330,7 +1330,7 @@ test("Internal Website provider - set default values", () => {
 });
 
 test("Api Gateway Stack provider - set optional parameters", () => {
-  new InternalWebsite(stack, "internalApiGatewayStackOptionalParameters", {
+  new InternalWebsite(stack, "internalWebsiteStackOptionalParameters", {
     stage: "dev",
     domains: internalServiceStack.domains,
     vpcEndpoint: vpcEndpointId,
@@ -1364,7 +1364,7 @@ test("Api Gateway Stack provider - set optional parameters", () => {
         "387c754ea2daf522842e23f74232b2c455937afe2e90e7c8d173275b0706342a.zip",
       ],
       DestinationBucketName: {
-        Ref: "internalApiGatewayStackOptionalParametersWebsiteBucketinternalApiGatewayStackOptionalParameters2269B1C9",
+        Ref: "internalWebsiteStackOptionalParametersWebsiteBucketinternalWebsiteStackOptionalParameters510228C2",
       },
       Prune: true,
     }),
@@ -1392,7 +1392,7 @@ test("Api Gateway Stack provider - set optional parameters", () => {
               },
               ":apigateway:us-east-1:s3:path/",
               {
-                Ref: "internalApiGatewayStackOptionalParametersWebsiteBucketinternalApiGatewayStackOptionalParameters2269B1C9",
+                Ref: "internalWebsiteStackOptionalParametersWebsiteBucketinternalWebsiteStackOptionalParameters510228C2",
               },
               "/test.html",
             ],

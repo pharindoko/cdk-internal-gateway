@@ -515,7 +515,7 @@ const internalApiGatewayProps: InternalApiGatewayProps = { ... }
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.apiBasePathMappingPath">apiBasePathMappingPath</a></code> | <code>string</code> | Path for custom domain base path mapping that will be attached to the api gateway. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.binaryMediaTypes">binaryMediaTypes</a></code> | <code>string[]</code> | Binary media types for the internal api gateway. |
-| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | minimum compression size for the internal api gateway. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | minimum compression size for the internal api gateway in kilobytes. |
 
 ---
 
@@ -589,7 +589,7 @@ public readonly minimumCompressionSize: number;
 
 - *Type:* number
 
-minimum compression size for the internal api gateway.
+minimum compression size for the internal api gateway in kilobytes.
 
 ---
 
@@ -784,7 +784,7 @@ const internalWebsiteProps: InternalWebsiteProps = { ... }
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.apiBasePathMappingPath">apiBasePathMappingPath</a></code> | <code>string</code> | Path for custom domain base path mapping that will be attached to the api gateway. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.binaryMediaTypes">binaryMediaTypes</a></code> | <code>string[]</code> | Binary media types for the internal api gateway. |
-| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | minimum compression size for the internal api gateway. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | minimum compression size for the internal api gateway in kilobytes. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.sourcePath">sourcePath</a></code> | <code>string</code> | Path of website folder containing the website`s sources. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.bucketName">bucketName</a></code> | <code>string</code> | Name of s3 bucket to use for the website deployment. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.enableSourceDeployment">enableSourceDeployment</a></code> | <code>boolean</code> | Enable/disable automatic sync of the website`s sources to the S3bucket. |
@@ -862,7 +862,7 @@ public readonly minimumCompressionSize: number;
 
 - *Type:* number
 
-minimum compression size for the internal api gateway.
+minimum compression size for the internal api gateway in kilobytes.
 
 ---
 

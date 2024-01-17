@@ -901,7 +901,7 @@ test("Api Gateway Stack provider - set optional parameters", () => {
     stage: "dev",
     domains: internalServiceStack.domains,
     vpcEndpoint: vpcEndpointId,
-    minimumCompressionSize: 1024,
+    minimumCompressionSize: 1000,
     binaryMediaTypes: ["application/octet-stream"],
     apiBasePathMappingPath: "test",
   });
@@ -910,7 +910,7 @@ test("Api Gateway Stack provider - set optional parameters", () => {
   template.hasResourceProperties(
     "AWS::ApiGateway::RestApi",
     Match.objectLike({
-      MinimumCompressionSize: 1024,
+      MinimumCompressionSize: 1024000,
     })
   );
 
