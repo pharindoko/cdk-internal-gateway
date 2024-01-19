@@ -1,8 +1,10 @@
 import {
   App,
+  Size,
+  Stack,
+  aws_apigateway as apigateway,
   aws_ec2 as ec2,
   aws_route53 as route53,
-  Stack,
 } from "aws-cdk-lib";
 import { Match, Template } from "aws-cdk-lib/assertions";
 import { Construct } from "constructs";
@@ -67,7 +69,6 @@ beforeEach(() => {
 
 test("Api Gateway Stack provider - set default values", () => {
   new ApiGatewayStackTest(stack, "apiGatewayStack", {
-    stage: "dev",
     domains: internalServiceStack.domains,
     vpcEndpoint: vpcEndpointId,
   });
@@ -144,7 +145,7 @@ test("Api Gateway Stack provider - set default values", () => {
                 },
                 "/",
                 Object {
-                  "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA",
+                  "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStageprodEB2E72B0",
                 },
                 "/",
               ],
@@ -327,7 +328,7 @@ test("Api Gateway Stack provider - set default values", () => {
           },
           "Type": "AWS::ApiGateway::Deployment",
         },
-        "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA": Object {
+        "apiGatewayStackGatewayapiGatewayStackDeploymentStageprodEB2E72B0": Object {
           "DependsOn": Array [
             "apiGatewayStackGatewayapiGatewayStackAccount7F19EDD7",
           ],
@@ -338,7 +339,7 @@ test("Api Gateway Stack provider - set default values", () => {
             "RestApiId": Object {
               "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
             },
-            "StageName": "dev",
+            "StageName": "prod",
           },
           "Type": "AWS::ApiGateway::Stage",
         },
@@ -371,7 +372,7 @@ test("Api Gateway Stack provider - set default values", () => {
               "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
             },
             "Stage": Object {
-              "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA",
+              "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStageprodEB2E72B0",
             },
           },
           "Type": "AWS::ApiGateway::BasePathMapping",
@@ -386,7 +387,7 @@ test("Api Gateway Stack provider - set default values", () => {
               "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
             },
             "Stage": Object {
-              "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA",
+              "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStageprodEB2E72B0",
             },
           },
           "Type": "AWS::ApiGateway::BasePathMapping",
@@ -401,7 +402,7 @@ test("Api Gateway Stack provider - set default values", () => {
               "Ref": "apiGatewayStackGatewayapiGatewayStackC685BA6E",
             },
             "Stage": Object {
-              "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStagedevF51461BA",
+              "Ref": "apiGatewayStackGatewayapiGatewayStackDeploymentStageprodEB2E72B0",
             },
           },
           "Type": "AWS::ApiGateway::BasePathMapping",
@@ -898,10 +899,9 @@ test("Api Gateway Stack provider - set default values", () => {
 
 test("Api Gateway Stack provider - set optional parameters", () => {
   new ApiGatewayStackTest(stack, "apiGatewayStackOptionalParameters", {
-    stage: "dev",
     domains: internalServiceStack.domains,
     vpcEndpoint: vpcEndpointId,
-    minimumCompressionSize: 1000,
+    minCompressionSize: Size.kibibytes(1000),
     binaryMediaTypes: ["application/octet-stream"],
     apiBasePathMappingPath: "test",
   });
@@ -926,5 +926,98 @@ test("Api Gateway Stack provider - set optional parameters", () => {
     Match.objectLike({
       BasePath: "test",
     })
+  );
+});
+
+test("Api Gateway Stack provider - set deprecated stage parameter", () => {
+  new ApiGatewayStackTest(stack, "apiGatewayStackOptionalParameters", {
+    domains: internalServiceStack.domains,
+    vpcEndpoint: vpcEndpointId,
+    stage: "dev",
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties(
+    "AWS::ApiGateway::Stage",
+    Match.objectLike({
+      StageName: "dev",
+      RestApiId: {
+        Ref: "apiGatewayStackOptionalParametersGatewayapiGatewayStackOptionalParameters47F8C933",
+      },
+    })
+  );
+});
+
+test("Api Gateway Stack provider - set no stage parameter", () => {
+  new ApiGatewayStackTest(stack, "apiGatewayStackOptionalParameters", {
+    domains: internalServiceStack.domains,
+    vpcEndpoint: vpcEndpointId,
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties(
+    "AWS::ApiGateway::Stage",
+    Match.objectLike({
+      StageName: "prod",
+      RestApiId: {
+        Ref: "apiGatewayStackOptionalParametersGatewayapiGatewayStackOptionalParameters47F8C933",
+      },
+    })
+  );
+});
+
+test("Api Gateway Stack provider - set stage parameter with deployOptions", () => {
+  new ApiGatewayStackTest(stack, "apiGatewayStackOptionalParameters", {
+    domains: internalServiceStack.domains,
+    vpcEndpoint: vpcEndpointId,
+    deployOptions: {
+      stageName: "test",
+    },
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties(
+    "AWS::ApiGateway::Stage",
+    Match.objectLike({
+      StageName: "test",
+      RestApiId: {
+        Ref: "apiGatewayStackOptionalParametersGatewayapiGatewayStackOptionalParameters47F8C933",
+      },
+    })
+  );
+});
+
+test("Api Gateway Stack EndpointConfiguration - Exception Wrong EndpointType", () => {
+  expect(() => {
+    new ApiGatewayStackTest(stack, "apiGatewayStackExceptionWrongType", {
+      domains: internalServiceStack.domains,
+      vpcEndpoint: vpcEndpointId,
+      deployOptions: {
+        stageName: "test",
+      },
+      endpointConfiguration: {
+        types: [apigateway.EndpointType.EDGE],
+      },
+    });
+  }).toThrowError(
+    "InternalApiGateway: endpointConfiguration.types must be EndpointType.PRIVATE"
+  );
+});
+
+test("Api Gateway Stack EndpointConfiguration - Exception No VPC Endpoint provided", () => {
+  expect(() => {
+    new ApiGatewayStackTest(stack, "apiGatewayStackExceptionNoVpcEndpoint", {
+      domains: internalServiceStack.domains,
+      vpcEndpoint: vpcEndpointId,
+      deployOptions: {
+        stageName: "test",
+      },
+      endpointConfiguration: {
+        vpcEndpoints: [],
+        types: [apigateway.EndpointType.PRIVATE],
+      },
+    });
+  }).toThrowError(
+    "InternalApiGateway: endpointConfiguration.vpcEndpoints must be set"
   );
 });

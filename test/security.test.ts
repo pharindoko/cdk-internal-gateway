@@ -1,15 +1,29 @@
 import {
   App,
   Aspects,
+  RemovalPolicy,
   Stack,
+  aws_apigateway as apigateway,
   aws_ec2 as ec2,
   aws_route53 as route53,
 } from "aws-cdk-lib";
 import { Annotations, Match } from "aws-cdk-lib/assertions";
 // eslint-disable-next-line import/no-extraneous-dependencies
+import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { AwsSolutionsChecks, NagSuppressions } from "cdk-nag";
-import { InternalService } from "../src";
+import { Construct } from "constructs";
+import {
+  InternalApiGateway,
+  InternalApiGatewayProps,
+  InternalService,
+} from "../src";
 
+export class ApiGatewayStackTest extends InternalApiGateway {
+  constructor(scope: Construct, id: string, props: InternalApiGatewayProps) {
+    super(scope, id, props);
+    this.apiGateway.root.addMethod("GET", undefined);
+  }
+}
 describe("cdk-nag AwsSolutions Pack", () => {
   let stack: Stack;
   let app: App;
@@ -43,13 +57,46 @@ describe("cdk-nag AwsSolutions Pack", () => {
       ),
     };
 
-    new InternalService(stack, "internal-service", {
-      subnetSelection: vpcPublicSubnets,
-      subDomain: "vt-runner",
-      vpcEndpointIPAddresses: ["192.168.2.1", "192.168.2.2"],
-      subjectAlternativeNames: ["test.example.io"],
-      hostedZone,
-      vpc,
+    const internalServiceStack = new InternalService(
+      stack,
+      "internal-service",
+      {
+        subnetSelection: vpcPublicSubnets,
+        subDomain: "vt-runner",
+        vpcEndpointIPAddresses: ["192.168.2.1", "192.168.2.2"],
+        subjectAlternativeNames: ["test.example.io"],
+        hostedZone,
+        vpc,
+      }
+    );
+
+    let vpcEndpointId =
+      ec2.InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(
+        stack,
+        "vpcEndpoint",
+        {
+          port: 443,
+          vpcEndpointId: "vpce-1234567890",
+        }
+      );
+    const logGroup = new LogGroup(stack, "LogGroup", {
+      logGroupName: "/aws/apigateway/my-api",
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
+    const accessLogDestination = new apigateway.LogGroupLogDestination(
+      logGroup
+    );
+    const accessLogFormat = apigateway.AccessLogFormat.jsonWithStandardFields();
+
+    new ApiGatewayStackTest(stack, "apiGatewayStack", {
+      domains: internalServiceStack.domains,
+      vpcEndpoint: vpcEndpointId,
+      deployOptions: {
+        stageName: "dev",
+        accessLogDestination,
+        accessLogFormat,
+        loggingLevel: apigateway.MethodLoggingLevel.INFO,
+      },
     });
 
     Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
@@ -57,6 +104,13 @@ describe("cdk-nag AwsSolutions Pack", () => {
 
   // THEN
   test("No unsuppressed Warnings", () => {
+    NagSuppressions.addStackSuppressions(stack, [
+      {
+        id: "AwsSolutions-APIG3",
+        reason: "AWS WAFv2 is not required for internal projects",
+      },
+    ]);
+
     const githubRunnerStackWarnings = Annotations.fromStack(stack).findWarning(
       "*",
       Match.stringLikeRegexp("AwsSolutions-.*")
@@ -77,7 +131,39 @@ describe("cdk-nag AwsSolutions Pack", () => {
     NagSuppressions.addStackSuppressions(stack, [
       {
         id: "AwsSolutions-S1",
-        reason: "no access logs needed for a access logs bucket",
+        reason:
+          "No additional access logs needed for the load balancer access logs bucket",
+      },
+    ]);
+
+    NagSuppressions.addStackSuppressions(stack, [
+      {
+        id: "AwsSolutions-APIG4",
+        reason:
+          "The API does not implement authorization. Depends on solution requested.",
+      },
+    ]);
+
+    NagSuppressions.addStackSuppressions(stack, [
+      {
+        id: "AwsSolutions-APIG2",
+        reason: "Input validation depends on solution requested.",
+      },
+    ]);
+
+    NagSuppressions.addStackSuppressions(stack, [
+      {
+        id: "AwsSolutions-COG4",
+        reason:
+          "The API GW method does not use a Cognito user pool authorizer. Depends on solution requested.",
+      },
+    ]);
+
+    NagSuppressions.addStackSuppressions(stack, [
+      {
+        id: "AwsSolutions-IAM4",
+        reason:
+          "AmazonAPIGatewayPushToCloudWatchLogs is a default role set by aws cdk.",
       },
     ]);
 

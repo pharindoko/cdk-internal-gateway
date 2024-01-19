@@ -56,7 +56,9 @@ beforeEach(() => {
 
 test("Internal Website provider - set default values", () => {
   new InternalWebsite(stack, "internalGatewayStack", {
-    stage: "dev",
+    deployOptions: {
+      stageName: "dev",
+    },
     domains: internalServiceStack.domains,
     vpcEndpoint: vpcEndpointId,
     sourcePath: "./test/website-sample",
@@ -1331,7 +1333,9 @@ test("Internal Website provider - set default values", () => {
 
 test("Api Gateway Stack provider - set optional parameters", () => {
   new InternalWebsite(stack, "internalWebsiteStackOptionalParameters", {
-    stage: "dev",
+    deployOptions: {
+      stageName: "dev",
+    },
     domains: internalServiceStack.domains,
     vpcEndpoint: vpcEndpointId,
     sourcePath: "./test/website-sample",

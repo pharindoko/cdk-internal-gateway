@@ -496,7 +496,7 @@ The tree node.
 
 ### InternalApiGatewayProps <a name="InternalApiGatewayProps" id="cdk-internal-gateway.InternalApiGatewayProps"></a>
 
-Properties for ApiGateway.
+Properties for ApiGateway Includes all properties of RestApiProps except: endpointConfiguration, policy This is done by intention to prevent the user from overriding the required security settings.
 
 #### Initializer <a name="Initializer" id="cdk-internal-gateway.InternalApiGatewayProps.Initializer"></a>
 
@@ -510,12 +510,366 @@ const internalApiGatewayProps: InternalApiGatewayProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.defaultCorsPreflightOptions">defaultCorsPreflightOptions</a></code> | <code>aws-cdk-lib.aws_apigateway.CorsOptions</code> | Adds a CORS preflight OPTIONS method to this resource and all child resources. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.defaultIntegration">defaultIntegration</a></code> | <code>aws-cdk-lib.aws_apigateway.Integration</code> | An integration to use as a default for all methods created within this API unless an integration is specified. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.defaultMethodOptions">defaultMethodOptions</a></code> | <code>aws-cdk-lib.aws_apigateway.MethodOptions</code> | Method options to use as a default for all methods created within this API unless custom options are specified. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.cloudWatchRole">cloudWatchRole</a></code> | <code>boolean</code> | Automatically configure an AWS CloudWatch role for API Gateway. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.deploy">deploy</a></code> | <code>boolean</code> | Indicates if a Deployment should be automatically created for this API, and recreated when the API model (resources, methods) changes. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.deployOptions">deployOptions</a></code> | <code>aws-cdk-lib.aws_apigateway.StageOptions</code> | Options for the API Gateway stage that will always point to the latest deployment when `deploy` is enabled. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.description">description</a></code> | <code>string</code> | A description of the RestApi construct. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.disableExecuteApiEndpoint">disableExecuteApiEndpoint</a></code> | <code>boolean</code> | Specifies whether clients can invoke the API using the default execute-api endpoint. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.domainName">domainName</a></code> | <code>aws-cdk-lib.aws_apigateway.DomainNameOptions</code> | Configure a custom domain name and map it to this API. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.endpointExportName">endpointExportName</a></code> | <code>string</code> | Export name for the CfnOutput containing the API endpoint. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.endpointTypes">endpointTypes</a></code> | <code>aws-cdk-lib.aws_apigateway.EndpointType[]</code> | A list of the endpoint types of the API. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.failOnWarnings">failOnWarnings</a></code> | <code>boolean</code> | Indicates whether to roll back the resource if a warning occurs while API Gateway is creating the RestApi resource. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.parameters">parameters</a></code> | <code>{[ key: string ]: string}</code> | Custom header parameters for the request. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_iam.PolicyDocument</code> | A policy document that contains the permissions for this RestApi. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.restApiName">restApiName</a></code> | <code>string</code> | A name for the API Gateway RestApi resource. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.retainDeployments">retainDeployments</a></code> | <code>boolean</code> | Retains old deployment resources when the API changes. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.apiKeySourceType">apiKeySourceType</a></code> | <code>aws-cdk-lib.aws_apigateway.ApiKeySourceType</code> | The source of the API key for metering requests according to a usage plan. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.binaryMediaTypes">binaryMediaTypes</a></code> | <code>string[]</code> | The list of binary media mime-types that are supported by the RestApi resource, such as "image/png" or "application/octet-stream". |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.cloneFrom">cloneFrom</a></code> | <code>aws-cdk-lib.aws_apigateway.IRestApi</code> | The ID of the API Gateway RestApi resource that you want to clone. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.endpointConfiguration">endpointConfiguration</a></code> | <code>aws-cdk-lib.aws_apigateway.EndpointConfiguration</code> | The EndpointConfiguration property type specifies the endpoint types of a REST API. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.minCompressionSize">minCompressionSize</a></code> | <code>aws-cdk-lib.Size</code> | A Size(in bytes, kibibytes, mebibytes etc) that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (when undefined) on an API. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | A nullable integer that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (when undefined) on an API. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.domains">domains</a></code> | <code>aws-cdk-lib.aws_apigateway.IDomainName[]</code> | List of custom domains names to be used for the API Gateway. |
-| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.stage">stage</a></code> | <code>string</code> | Stage name  used for all cloudformation resource names and internal aws resource names. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
 | <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.apiBasePathMappingPath">apiBasePathMappingPath</a></code> | <code>string</code> | Path for custom domain base path mapping that will be attached to the api gateway. |
-| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.binaryMediaTypes">binaryMediaTypes</a></code> | <code>string[]</code> | Binary media types for the internal api gateway. |
-| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | minimum compression size for the internal api gateway in kilobytes. |
+| <code><a href="#cdk-internal-gateway.InternalApiGatewayProps.property.stage">stage</a></code> | <code>string</code> | Stage name  used for all cloudformation resource names and internal aws resource names. |
+
+---
+
+##### `defaultCorsPreflightOptions`<sup>Optional</sup> <a name="defaultCorsPreflightOptions" id="cdk-internal-gateway.InternalApiGatewayProps.property.defaultCorsPreflightOptions"></a>
+
+```typescript
+public readonly defaultCorsPreflightOptions: CorsOptions;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.CorsOptions
+- *Default:* CORS is disabled
+
+Adds a CORS preflight OPTIONS method to this resource and all child resources.
+
+You can add CORS at the resource-level using `addCorsPreflight`.
+
+---
+
+##### `defaultIntegration`<sup>Optional</sup> <a name="defaultIntegration" id="cdk-internal-gateway.InternalApiGatewayProps.property.defaultIntegration"></a>
+
+```typescript
+public readonly defaultIntegration: Integration;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.Integration
+- *Default:* Inherited from parent.
+
+An integration to use as a default for all methods created within this API unless an integration is specified.
+
+---
+
+##### `defaultMethodOptions`<sup>Optional</sup> <a name="defaultMethodOptions" id="cdk-internal-gateway.InternalApiGatewayProps.property.defaultMethodOptions"></a>
+
+```typescript
+public readonly defaultMethodOptions: MethodOptions;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.MethodOptions
+- *Default:* Inherited from parent.
+
+Method options to use as a default for all methods created within this API unless custom options are specified.
+
+---
+
+##### `cloudWatchRole`<sup>Optional</sup> <a name="cloudWatchRole" id="cdk-internal-gateway.InternalApiGatewayProps.property.cloudWatchRole"></a>
+
+```typescript
+public readonly cloudWatchRole: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false if `@aws-cdk/aws-apigateway:disableCloudWatchRole` is enabled, true otherwise
+
+Automatically configure an AWS CloudWatch role for API Gateway.
+
+---
+
+##### `deploy`<sup>Optional</sup> <a name="deploy" id="cdk-internal-gateway.InternalApiGatewayProps.property.deploy"></a>
+
+```typescript
+public readonly deploy: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Indicates if a Deployment should be automatically created for this API, and recreated when the API model (resources, methods) changes.
+
+Since API Gateway deployments are immutable, When this option is enabled
+(by default), an AWS::ApiGateway::Deployment resource will automatically
+created with a logical ID that hashes the API model (methods, resources
+and options). This means that when the model changes, the logical ID of
+this CloudFormation resource will change, and a new deployment will be
+created.
+
+If this is set, `latestDeployment` will refer to the `Deployment` object
+and `deploymentStage` will refer to a `Stage` that points to this
+deployment. To customize the stage options, use the `deployOptions`
+property.
+
+A CloudFormation Output will also be defined with the root URL endpoint
+of this REST API.
+
+---
+
+##### `deployOptions`<sup>Optional</sup> <a name="deployOptions" id="cdk-internal-gateway.InternalApiGatewayProps.property.deployOptions"></a>
+
+```typescript
+public readonly deployOptions: StageOptions;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.StageOptions
+- *Default:* Based on defaults of `StageOptions`.
+
+Options for the API Gateway stage that will always point to the latest deployment when `deploy` is enabled.
+
+If `deploy` is disabled,
+this value cannot be set.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="description" id="cdk-internal-gateway.InternalApiGatewayProps.property.description"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* string
+- *Default:* 'Automatically created by the RestApi construct'
+
+A description of the RestApi construct.
+
+---
+
+##### `disableExecuteApiEndpoint`<sup>Optional</sup> <a name="disableExecuteApiEndpoint" id="cdk-internal-gateway.InternalApiGatewayProps.property.disableExecuteApiEndpoint"></a>
+
+```typescript
+public readonly disableExecuteApiEndpoint: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Specifies whether clients can invoke the API using the default execute-api endpoint.
+
+To require that clients use a custom domain name to invoke the
+API, disable the default endpoint.
+
+> [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-restapi.html](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-restapi.html)
+
+---
+
+##### `domainName`<sup>Optional</sup> <a name="domainName" id="cdk-internal-gateway.InternalApiGatewayProps.property.domainName"></a>
+
+```typescript
+public readonly domainName: DomainNameOptions;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.DomainNameOptions
+- *Default:* no domain name is defined, use `addDomainName` or directly define a `DomainName`.
+
+Configure a custom domain name and map it to this API.
+
+---
+
+##### `endpointExportName`<sup>Optional</sup> <a name="endpointExportName" id="cdk-internal-gateway.InternalApiGatewayProps.property.endpointExportName"></a>
+
+```typescript
+public readonly endpointExportName: string;
+```
+
+- *Type:* string
+- *Default:* when no export name is given, output will be created without export
+
+Export name for the CfnOutput containing the API endpoint.
+
+---
+
+##### `endpointTypes`<sup>Optional</sup> <a name="endpointTypes" id="cdk-internal-gateway.InternalApiGatewayProps.property.endpointTypes"></a>
+
+```typescript
+public readonly endpointTypes: EndpointType[];
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.EndpointType[]
+- *Default:* EndpointType.EDGE
+
+A list of the endpoint types of the API.
+
+Use this property when creating
+an API.
+
+---
+
+##### `failOnWarnings`<sup>Optional</sup> <a name="failOnWarnings" id="cdk-internal-gateway.InternalApiGatewayProps.property.failOnWarnings"></a>
+
+```typescript
+public readonly failOnWarnings: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Indicates whether to roll back the resource if a warning occurs while API Gateway is creating the RestApi resource.
+
+---
+
+##### `parameters`<sup>Optional</sup> <a name="parameters" id="cdk-internal-gateway.InternalApiGatewayProps.property.parameters"></a>
+
+```typescript
+public readonly parameters: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: string}
+- *Default:* No parameters.
+
+Custom header parameters for the request.
+
+> [https://docs.aws.amazon.com/cli/latest/reference/apigateway/import-rest-api.html](https://docs.aws.amazon.com/cli/latest/reference/apigateway/import-rest-api.html)
+
+---
+
+##### `policy`<sup>Optional</sup> <a name="policy" id="cdk-internal-gateway.InternalApiGatewayProps.property.policy"></a>
+
+```typescript
+public readonly policy: PolicyDocument;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyDocument
+- *Default:* No policy.
+
+A policy document that contains the permissions for this RestApi.
+
+---
+
+##### `restApiName`<sup>Optional</sup> <a name="restApiName" id="cdk-internal-gateway.InternalApiGatewayProps.property.restApiName"></a>
+
+```typescript
+public readonly restApiName: string;
+```
+
+- *Type:* string
+- *Default:* ID of the RestApi construct.
+
+A name for the API Gateway RestApi resource.
+
+---
+
+##### `retainDeployments`<sup>Optional</sup> <a name="retainDeployments" id="cdk-internal-gateway.InternalApiGatewayProps.property.retainDeployments"></a>
+
+```typescript
+public readonly retainDeployments: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Retains old deployment resources when the API changes.
+
+This allows
+manually reverting stages to point to old deployments via the AWS
+Console.
+
+---
+
+##### `apiKeySourceType`<sup>Optional</sup> <a name="apiKeySourceType" id="cdk-internal-gateway.InternalApiGatewayProps.property.apiKeySourceType"></a>
+
+```typescript
+public readonly apiKeySourceType: ApiKeySourceType;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.ApiKeySourceType
+- *Default:* Metering is disabled.
+
+The source of the API key for metering requests according to a usage plan.
+
+---
+
+##### `binaryMediaTypes`<sup>Optional</sup> <a name="binaryMediaTypes" id="cdk-internal-gateway.InternalApiGatewayProps.property.binaryMediaTypes"></a>
+
+```typescript
+public readonly binaryMediaTypes: string[];
+```
+
+- *Type:* string[]
+- *Default:* RestApi supports only UTF-8-encoded text payloads.
+
+The list of binary media mime-types that are supported by the RestApi resource, such as "image/png" or "application/octet-stream".
+
+---
+
+##### `cloneFrom`<sup>Optional</sup> <a name="cloneFrom" id="cdk-internal-gateway.InternalApiGatewayProps.property.cloneFrom"></a>
+
+```typescript
+public readonly cloneFrom: IRestApi;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.IRestApi
+- *Default:* None.
+
+The ID of the API Gateway RestApi resource that you want to clone.
+
+---
+
+##### `endpointConfiguration`<sup>Optional</sup> <a name="endpointConfiguration" id="cdk-internal-gateway.InternalApiGatewayProps.property.endpointConfiguration"></a>
+
+```typescript
+public readonly endpointConfiguration: EndpointConfiguration;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.EndpointConfiguration
+- *Default:* EndpointType.EDGE
+
+The EndpointConfiguration property type specifies the endpoint types of a REST API.
+
+> [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-restapi-endpointconfiguration.html](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-restapi-endpointconfiguration.html)
+
+---
+
+##### `minCompressionSize`<sup>Optional</sup> <a name="minCompressionSize" id="cdk-internal-gateway.InternalApiGatewayProps.property.minCompressionSize"></a>
+
+```typescript
+public readonly minCompressionSize: Size;
+```
+
+- *Type:* aws-cdk-lib.Size
+- *Default:* Compression is disabled.
+
+A Size(in bytes, kibibytes, mebibytes etc) that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (when undefined) on an API.
+
+When compression is enabled, compression or
+decompression is not applied on the payload if the payload size is
+smaller than this value. Setting it to zero allows compression for any
+payload size.
+
+---
+
+##### ~~`minimumCompressionSize`~~<sup>Optional</sup> <a name="minimumCompressionSize" id="cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize"></a>
+
+- *Deprecated:* - superseded by `minCompressionSize`
+
+```typescript
+public readonly minimumCompressionSize: number;
+```
+
+- *Type:* number
+- *Default:* Compression is disabled.
+
+A nullable integer that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (when undefined) on an API.
+
+When compression is enabled, compression or
+decompression is not applied on the payload if the payload size is
+smaller than this value. Setting it to zero allows compression for any
+payload size.
 
 ---
 
@@ -528,18 +882,6 @@ public readonly domains: IDomainName[];
 - *Type:* aws-cdk-lib.aws_apigateway.IDomainName[]
 
 List of custom domains names to be used for the API Gateway.
-
----
-
-##### `stage`<sup>Required</sup> <a name="stage" id="cdk-internal-gateway.InternalApiGatewayProps.property.stage"></a>
-
-```typescript
-public readonly stage: string;
-```
-
-- *Type:* string
-
-Stage name  used for all cloudformation resource names and internal aws resource names.
 
 ---
 
@@ -569,27 +911,17 @@ Path for custom domain base path mapping that will be attached to the api gatewa
 
 ---
 
-##### `binaryMediaTypes`<sup>Optional</sup> <a name="binaryMediaTypes" id="cdk-internal-gateway.InternalApiGatewayProps.property.binaryMediaTypes"></a>
+##### ~~`stage`~~<sup>Optional</sup> <a name="stage" id="cdk-internal-gateway.InternalApiGatewayProps.property.stage"></a>
+
+- *Deprecated:* use deployOptions.stageName instead
 
 ```typescript
-public readonly binaryMediaTypes: string[];
+public readonly stage: string;
 ```
 
-- *Type:* string[]
+- *Type:* string
 
-Binary media types for the internal api gateway.
-
----
-
-##### `minimumCompressionSize`<sup>Optional</sup> <a name="minimumCompressionSize" id="cdk-internal-gateway.InternalApiGatewayProps.property.minimumCompressionSize"></a>
-
-```typescript
-public readonly minimumCompressionSize: number;
-```
-
-- *Type:* number
-
-minimum compression size for the internal api gateway in kilobytes.
+Stage name  used for all cloudformation resource names and internal aws resource names.
 
 ---
 
@@ -779,16 +1111,370 @@ const internalWebsiteProps: InternalWebsiteProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.defaultCorsPreflightOptions">defaultCorsPreflightOptions</a></code> | <code>aws-cdk-lib.aws_apigateway.CorsOptions</code> | Adds a CORS preflight OPTIONS method to this resource and all child resources. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.defaultIntegration">defaultIntegration</a></code> | <code>aws-cdk-lib.aws_apigateway.Integration</code> | An integration to use as a default for all methods created within this API unless an integration is specified. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.defaultMethodOptions">defaultMethodOptions</a></code> | <code>aws-cdk-lib.aws_apigateway.MethodOptions</code> | Method options to use as a default for all methods created within this API unless custom options are specified. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.cloudWatchRole">cloudWatchRole</a></code> | <code>boolean</code> | Automatically configure an AWS CloudWatch role for API Gateway. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.deploy">deploy</a></code> | <code>boolean</code> | Indicates if a Deployment should be automatically created for this API, and recreated when the API model (resources, methods) changes. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.deployOptions">deployOptions</a></code> | <code>aws-cdk-lib.aws_apigateway.StageOptions</code> | Options for the API Gateway stage that will always point to the latest deployment when `deploy` is enabled. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.description">description</a></code> | <code>string</code> | A description of the RestApi construct. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.disableExecuteApiEndpoint">disableExecuteApiEndpoint</a></code> | <code>boolean</code> | Specifies whether clients can invoke the API using the default execute-api endpoint. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.domainName">domainName</a></code> | <code>aws-cdk-lib.aws_apigateway.DomainNameOptions</code> | Configure a custom domain name and map it to this API. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.endpointExportName">endpointExportName</a></code> | <code>string</code> | Export name for the CfnOutput containing the API endpoint. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.endpointTypes">endpointTypes</a></code> | <code>aws-cdk-lib.aws_apigateway.EndpointType[]</code> | A list of the endpoint types of the API. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.failOnWarnings">failOnWarnings</a></code> | <code>boolean</code> | Indicates whether to roll back the resource if a warning occurs while API Gateway is creating the RestApi resource. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.parameters">parameters</a></code> | <code>{[ key: string ]: string}</code> | Custom header parameters for the request. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_iam.PolicyDocument</code> | A policy document that contains the permissions for this RestApi. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.restApiName">restApiName</a></code> | <code>string</code> | A name for the API Gateway RestApi resource. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.retainDeployments">retainDeployments</a></code> | <code>boolean</code> | Retains old deployment resources when the API changes. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.apiKeySourceType">apiKeySourceType</a></code> | <code>aws-cdk-lib.aws_apigateway.ApiKeySourceType</code> | The source of the API key for metering requests according to a usage plan. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.binaryMediaTypes">binaryMediaTypes</a></code> | <code>string[]</code> | The list of binary media mime-types that are supported by the RestApi resource, such as "image/png" or "application/octet-stream". |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.cloneFrom">cloneFrom</a></code> | <code>aws-cdk-lib.aws_apigateway.IRestApi</code> | The ID of the API Gateway RestApi resource that you want to clone. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.endpointConfiguration">endpointConfiguration</a></code> | <code>aws-cdk-lib.aws_apigateway.EndpointConfiguration</code> | The EndpointConfiguration property type specifies the endpoint types of a REST API. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.minCompressionSize">minCompressionSize</a></code> | <code>aws-cdk-lib.Size</code> | A Size(in bytes, kibibytes, mebibytes etc) that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (when undefined) on an API. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | A nullable integer that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (when undefined) on an API. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.domains">domains</a></code> | <code>aws-cdk-lib.aws_apigateway.IDomainName[]</code> | List of custom domains names to be used for the API Gateway. |
-| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.stage">stage</a></code> | <code>string</code> | Stage name  used for all cloudformation resource names and internal aws resource names. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | VPC endpoint id of execute-api vpc endpoint. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.apiBasePathMappingPath">apiBasePathMappingPath</a></code> | <code>string</code> | Path for custom domain base path mapping that will be attached to the api gateway. |
-| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.binaryMediaTypes">binaryMediaTypes</a></code> | <code>string[]</code> | Binary media types for the internal api gateway. |
-| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.minimumCompressionSize">minimumCompressionSize</a></code> | <code>number</code> | minimum compression size for the internal api gateway in kilobytes. |
+| <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.stage">stage</a></code> | <code>string</code> | Stage name  used for all cloudformation resource names and internal aws resource names. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.sourcePath">sourcePath</a></code> | <code>string</code> | Path of website folder containing the website`s sources. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.bucketName">bucketName</a></code> | <code>string</code> | Name of s3 bucket to use for the website deployment. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.enableSourceDeployment">enableSourceDeployment</a></code> | <code>boolean</code> | Enable/disable automatic sync of the website`s sources to the S3bucket. |
 | <code><a href="#cdk-internal-gateway.InternalWebsiteProps.property.websiteIndexDocument">websiteIndexDocument</a></code> | <code>string</code> | Name of html index document used for the website. |
+
+---
+
+##### `defaultCorsPreflightOptions`<sup>Optional</sup> <a name="defaultCorsPreflightOptions" id="cdk-internal-gateway.InternalWebsiteProps.property.defaultCorsPreflightOptions"></a>
+
+```typescript
+public readonly defaultCorsPreflightOptions: CorsOptions;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.CorsOptions
+- *Default:* CORS is disabled
+
+Adds a CORS preflight OPTIONS method to this resource and all child resources.
+
+You can add CORS at the resource-level using `addCorsPreflight`.
+
+---
+
+##### `defaultIntegration`<sup>Optional</sup> <a name="defaultIntegration" id="cdk-internal-gateway.InternalWebsiteProps.property.defaultIntegration"></a>
+
+```typescript
+public readonly defaultIntegration: Integration;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.Integration
+- *Default:* Inherited from parent.
+
+An integration to use as a default for all methods created within this API unless an integration is specified.
+
+---
+
+##### `defaultMethodOptions`<sup>Optional</sup> <a name="defaultMethodOptions" id="cdk-internal-gateway.InternalWebsiteProps.property.defaultMethodOptions"></a>
+
+```typescript
+public readonly defaultMethodOptions: MethodOptions;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.MethodOptions
+- *Default:* Inherited from parent.
+
+Method options to use as a default for all methods created within this API unless custom options are specified.
+
+---
+
+##### `cloudWatchRole`<sup>Optional</sup> <a name="cloudWatchRole" id="cdk-internal-gateway.InternalWebsiteProps.property.cloudWatchRole"></a>
+
+```typescript
+public readonly cloudWatchRole: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false if `@aws-cdk/aws-apigateway:disableCloudWatchRole` is enabled, true otherwise
+
+Automatically configure an AWS CloudWatch role for API Gateway.
+
+---
+
+##### `deploy`<sup>Optional</sup> <a name="deploy" id="cdk-internal-gateway.InternalWebsiteProps.property.deploy"></a>
+
+```typescript
+public readonly deploy: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Indicates if a Deployment should be automatically created for this API, and recreated when the API model (resources, methods) changes.
+
+Since API Gateway deployments are immutable, When this option is enabled
+(by default), an AWS::ApiGateway::Deployment resource will automatically
+created with a logical ID that hashes the API model (methods, resources
+and options). This means that when the model changes, the logical ID of
+this CloudFormation resource will change, and a new deployment will be
+created.
+
+If this is set, `latestDeployment` will refer to the `Deployment` object
+and `deploymentStage` will refer to a `Stage` that points to this
+deployment. To customize the stage options, use the `deployOptions`
+property.
+
+A CloudFormation Output will also be defined with the root URL endpoint
+of this REST API.
+
+---
+
+##### `deployOptions`<sup>Optional</sup> <a name="deployOptions" id="cdk-internal-gateway.InternalWebsiteProps.property.deployOptions"></a>
+
+```typescript
+public readonly deployOptions: StageOptions;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.StageOptions
+- *Default:* Based on defaults of `StageOptions`.
+
+Options for the API Gateway stage that will always point to the latest deployment when `deploy` is enabled.
+
+If `deploy` is disabled,
+this value cannot be set.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="description" id="cdk-internal-gateway.InternalWebsiteProps.property.description"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* string
+- *Default:* 'Automatically created by the RestApi construct'
+
+A description of the RestApi construct.
+
+---
+
+##### `disableExecuteApiEndpoint`<sup>Optional</sup> <a name="disableExecuteApiEndpoint" id="cdk-internal-gateway.InternalWebsiteProps.property.disableExecuteApiEndpoint"></a>
+
+```typescript
+public readonly disableExecuteApiEndpoint: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Specifies whether clients can invoke the API using the default execute-api endpoint.
+
+To require that clients use a custom domain name to invoke the
+API, disable the default endpoint.
+
+> [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-restapi.html](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-restapi.html)
+
+---
+
+##### `domainName`<sup>Optional</sup> <a name="domainName" id="cdk-internal-gateway.InternalWebsiteProps.property.domainName"></a>
+
+```typescript
+public readonly domainName: DomainNameOptions;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.DomainNameOptions
+- *Default:* no domain name is defined, use `addDomainName` or directly define a `DomainName`.
+
+Configure a custom domain name and map it to this API.
+
+---
+
+##### `endpointExportName`<sup>Optional</sup> <a name="endpointExportName" id="cdk-internal-gateway.InternalWebsiteProps.property.endpointExportName"></a>
+
+```typescript
+public readonly endpointExportName: string;
+```
+
+- *Type:* string
+- *Default:* when no export name is given, output will be created without export
+
+Export name for the CfnOutput containing the API endpoint.
+
+---
+
+##### `endpointTypes`<sup>Optional</sup> <a name="endpointTypes" id="cdk-internal-gateway.InternalWebsiteProps.property.endpointTypes"></a>
+
+```typescript
+public readonly endpointTypes: EndpointType[];
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.EndpointType[]
+- *Default:* EndpointType.EDGE
+
+A list of the endpoint types of the API.
+
+Use this property when creating
+an API.
+
+---
+
+##### `failOnWarnings`<sup>Optional</sup> <a name="failOnWarnings" id="cdk-internal-gateway.InternalWebsiteProps.property.failOnWarnings"></a>
+
+```typescript
+public readonly failOnWarnings: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Indicates whether to roll back the resource if a warning occurs while API Gateway is creating the RestApi resource.
+
+---
+
+##### `parameters`<sup>Optional</sup> <a name="parameters" id="cdk-internal-gateway.InternalWebsiteProps.property.parameters"></a>
+
+```typescript
+public readonly parameters: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: string}
+- *Default:* No parameters.
+
+Custom header parameters for the request.
+
+> [https://docs.aws.amazon.com/cli/latest/reference/apigateway/import-rest-api.html](https://docs.aws.amazon.com/cli/latest/reference/apigateway/import-rest-api.html)
+
+---
+
+##### `policy`<sup>Optional</sup> <a name="policy" id="cdk-internal-gateway.InternalWebsiteProps.property.policy"></a>
+
+```typescript
+public readonly policy: PolicyDocument;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyDocument
+- *Default:* No policy.
+
+A policy document that contains the permissions for this RestApi.
+
+---
+
+##### `restApiName`<sup>Optional</sup> <a name="restApiName" id="cdk-internal-gateway.InternalWebsiteProps.property.restApiName"></a>
+
+```typescript
+public readonly restApiName: string;
+```
+
+- *Type:* string
+- *Default:* ID of the RestApi construct.
+
+A name for the API Gateway RestApi resource.
+
+---
+
+##### `retainDeployments`<sup>Optional</sup> <a name="retainDeployments" id="cdk-internal-gateway.InternalWebsiteProps.property.retainDeployments"></a>
+
+```typescript
+public readonly retainDeployments: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Retains old deployment resources when the API changes.
+
+This allows
+manually reverting stages to point to old deployments via the AWS
+Console.
+
+---
+
+##### `apiKeySourceType`<sup>Optional</sup> <a name="apiKeySourceType" id="cdk-internal-gateway.InternalWebsiteProps.property.apiKeySourceType"></a>
+
+```typescript
+public readonly apiKeySourceType: ApiKeySourceType;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.ApiKeySourceType
+- *Default:* Metering is disabled.
+
+The source of the API key for metering requests according to a usage plan.
+
+---
+
+##### `binaryMediaTypes`<sup>Optional</sup> <a name="binaryMediaTypes" id="cdk-internal-gateway.InternalWebsiteProps.property.binaryMediaTypes"></a>
+
+```typescript
+public readonly binaryMediaTypes: string[];
+```
+
+- *Type:* string[]
+- *Default:* RestApi supports only UTF-8-encoded text payloads.
+
+The list of binary media mime-types that are supported by the RestApi resource, such as "image/png" or "application/octet-stream".
+
+---
+
+##### `cloneFrom`<sup>Optional</sup> <a name="cloneFrom" id="cdk-internal-gateway.InternalWebsiteProps.property.cloneFrom"></a>
+
+```typescript
+public readonly cloneFrom: IRestApi;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.IRestApi
+- *Default:* None.
+
+The ID of the API Gateway RestApi resource that you want to clone.
+
+---
+
+##### `endpointConfiguration`<sup>Optional</sup> <a name="endpointConfiguration" id="cdk-internal-gateway.InternalWebsiteProps.property.endpointConfiguration"></a>
+
+```typescript
+public readonly endpointConfiguration: EndpointConfiguration;
+```
+
+- *Type:* aws-cdk-lib.aws_apigateway.EndpointConfiguration
+- *Default:* EndpointType.EDGE
+
+The EndpointConfiguration property type specifies the endpoint types of a REST API.
+
+> [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-restapi-endpointconfiguration.html](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-restapi-endpointconfiguration.html)
+
+---
+
+##### `minCompressionSize`<sup>Optional</sup> <a name="minCompressionSize" id="cdk-internal-gateway.InternalWebsiteProps.property.minCompressionSize"></a>
+
+```typescript
+public readonly minCompressionSize: Size;
+```
+
+- *Type:* aws-cdk-lib.Size
+- *Default:* Compression is disabled.
+
+A Size(in bytes, kibibytes, mebibytes etc) that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (when undefined) on an API.
+
+When compression is enabled, compression or
+decompression is not applied on the payload if the payload size is
+smaller than this value. Setting it to zero allows compression for any
+payload size.
+
+---
+
+##### ~~`minimumCompressionSize`~~<sup>Optional</sup> <a name="minimumCompressionSize" id="cdk-internal-gateway.InternalWebsiteProps.property.minimumCompressionSize"></a>
+
+- *Deprecated:* - superseded by `minCompressionSize`
+
+```typescript
+public readonly minimumCompressionSize: number;
+```
+
+- *Type:* number
+- *Default:* Compression is disabled.
+
+A nullable integer that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (when undefined) on an API.
+
+When compression is enabled, compression or
+decompression is not applied on the payload if the payload size is
+smaller than this value. Setting it to zero allows compression for any
+payload size.
 
 ---
 
@@ -801,18 +1487,6 @@ public readonly domains: IDomainName[];
 - *Type:* aws-cdk-lib.aws_apigateway.IDomainName[]
 
 List of custom domains names to be used for the API Gateway.
-
----
-
-##### `stage`<sup>Required</sup> <a name="stage" id="cdk-internal-gateway.InternalWebsiteProps.property.stage"></a>
-
-```typescript
-public readonly stage: string;
-```
-
-- *Type:* string
-
-Stage name  used for all cloudformation resource names and internal aws resource names.
 
 ---
 
@@ -842,27 +1516,17 @@ Path for custom domain base path mapping that will be attached to the api gatewa
 
 ---
 
-##### `binaryMediaTypes`<sup>Optional</sup> <a name="binaryMediaTypes" id="cdk-internal-gateway.InternalWebsiteProps.property.binaryMediaTypes"></a>
+##### ~~`stage`~~<sup>Optional</sup> <a name="stage" id="cdk-internal-gateway.InternalWebsiteProps.property.stage"></a>
+
+- *Deprecated:* use deployOptions.stageName instead
 
 ```typescript
-public readonly binaryMediaTypes: string[];
+public readonly stage: string;
 ```
 
-- *Type:* string[]
+- *Type:* string
 
-Binary media types for the internal api gateway.
-
----
-
-##### `minimumCompressionSize`<sup>Optional</sup> <a name="minimumCompressionSize" id="cdk-internal-gateway.InternalWebsiteProps.property.minimumCompressionSize"></a>
-
-```typescript
-public readonly minimumCompressionSize: number;
-```
-
-- *Type:* number
-
-minimum compression size for the internal api gateway in kilobytes.
+Stage name  used for all cloudformation resource names and internal aws resource names.
 
 ---
 
