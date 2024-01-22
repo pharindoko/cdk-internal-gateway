@@ -746,7 +746,7 @@ test("Internal Website provider - set default values", () => {
           "Properties": Object {
             "Content": Object {
               "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
-              "S3Key": "3fb6287214999ddeafa7cd0e3e58bc5144c8678bb720f3b5e45e8fd32f333eb3.zip",
+              "S3Key": "3322b7049fb0ed2b7cbb644a2ada8d1116ff80c32dca89e6ada846b5de26f961.zip",
             },
             "Description": "/opt/awscli/aws",
           },
