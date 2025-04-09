@@ -90,6 +90,11 @@ export class InternalService extends Construct {
    */
   public readonly domains: apigateway.IDomainName[];
 
+  /**
+   * The application load balancer created by the internal service stack.
+   */
+  public readonly applicationLoadBalancer: elb.ApplicationLoadBalancer;
+
   constructor(scope: Construct, id: string, props: InternalServiceProps) {
     super(scope, id);
 
@@ -179,7 +184,7 @@ export class InternalService extends Construct {
       );
     }
 
-    const applicationLoadBalancer = new elb.ApplicationLoadBalancer(
+    this.applicationLoadBalancer = new elb.ApplicationLoadBalancer(
       this,
       `ApplicationLoadBalancer-${id}`,
       {
@@ -191,6 +196,7 @@ export class InternalService extends Construct {
         securityGroup: sgImmutable,
       }
     );
+
     const enableLoadBalancerAccessLogs =
       props.enableLoadBalancerAccessLogs ?? true;
     if (enableLoadBalancerAccessLogs) {
@@ -204,18 +210,18 @@ export class InternalService extends Construct {
         autoDeleteObjects: true,
       });
       //create access logs for the load balancer
-      applicationLoadBalancer.logAccessLogs(bucket);
+      this.applicationLoadBalancer.logAccessLogs(bucket);
     }
     // Add http-to-https redirect
     const addLoadBalancerRedirect = props.addLoadBalancerRedirect ?? true;
     if (addLoadBalancerRedirect) {
-      applicationLoadBalancer.addRedirect();
+      this.applicationLoadBalancer.addRedirect();
     }
 
     new route53.ARecord(this, `Route53Record-${id}`, {
       zone: props.hostedZone,
       target: route53.RecordTarget.fromAlias(
-        new targets.LoadBalancerTarget(applicationLoadBalancer)
+        new targets.LoadBalancerTarget(this.applicationLoadBalancer)
       ),
       recordName: domainName,
     });
@@ -238,7 +244,7 @@ export class InternalService extends Construct {
       }
     );
 
-    const listener = applicationLoadBalancer.addListener(`Listener-${id}`, {
+    const listener = this.applicationLoadBalancer.addListener(`Listener-${id}`, {
       port: 443,
       certificates: [certificate],
       sslPolicy:
