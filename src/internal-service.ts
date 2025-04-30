@@ -244,14 +244,17 @@ export class InternalService extends Construct {
       }
     );
 
-    const listener = this.applicationLoadBalancer.addListener(`Listener-${id}`, {
-      port: 443,
-      certificates: [certificate],
-      sslPolicy:
-        props?.loadBalancerListenerSSLPolicy ??
-        elb.SslPolicy.FORWARD_SECRECY_TLS12_RES_GCM,
-      open: false,
-    });
+    const listener = this.applicationLoadBalancer.addListener(
+      `Listener-${id}`,
+      {
+        port: 443,
+        certificates: [certificate],
+        sslPolicy:
+          props?.loadBalancerListenerSSLPolicy ??
+          elb.SslPolicy.FORWARD_SECRECY_TLS12_RES_GCM,
+        open: false,
+      }
+    );
 
     listener.addTargetGroups(`TargetGroupAttachment-${id}`, {
       targetGroups: [targetGroup],

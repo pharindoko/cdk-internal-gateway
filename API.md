@@ -184,6 +184,7 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-internal-gateway.InternalService.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#cdk-internal-gateway.InternalService.property.applicationLoadBalancer">applicationLoadBalancer</a></code> | <code>aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer</code> | The application load balancer created by the internal service stack. |
 | <code><a href="#cdk-internal-gateway.InternalService.property.domains">domains</a></code> | <code>aws-cdk-lib.aws_apigateway.IDomainName[]</code> | List of domains created by the internal service stack and shared with the api gateway stack. |
 
 ---
@@ -197,6 +198,18 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `applicationLoadBalancer`<sup>Required</sup> <a name="applicationLoadBalancer" id="cdk-internal-gateway.InternalService.property.applicationLoadBalancer"></a>
+
+```typescript
+public readonly applicationLoadBalancer: ApplicationLoadBalancer;
+```
+
+- *Type:* aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer
+
+The application load balancer created by the internal service stack.
 
 ---
 
