@@ -7,7 +7,7 @@
 !/package.json
 !/LICENSE
 !/.npmignore
-logs
+/logs
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -38,6 +38,7 @@ status.json
 junit.xml
 /coverage/
 !/.github/workflows/build.yml
+!/.github/workflows/self-mutation.yml
 /dist/changelog.md
 /dist/version.txt
 !/.github/workflows/release.yml
@@ -46,13 +47,13 @@ junit.xml
 !/.prettierignore
 !/.prettierrc.json
 !/test/
-!/tsconfig.dev.json
+!/tsconfig.json
+!/test/tsconfig.json
 !/src/
 /lib
 /dist/
 !/.eslintrc.json
 .jsii
-tsconfig.json
 !/API.md
 !/.vscode/settings.json
 !/.projenrc.js
